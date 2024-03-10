@@ -1,5 +1,7 @@
-package co.edu.uniquindio.uniLocal_PA.modelo;
+package co.edu.uniquindio.uniLocal_PA.modelo.documentos;
 
+import co.edu.uniquindio.uniLocal_PA.modelo.Cuenta;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class Moderador extends Cuenta{
+public class Moderador extends Cuenta {
     @Id
     @EqualsAndHashCode.Include
     private String codigo;
