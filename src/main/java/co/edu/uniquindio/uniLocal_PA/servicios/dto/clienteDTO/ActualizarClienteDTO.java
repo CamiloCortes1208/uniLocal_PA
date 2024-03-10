@@ -1,4 +1,4 @@
-package co.edu.uniquindio.uniLocal_PA.servicios.dto;
+package co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO;
 
 public record ActualizarClienteDTO (
         String id,

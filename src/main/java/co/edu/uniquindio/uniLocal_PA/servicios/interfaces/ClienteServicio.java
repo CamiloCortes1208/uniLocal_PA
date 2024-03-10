@@ -1,7 +1,7 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.interfaces;
 
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.ActualizarClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.RegistroClienteDTO;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.ActualizarClienteDTO;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.RegistroClienteDTO;
 
 public interface ClienteServicio extends CuentaServicio{
 

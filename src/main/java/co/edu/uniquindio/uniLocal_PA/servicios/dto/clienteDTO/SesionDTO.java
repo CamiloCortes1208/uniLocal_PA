@@ -1,4 +1,4 @@
-package co.edu.uniquindio.uniLocal_PA.servicios.dto;
+package co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
