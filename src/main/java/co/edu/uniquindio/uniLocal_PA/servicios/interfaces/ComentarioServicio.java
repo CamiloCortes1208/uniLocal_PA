@@ -1,8 +1,8 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.interfaces;
 
-public interface ComentarioServicio {
-    void agregarComentario();
+import co.edu.uniquindio.uniLocal_PA.modelo.Comentario;
 
-    void eliminarComentario();
+public interface ComentarioServicio {
+    void eliminarComentario(String idComentario);
 
 }
