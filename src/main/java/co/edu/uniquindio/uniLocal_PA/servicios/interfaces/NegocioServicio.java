@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface NegocioServicio {
 
-    void agregarNegocio(AgregarNegocioDTO agregarNegocioDTO) throws Exception;
+    String agregarNegocio(AgregarNegocioDTO agregarNegocioDTO) throws Exception;
 
     void actualizarNegocio(ActualizarNegocioDTO actualizarNegocioDTO) throws Exception;
 
