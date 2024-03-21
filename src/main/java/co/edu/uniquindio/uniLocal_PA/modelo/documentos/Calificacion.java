@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Calificacion extends Comentario {
     @Id
     @EqualsAndHashCode.Include

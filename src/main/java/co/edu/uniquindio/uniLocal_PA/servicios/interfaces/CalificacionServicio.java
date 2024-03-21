@@ -8,9 +8,9 @@ import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.ResponderCali
 import java.util.List;
 
 public interface CalificacionServicio {
-    void agregarCalificacion(AgregarCalificacionDTO agregarCalificacionDTO) throws Exception;
+    String agregarCalificacion(AgregarCalificacionDTO agregarCalificacionDTO) throws Exception;
 
-    void actualizarCalificacion(ActualizarCalificacionDTO actualizarCalificacionDTO) throws Exception;
+    void actualizarCalificacion(String idCalificacion, ActualizarCalificacionDTO actualizarCalificacionDTO) throws Exception;
 
     List<Calificacion> listarCalificacionesNegocio();
 
