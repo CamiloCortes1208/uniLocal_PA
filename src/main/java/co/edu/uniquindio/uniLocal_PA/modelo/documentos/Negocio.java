@@ -3,6 +3,7 @@ package co.edu.uniquindio.uniLocal_PA.modelo.documentos;
 import co.edu.uniquindio.uniLocal_PA.modelo.Horario;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.Ubicacion;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -26,6 +27,7 @@ public class Negocio {
     private String nombre;
     private String descripcion;
     private CategoriaNegocio categoriaNegocio;
+    private EstadoNegocio estadoNegocio;
     private Ubicacion ubicacion;
     private List<String> listaTelefonos = new ArrayList<>();
     private List<String> listaRutasImagenes = new ArrayList<>();
