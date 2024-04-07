@@ -6,6 +6,7 @@ import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.ActualizarCal
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.AgregarCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.ResponderCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.CalificacionServicio;
+import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 @Transactional
 public class CalificacionServicioImpl implements CalificacionServicio {
     private final CalificacionRepo calificacionRepo;
+    NegocioServicio negocioServicio;
 
     public CalificacionServicioImpl(CalificacionRepo calificacionRepo) {
         this.calificacionRepo = calificacionRepo;
@@ -63,7 +65,7 @@ public class CalificacionServicioImpl implements CalificacionServicio {
     }
 
     @Override
-    public List<Calificacion> listarCalificacionesNegocio() {
+    public List<Calificacion> listarCalificacionesNegocio(String idNegocio) {
         return null;
     }
 

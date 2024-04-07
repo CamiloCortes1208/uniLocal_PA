@@ -12,7 +12,7 @@ public interface CalificacionServicio {
 
     void actualizarCalificacion(String idCalificacion, ActualizarCalificacionDTO actualizarCalificacionDTO) throws Exception;
 
-    List<Calificacion> listarCalificacionesNegocio();
+    List<Calificacion> listarCalificacionesNegocio(String idNegocio);
 
     void responderCalificacion(ResponderCalificacionDTO responderCalificacionDTO) throws Exception;
 }
