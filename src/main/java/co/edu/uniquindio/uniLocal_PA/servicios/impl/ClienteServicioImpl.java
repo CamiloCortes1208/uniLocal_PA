@@ -72,10 +72,6 @@ public class ClienteServicioImpl implements ClienteServicio {
                 cliente.getCiudadResidencia());
     }
 
-    @Override
-    public void iniciarSesion(SesionDTO sesionDTO) throws Exception {
-
-    }
 
     @Override
     public void eliminarCuenta(String idCuenta) throws Exception {
