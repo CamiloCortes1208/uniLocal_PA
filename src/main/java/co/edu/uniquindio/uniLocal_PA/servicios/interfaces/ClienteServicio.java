@@ -9,5 +9,6 @@ public interface ClienteServicio extends CuentaServicio{
     void registrarse(RegistroClienteDTO registroClienteDTO)throws Exception;
 
     void editarPerfil(ActualizarClienteDTO actualizarClienteDTO)throws Exception;
+    void eliminarCuenta(String idCuenta)throws Exception;
 
 }
