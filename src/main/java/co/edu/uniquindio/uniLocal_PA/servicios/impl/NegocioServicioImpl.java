@@ -1,14 +1,16 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
-import co.edu.uniquindio.uniLocal_PA.modelo.Ubicacion;
+import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import co.edu.uniquindio.uniLocal_PA.repositorios.NegocioRepo;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.ItemClienteDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ActualizarNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.AgregarNegocioDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.DetalleNegocioDTO;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.RegistrarRevisionDTO;
+import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,7 @@ import java.util.Optional;
 public class NegocioServicioImpl implements NegocioServicio {
 
     private final NegocioRepo negocioRepo;
+    ClienteServicio clienteServicio;
 
     public NegocioServicioImpl(NegocioRepo negocioRepo) {
         this.negocioRepo = negocioRepo;
@@ -82,15 +85,15 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
-    public List<DetalleNegocioDTO> buscarNegociosCategoria(String categoria) {
+    public List<ItemNegocioDTO> buscarNegociosCategoria(String categoria) {
         List<Negocio> negocios =  negocioRepo.findAllByCategoria(categoria);
 
         //Creamos una lista de DTOs de negocios
-        List<DetalleNegocioDTO> detalleNegocioDTOS = new ArrayList<>();
+        List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
 
         for (Negocio negocio : negocios) {
-            detalleNegocioDTOS.add(
-                    new DetalleNegocioDTO(
+            itemNegocioDTOS.add(
+                    new ItemNegocioDTO(
                             negocio.getNombre(),
                             negocio.getDescripcion(),
                             negocio.getCategoriaNegocio(),
@@ -100,19 +103,19 @@ public class NegocioServicioImpl implements NegocioServicio {
                     )
             );
         }
-        return detalleNegocioDTOS;
+        return itemNegocioDTOS;
     }
 
     @Override
-    public List<DetalleNegocioDTO> filtrarPorEstado(EstadoNegocio estadoNegocio) {
+    public List<ItemNegocioDTO> filtrarPorEstado(EstadoNegocio estadoNegocio) {
         List<Negocio> negocios =  negocioRepo.findAllByEstadoNegocio(estadoNegocio);
 
         //Creamos una lista de DTOs de negocios
-        List<DetalleNegocioDTO> detalleNegocioDTOS = new ArrayList<>();
+        List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
 
         for (Negocio negocio : negocios) {
-            detalleNegocioDTOS.add(
-                    new DetalleNegocioDTO(
+            itemNegocioDTOS.add(
+                    new ItemNegocioDTO(
                             negocio.getNombre(),
                             negocio.getDescripcion(),
                             negocio.getCategoriaNegocio(),
@@ -122,13 +125,12 @@ public class NegocioServicioImpl implements NegocioServicio {
                     )
             );
         }
-        return detalleNegocioDTOS;
+        return itemNegocioDTOS;
     }
 
-    //PENDIENTE
     @Override
-    public List<DetalleNegocioDTO> listarNegociosPropietario(String idPropietario) throws Exception {
-        return null;
+    public List<ItemNegocioDTO> listarNegociosPropietario(String idPropietario) throws Exception {
+        return negocioRepo.listarNegociosCliente(idPropietario);
     }
 
     @Override
