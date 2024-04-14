@@ -101,14 +101,16 @@ public class NegocioServicioImpl implements NegocioServicio {
         List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
 
         for (Negocio negocio : negocios) {
-            itemNegocioDTOS.add(
-                    new ItemNegocioDTO(
-                            negocio.getNombre(),
-                            negocio.getDescripcion(),
-                            negocio.getCategoriaNegocio(),
-                            negocio.getUbicacion()
-                    )
-            );
+            if(negocio.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)){
+                itemNegocioDTOS.add(
+                        new ItemNegocioDTO(
+                                negocio.getNombre(),
+                                negocio.getDescripcion(),
+                                negocio.getCategoriaNegocio(),
+                                negocio.getUbicacion()
+                        )
+                );
+            }
         }
         return itemNegocioDTOS;
     }
