@@ -37,6 +37,39 @@ public class ClienteServicioImpl implements ClienteServicio {
     }
 
     @Override
+    public void agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception {
+
+        //Buscamos el cliente al que se le quiere agregar el favorito
+        Optional<Cliente> optionalCliente = clienteRepo.findById( idCliente );
+        //Si no se encontró el cliente, lanzamos una excepción
+        if(optionalCliente.isEmpty()){
+            throw new Exception("No se encontró el cliente a con el id "+idCliente);
+        }
+        //Obtenemos el cliente
+        Cliente cliente = optionalCliente.get();
+
+        cliente.getListaFavoritos().add(idNegocio);
+
+        clienteRepo.save(cliente);
+    }
+
+    @Override
+    public void eliminarNegocioFavorito(String idCliente, String idNegocio) throws Exception {
+        //Buscamos el cliente al que se le quiere agregar el favorito
+        Optional<Cliente> optionalCliente = clienteRepo.findById( idCliente );
+        //Si no se encontró el cliente, lanzamos una excepción
+        if(optionalCliente.isEmpty()){
+            throw new Exception("No se encontró el cliente a con el id "+idCliente);
+        }
+        //Obtenemos el cliente
+        Cliente cliente = optionalCliente.get();
+
+        cliente.getListaFavoritos().remove(idNegocio);
+
+        clienteRepo.save(cliente);
+    }
+
+    @Override
     public void editarPerfil(ActualizarClienteDTO actualizarClienteDTO) throws Exception {
         //Buscamos el cliente que se quiere actualizar
         Optional<Cliente> optionalCliente = clienteRepo.findById( actualizarClienteDTO.id() );
@@ -98,4 +131,5 @@ public class ClienteServicioImpl implements ClienteServicio {
     public void cambiarPassword(CambioPasswordDTO cambioPasswordDTO) throws Exception {
 
     }
+
 }

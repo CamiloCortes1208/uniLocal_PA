@@ -7,10 +7,13 @@ import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.RegistroClienteDTO
 public interface ClienteServicio extends CuentaServicio{
 
     String registrarCliente(RegistroClienteDTO registroClienteDTO)throws Exception;
-
+    void agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception;
+    void eliminarNegocioFavorito(String idCliente, String idNegocio) throws Exception;
     void editarPerfil(ActualizarClienteDTO actualizarClienteDTO)throws Exception;
     void eliminarCuenta(String idCuenta)throws Exception;
 
     ItemClienteDTO obtenerCliente(String idCliente) throws Exception;
+
+
 
 }
