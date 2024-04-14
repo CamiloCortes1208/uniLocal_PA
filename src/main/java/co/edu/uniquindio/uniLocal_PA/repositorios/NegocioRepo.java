@@ -12,13 +12,18 @@ import java.util.List;
 @Repository
 public interface NegocioRepo extends MongoRepository<Negocio, String> {
 
-    List<Negocio> findAllByCategoria(String categoria);
+    List<Negocio> findAllByCategoriaNegocio(String categoria);
 
     List<Negocio> findAllByEstadoNegocio(EstadoNegocio estadoNegocio);
 
+    List<Negocio> findAllByNombre(String nombre);
+
+    List<Negocio> findAllByNombreLikeIgnoreCase(String nombre);
+
     @Aggregation({"{ $match: { codigoCliente: ?0 } }", "{ $lookup: { from: 'clientes', localField: " +
             "'codigoCliente', foreignField: '_id', as: 'cliente' } }", "{ $unwind: '$cliente' }", "{ " +
-            "$project: { nombre: '$nombre', ubicacion: '$ubicacion', descripcion: '$descripcion', " +
+            "$project: { nombre: '$nombre', descripcion: '$descripcion'," +
+            "categoriaNegocio: '$categoriaNegocio', ubicacion: '$ubicacion', " +
             "nombrePropietario: '$cliente.nombre', correoPropietario: '$cliente.email' } }" })
     List<ItemNegocioDTO> listarNegociosCliente(String codigoCliente);
 
