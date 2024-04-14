@@ -23,5 +23,5 @@ public class Publicacion {
     private String descripcion;
     private int cantidadMeGusta;
     private List<String> listaRutasImagenes = new ArrayList<>();
-    private List<Opinion> listaOpiniones = new ArrayList<>();
+    private List<String> listaOpiniones = new ArrayList<>();
 }

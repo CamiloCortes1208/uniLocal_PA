@@ -19,6 +19,7 @@ public class Evento {
     @Id
     @EqualsAndHashCode.Include
     private String codigoEvento;
+    private String codigoNegocio;
 
     private String nombre;
     private String descripcion;
