@@ -21,6 +21,7 @@ public class Revision {
 
     private LocalDateTime fecha;
     private String codigoModerador;
+    private String codigoNegocio;
     private String descripcion;
     private EstadoNegocio estadoNegocio;
 }
