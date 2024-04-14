@@ -25,6 +25,7 @@ public class Cliente extends Cuenta {
     private List<Publicacion> listaPublicaciones = new ArrayList<>();
     private List<Comentario> listaComentarios = new ArrayList<>();
     private List<Negocio> listaNegocios = new ArrayList<>();
+    private List<String> listaFavoritos = new ArrayList<>();
 
     public Cliente(String nombre, String fotoPerfil, String password, String email,
                    EstadoRegistro estadoRegistro, String codigoCliente, String nickname,
