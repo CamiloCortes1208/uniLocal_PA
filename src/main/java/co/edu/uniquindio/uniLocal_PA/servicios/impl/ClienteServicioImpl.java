@@ -57,7 +57,7 @@ public class ClienteServicioImpl implements ClienteServicio {
     }
 
     @Override
-    public DetalleClienteDTO obtenerCliente(String idCliente) throws Exception {
+    public ItemClienteDTO obtenerCliente(String idCliente) throws Exception {
         //Buscamos el cliente que se quiere eliminar
         Optional<Cliente> optionalCliente = clienteRepo.findById( idCliente );
         //Si no se encontró el cliente, lanzamos una excepción
@@ -67,7 +67,7 @@ public class ClienteServicioImpl implements ClienteServicio {
         //Obtenemos el cliente
         Cliente cliente = optionalCliente.get();
         //Retornamos el cliente en formato DTO
-        return new DetalleClienteDTO(cliente.getCodigoCliente(), cliente.getNombre(),
+        return new ItemClienteDTO(cliente.getCodigoCliente(), cliente.getNombre(),
                 cliente.getFotoPerfil(), cliente.getNickname(), cliente.getEmail(),
                 cliente.getCiudadResidencia());
     }

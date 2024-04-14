@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
-public record DetalleNegocioDTO(
+public record ItemNegocioDTO(
         @NotBlank @Min(10) @Max(50) String nombreNegocio,
         @NotBlank @Min(50) @Max(300) String descripcion,
         @NotBlank CategoriaNegocio categoriaNegocio,
