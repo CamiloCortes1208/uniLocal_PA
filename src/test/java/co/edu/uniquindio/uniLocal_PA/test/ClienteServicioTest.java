@@ -29,4 +29,9 @@ public class ClienteServicioTest {
         String codigo = clienteServicio.registrarCliente(registroClienteDTO);
         Assertions.assertNotNull(codigo);
     }
+
+    @Test
+    public void obtenerClienteTest() throws Exception{
+
+    }
 }
