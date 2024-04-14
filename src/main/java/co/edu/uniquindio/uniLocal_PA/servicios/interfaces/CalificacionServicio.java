@@ -3,6 +3,7 @@ package co.edu.uniquindio.uniLocal_PA.servicios.interfaces;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.ActualizarCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.AgregarCalificacionDTO;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.ItemCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.ResponderCalificacionDTO;
 
 import java.util.List;
@@ -12,7 +13,9 @@ public interface CalificacionServicio {
 
     void actualizarCalificacion(String idCalificacion, ActualizarCalificacionDTO actualizarCalificacionDTO) throws Exception;
 
-    List<Calificacion> listarCalificacionesNegocio(String idNegocio);
+    List<ItemCalificacionDTO> listarCalificacionesNegocio(String idNegocio) throws Exception;
 
     void responderCalificacion(ResponderCalificacionDTO responderCalificacionDTO) throws Exception;
+
+    float obtenerCalificacionPromedioNegocio(List<ItemCalificacionDTO> listaItemCalificacionDTO);
 }

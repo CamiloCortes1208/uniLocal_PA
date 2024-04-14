@@ -16,7 +16,13 @@ public interface NegocioServicio {
 
     void eliminarNegocio(String idNegocio) throws Exception;
 
-    List<ItemNegocioDTO> buscarNegociosCategoria(String categoria);
+    void rechazarNegocio(String idNegocio) throws Exception;
+
+    List<ItemNegocioDTO> buscarNegociosPorCategoria(String categoria);
+
+    List<ItemNegocioDTO> buscarNegociosPorNombre(String nombre);
+
+    List<ItemNegocioDTO> buscarNegociosPorNombreSimilar(String nombre);
 
     List<ItemNegocioDTO> filtrarPorEstado(EstadoNegocio estadoNegocio);
 
@@ -25,5 +31,9 @@ public interface NegocioServicio {
     void cambiarEstado(String idNegocio, EstadoNegocio estadoNegocio) throws Exception;
 
     void registrarRevision(String idNegocio, RegistrarRevisionDTO registrarRevisionDTO) throws Exception;
+
+    void reactivarNegocio(String idNegocio) throws Exception;
+
+    void aprobarNegocio(String idNegocio) throws Exception;
 
 }

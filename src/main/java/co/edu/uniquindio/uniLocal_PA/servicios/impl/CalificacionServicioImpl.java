@@ -4,6 +4,7 @@ import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion;
 import co.edu.uniquindio.uniLocal_PA.repositorios.CalificacionRepo;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.ActualizarCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.AgregarCalificacionDTO;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.ItemCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.ResponderCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.CalificacionServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
@@ -65,14 +66,18 @@ public class CalificacionServicioImpl implements CalificacionServicio {
     }
 
     @Override
-    public List<Calificacion> listarCalificacionesNegocio(String idNegocio) {
+    public List<ItemCalificacionDTO> listarCalificacionesNegocio(String idNegocio) {
+        //return calificacionRepo.listarCalificacionesNegocio(idNegocio);
         return null;
     }
 
     @Override
     public void responderCalificacion(ResponderCalificacionDTO responderCalificacionDTO) throws Exception {
 
+    }
 
-
+    @Override
+    public float obtenerCalificacionPromedioNegocio(List<ItemCalificacionDTO> listaItemCalificacionDTO) {
+        return 0;
     }
 }

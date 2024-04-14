@@ -4,6 +4,7 @@ import co.edu.uniquindio.uniLocal_PA.modelo.Horario;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.Ubicacion;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -34,5 +35,6 @@ public class Negocio {
     private List<Horario> listaHorarios = new ArrayList<>();
     private List<Calificacion> listaCalificaciones = new ArrayList<>();
     private List<Revision> listaRevisiones = new ArrayList<>();
+    private EstadoRegistro estadoRegistro;
 
 }

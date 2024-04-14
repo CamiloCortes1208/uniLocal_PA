@@ -4,6 +4,7 @@ import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.ItemClienteDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ActualizarNegocioDTO;
@@ -42,6 +43,7 @@ public class NegocioServicioImpl implements NegocioServicio {
         negocio.setListaRutasImagenes(agregarNegocioDTO.listaImagenesNegocio());
         negocio.setListaTelefonos(agregarNegocioDTO.listaTelefonos());
         negocio.setListaHorarios(agregarNegocioDTO.listaHorarios());
+        negocio.setEstadoNegocio(EstadoNegocio.PENDIENTE);
 
         //Se guarda en la base de datos
         Negocio negocioGuardado = negocioRepo.save(negocio);
@@ -72,6 +74,7 @@ public class NegocioServicioImpl implements NegocioServicio {
         negocioRepo.save(negocio);
     }
 
+    //Preguntar
     @Override
     public void eliminarNegocio(String idNegocio) throws Exception {
         Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
@@ -81,12 +84,28 @@ public class NegocioServicioImpl implements NegocioServicio {
         }
 
         Negocio negocio = optionalNegocio.get();
-        negocio.setEstadoNegocio(EstadoNegocio.RECHAZADO);
+        negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
+
+        negocioRepo.save(negocio);
     }
 
     @Override
-    public List<ItemNegocioDTO> buscarNegociosCategoria(String categoria) {
-        List<Negocio> negocios =  negocioRepo.findAllByCategoria(categoria);
+    public void rechazarNegocio(String idNegocio) throws Exception {
+        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
+
+        if(optionalNegocio.isEmpty()){
+            throw new Exception("No existe un negocio con el id" + idNegocio);
+        }
+
+        Negocio negocio = optionalNegocio.get();
+        negocio.setEstadoNegocio(EstadoNegocio.RECHAZADO);
+
+        negocioRepo.save(negocio);
+    }
+
+    @Override
+    public List<ItemNegocioDTO> buscarNegociosPorCategoria(String categoria) {
+        List<Negocio> negocios =  negocioRepo.findAllByCategoriaNegocio(categoria);
 
         //Creamos una lista de DTOs de negocios
         List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
@@ -97,11 +116,55 @@ public class NegocioServicioImpl implements NegocioServicio {
                             negocio.getNombre(),
                             negocio.getDescripcion(),
                             negocio.getCategoriaNegocio(),
-                            negocio.getListaRutasImagenes(),
-                            negocio.getListaTelefonos(),
-                            negocio.getListaHorarios()
+                            negocio.getUbicacion()
                     )
             );
+        }
+        return itemNegocioDTOS;
+    }
+
+    @Override
+    public List<ItemNegocioDTO> buscarNegociosPorNombre(String nombre) {
+        List<Negocio> negocios = negocioRepo.findAllByNombre(nombre);
+
+        //Creamos una lista de DTOs de negocios
+        List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
+
+        for (Negocio negocio : negocios) {
+            if(negocio.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)){
+                itemNegocioDTOS.add(
+                        new ItemNegocioDTO(
+                                negocio.getNombre(),
+                                negocio.getDescripcion(),
+                                negocio.getCategoriaNegocio(),
+                                negocio.getUbicacion()
+                        )
+                );
+            }
+        }
+        return itemNegocioDTOS;
+    }
+
+    //En caso de que no se dé un nombre exacto, busca por aquellos que tengan
+    //coincidencias
+    @Override
+    public List<ItemNegocioDTO> buscarNegociosPorNombreSimilar(String nombre) {
+        List<Negocio> negocios = negocioRepo.findAllByNombreLikeIgnoreCase(nombre);
+
+        //Creamos una lista de DTOs de negocios
+        List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
+
+        for (Negocio negocio : negocios) {
+            if(negocio.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)){
+                itemNegocioDTOS.add(
+                        new ItemNegocioDTO(
+                                negocio.getNombre(),
+                                negocio.getDescripcion(),
+                                negocio.getCategoriaNegocio(),
+                                negocio.getUbicacion()
+                        )
+                );
+            }
         }
         return itemNegocioDTOS;
     }
@@ -114,16 +177,16 @@ public class NegocioServicioImpl implements NegocioServicio {
         List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
 
         for (Negocio negocio : negocios) {
-            itemNegocioDTOS.add(
-                    new ItemNegocioDTO(
-                            negocio.getNombre(),
-                            negocio.getDescripcion(),
-                            negocio.getCategoriaNegocio(),
-                            negocio.getListaRutasImagenes(),
-                            negocio.getListaTelefonos(),
-                            negocio.getListaHorarios()
-                    )
-            );
+            if(negocio.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)){
+                itemNegocioDTOS.add(
+                        new ItemNegocioDTO(
+                                negocio.getNombre(),
+                                negocio.getDescripcion(),
+                                negocio.getCategoriaNegocio(),
+                                negocio.getUbicacion()
+                        )
+                );
+            }
         }
         return itemNegocioDTOS;
     }
@@ -175,5 +238,45 @@ public class NegocioServicioImpl implements NegocioServicio {
         //Se actualiza la información del negocio en la base de datos
         negocioRepo.save(negocio);
 
+    }
+
+    @Override
+    public void reactivarNegocio(String idNegocio) throws Exception {
+        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
+
+        if(optionalNegocio.isEmpty()){
+            throw new Exception("No existe un negocio con el id" + idNegocio);
+        }
+
+        Negocio negocio = optionalNegocio.get();
+
+        if(negocio.getEstadoNegocio().equals(EstadoNegocio.APROBADO)){
+            throw new Exception("El negocio ya se encuentra aprobado ");
+        }
+
+        negocio.setEstadoNegocio(EstadoNegocio.APROBADO);
+
+        //Se actualiza el negocio en la base de datos
+        negocioRepo.save(negocio);
+    }
+
+    @Override
+    public void aprobarNegocio(String idNegocio) throws Exception {
+        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
+
+        if(optionalNegocio.isEmpty()){
+            throw new Exception("No existe un negocio con el id" + idNegocio);
+        }
+
+        Negocio negocio = optionalNegocio.get();
+
+        if(negocio.getEstadoNegocio().equals(EstadoNegocio.APROBADO)){
+            throw new Exception("El negocio ya se encuentra aprobado ");
+        }
+
+        negocio.setEstadoNegocio(EstadoNegocio.APROBADO);
+
+        //Se actualiza el negocio en la base de datos
+        negocioRepo.save(negocio);
     }
 }
