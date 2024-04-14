@@ -5,6 +5,7 @@ import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
+import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.NegocioRepo;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.ItemClienteDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ActualizarNegocioDTO;
@@ -33,6 +34,7 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public String agregarNegocio(AgregarNegocioDTO agregarNegocioDTO) throws Exception {
+
         //Se crea el negocio
         Negocio negocio = new Negocio();
 
@@ -55,20 +57,16 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public void actualizarNegocio(ActualizarNegocioDTO actualizarNegocioDTO) throws Exception {
-        //Buscamos el negocio que se quiere actualizar
-        Optional<Negocio> optionalNegocio = negocioRepo.findById(actualizarNegocioDTO.codigoNegocio());
-        //Si no se encontró el negocio, lanzamos una excepción
-        if(optionalNegocio.isEmpty()){
-            throw new Exception("No se encontró el negocio a actualizar");
-        }
-        //Obtenemos el negocio que se quiere actualizar y le asignamos los nuevos valores
-        Negocio negocio = optionalNegocio.get();
+
+        Negocio negocio = obtenerNegocioID(actualizarNegocioDTO.codigoNegocio());
+
         negocio.setNombre(actualizarNegocioDTO.nombreNegocio());
         negocio.setDescripcion(actualizarNegocioDTO.descripcion());
         negocio.setCategoriaNegocio(actualizarNegocioDTO.categoriaNegocio());
         negocio.setListaRutasImagenes(actualizarNegocioDTO.listaImagenesNegocio());
         negocio.setListaTelefonos(actualizarNegocioDTO.listaTelefonos());
         negocio.setListaHorarios(actualizarNegocioDTO.listaHorarios());
+
         //Como el objeto cliente ya tiene un id, el save() no crea un nuevo registro sino que
         // actualiza el que ya existe
         negocioRepo.save(negocio);
@@ -77,13 +75,9 @@ public class NegocioServicioImpl implements NegocioServicio {
     //Preguntar
     @Override
     public void eliminarNegocio(String idNegocio) throws Exception {
-        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
 
-        if(optionalNegocio.isEmpty()){
-            throw new Exception("No existe un negocio con el id" + idNegocio);
-        }
+        Negocio negocio = obtenerNegocioID(idNegocio);
 
-        Negocio negocio = optionalNegocio.get();
         negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
 
         negocioRepo.save(negocio);
@@ -91,13 +85,9 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public void rechazarNegocio(String idNegocio) throws Exception {
-        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
 
-        if(optionalNegocio.isEmpty()){
-            throw new Exception("No existe un negocio con el id" + idNegocio);
-        }
+        Negocio negocio = obtenerNegocioID(idNegocio);
 
-        Negocio negocio = optionalNegocio.get();
         negocio.setEstadoNegocio(EstadoNegocio.RECHAZADO);
 
         negocioRepo.save(negocio);
@@ -125,6 +115,7 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public List<ItemNegocioDTO> buscarNegociosPorNombre(String nombre) {
+
         List<Negocio> negocios = negocioRepo.findAllByNombre(nombre);
 
         //Creamos una lista de DTOs de negocios
@@ -149,6 +140,7 @@ public class NegocioServicioImpl implements NegocioServicio {
     //coincidencias
     @Override
     public List<ItemNegocioDTO> buscarNegociosPorNombreSimilar(String nombre) {
+
         List<Negocio> negocios = negocioRepo.findAllByNombreLikeIgnoreCase(nombre);
 
         //Creamos una lista de DTOs de negocios
@@ -171,6 +163,7 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public List<ItemNegocioDTO> filtrarPorEstado(EstadoNegocio estadoNegocio) {
+
         List<Negocio> negocios =  negocioRepo.findAllByEstadoNegocio(estadoNegocio);
 
         //Creamos una lista de DTOs de negocios
@@ -199,15 +192,8 @@ public class NegocioServicioImpl implements NegocioServicio {
     @Override
     public void cambiarEstado(String idNegocio, EstadoNegocio estadoNegocio) throws Exception {
 
-        //Se obtiene un negocio en base a su id
-        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
+        Negocio negocio = obtenerNegocioID(idNegocio);
 
-        if(optionalNegocio.isEmpty()){
-            throw new Exception("No existe un negocio con el id "+ idNegocio);
-        }
-
-        //Se obtiene el negocio y se cambia su estado
-        Negocio negocio = optionalNegocio.get();
         negocio.setEstadoNegocio(estadoNegocio);
 
         //Se actualiza el repositorio con el estado del negocio actualizado
@@ -217,15 +203,7 @@ public class NegocioServicioImpl implements NegocioServicio {
     @Override
     public void registrarRevision(String idNegocio, RegistrarRevisionDTO registrarRevisionDTO) throws Exception {
 
-        //Se obtiene un negocio en base a su id
-        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
-
-        if(optionalNegocio.isEmpty()){
-            throw new Exception("No existe un negocio con el id "+ idNegocio);
-        }
-
-        //Se obtiene el negocio y se cambia su estado
-        Negocio negocio = optionalNegocio.get();
+        Negocio negocio = obtenerNegocioID(idNegocio);
 
         //Se crea la revisión del negocio
         Revision revision = new Revision();
@@ -242,13 +220,8 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public void reactivarNegocio(String idNegocio) throws Exception {
-        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
 
-        if(optionalNegocio.isEmpty()){
-            throw new Exception("No existe un negocio con el id" + idNegocio);
-        }
-
-        Negocio negocio = optionalNegocio.get();
+        Negocio negocio = obtenerNegocioID(idNegocio);
 
         if(negocio.getEstadoNegocio().equals(EstadoNegocio.APROBADO)){
             throw new Exception("El negocio ya se encuentra aprobado ");
@@ -262,13 +235,8 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public void aprobarNegocio(String idNegocio) throws Exception {
-        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
 
-        if(optionalNegocio.isEmpty()){
-            throw new Exception("No existe un negocio con el id" + idNegocio);
-        }
-
-        Negocio negocio = optionalNegocio.get();
+        Negocio negocio = obtenerNegocioID(idNegocio);
 
         if(negocio.getEstadoNegocio().equals(EstadoNegocio.APROBADO)){
             throw new Exception("El negocio ya se encuentra aprobado ");
@@ -278,5 +246,19 @@ public class NegocioServicioImpl implements NegocioServicio {
 
         //Se actualiza el negocio en la base de datos
         negocioRepo.save(negocio);
+    }
+
+    //Metodos para verificar existencia de datos
+    private Negocio obtenerNegocioID(String idNegocio) throws ResourceNotFoundException {
+
+        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
+
+        if (optionalNegocio.isEmpty()){
+            throw new ResourceNotFoundException(idNegocio);
+        }
+
+        Negocio negocio = optionalNegocio.get();
+
+        return negocio;
     }
 }
