@@ -112,6 +112,10 @@ public class ClienteServicioImpl implements ClienteServicio {
 
         Cliente cliente = obtenerClienteID(idCliente);
 
+        if(cliente.getEstadoRegistro().equals(EstadoRegistro.INACTIVO)){
+            throw new Exception("El cliente con el id "+idCliente+" tiene su cuenta inactiva");
+        }
+
         //Retornamos el cliente en formato DTO
         return new ItemClienteDTO(cliente.getCodigoCliente(), cliente.getNombre(),
                 cliente.getFotoPerfil(), cliente.getNickname(), cliente.getEmail(),
