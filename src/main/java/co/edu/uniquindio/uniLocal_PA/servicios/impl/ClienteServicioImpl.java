@@ -107,7 +107,7 @@ public class ClienteServicioImpl implements ClienteServicio {
     }
 
     @Override
-    public ItemClienteDTO obtenerCliente(String idCliente) throws Exception {
+    public DetalleClienteDTO obtenerCliente(String idCliente) throws Exception {
 
         Cliente cliente = obtenerClienteID(idCliente);
 
@@ -116,9 +116,14 @@ public class ClienteServicioImpl implements ClienteServicio {
         }
 
         //Retornamos el cliente en formato DTO
-        return new ItemClienteDTO(cliente.getCodigoCliente(), cliente.getNombre(),
+        return new DetalleClienteDTO(cliente.getCodigoCliente(), cliente.getNombre(),
                 cliente.getFotoPerfil(), cliente.getNickname(), cliente.getEmail(),
                 cliente.getCiudadResidencia(),cliente.getListaNegociosFavoritos());
+    }
+
+    @Override
+    public boolean existeCliente(String idCliente) {
+        return clienteRepo.findById(idCliente).isPresent();
     }
 
     @Override
@@ -172,6 +177,7 @@ public class ClienteServicioImpl implements ClienteServicio {
 
         return optionalCliente.get();
     }
+
 
     private boolean existeEmail(String email) {
         return clienteRepo.findByEmail(email).isPresent();

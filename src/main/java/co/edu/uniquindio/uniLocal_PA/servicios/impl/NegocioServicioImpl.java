@@ -7,10 +7,7 @@ import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.NegocioRepo;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ActualizarNegocioDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.AgregarNegocioDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ItemNegocioDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.RegistrarRevisionDTO;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.*;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
 import org.springframework.stereotype.Service;
@@ -37,11 +34,12 @@ public class NegocioServicioImpl implements NegocioServicio {
         Negocio negocio = new Negocio();
 
         //Se asignan los datos
+        negocio.setCodigoCliente(agregarNegocioDTO.codigoCliente());
         negocio.setNombre(agregarNegocioDTO.nombreNegocio());
         negocio.setDescripcion(agregarNegocioDTO.descripcion());
         negocio.setCategoriaNegocio(agregarNegocioDTO.categoriaNegocio());
-        negocio.setListaRutasImagenes(agregarNegocioDTO.listaImagenesNegocio());
         negocio.setListaTelefonos(agregarNegocioDTO.listaTelefonos());
+        negocio.setListaRutasImagenes(agregarNegocioDTO.listaImagenesNegocio());
         negocio.setListaHorarios(agregarNegocioDTO.listaHorarios());
         negocio.setEstadoNegocio(EstadoNegocio.PENDIENTE);
         negocio.setEstadoRegistro(EstadoRegistro.ACTIVO);
@@ -55,19 +53,25 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
-    public ItemNegocioDTO obtenerNegocio(String idNegocio) throws Exception {
+    public DetalleNegocioDTO obtenerNegocio(String idNegocio) throws Exception {
 
         Negocio negocio = obtenerNegocioID(idNegocio);
 
-        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(
+        DetalleNegocioDTO detalleNegocioDTO = new DetalleNegocioDTO(
                 negocio.getCodigoNegocio(),
+                negocio.getCodigoCliente(),
                 negocio.getNombre(),
                 negocio.getDescripcion(),
                 negocio.getCategoriaNegocio(),
-                negocio.getUbicacion()
+                negocio.getEstadoNegocio(),
+                negocio.getUbicacion(),
+                negocio.getListaTelefonos(),
+                negocio.getListaRutasImagenes(),
+                negocio.getListaHorarios(),
+                negocio.getEstadoRegistro()
         );
 
-        return itemNegocioDTO;
+        return detalleNegocioDTO;
     }
 
     @Override
@@ -144,7 +148,7 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public List<ItemNegocioDTO> listarNegociosPropietario(String idPropietario) throws Exception {
-        return negocioRepo.listarNegociosCliente(idPropietario);
+        return negocioRepo.findAllByCodigoCliente(idPropietario);
     }
 
     @Override
@@ -218,10 +222,16 @@ public class NegocioServicioImpl implements NegocioServicio {
                 itemNegocioDTOS.add(
                         new ItemNegocioDTO(
                                 negocio.getCodigoNegocio(),
+                                negocio.getCodigoCliente(),
                                 negocio.getNombre(),
                                 negocio.getDescripcion(),
                                 negocio.getCategoriaNegocio(),
-                                negocio.getUbicacion()
+                                negocio.getEstadoNegocio(),
+                                negocio.getUbicacion(),
+                                negocio.getListaTelefonos(),
+                                negocio.getListaRutasImagenes(),
+                                negocio.getListaHorarios(),
+                                negocio.getEstadoRegistro()
                         )
                 );
             }

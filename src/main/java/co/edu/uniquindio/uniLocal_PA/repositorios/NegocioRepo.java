@@ -21,11 +21,6 @@ public interface NegocioRepo extends MongoRepository<Negocio, String> {
 
     List<Negocio> findAllByNombreLikeIgnoreCase(String nombre);
 
-    @Aggregation({"{ $match: { codigoCliente: ?0 } }", "{ $lookup: { from: 'clientes', localField: " +
-            "'codigoCliente', foreignField: '_id', as: 'cliente' } }", "{ $unwind: '$cliente' }", "{ " +
-            "$project: { nombre: '$nombre', descripcion: '$descripcion'," +
-            "categoriaNegocio: '$categoriaNegocio', ubicacion: '$ubicacion', " +
-            "nombrePropietario: '$cliente.nombre', correoPropietario: '$cliente.email' } }" })
-    List<ItemNegocioDTO> listarNegociosCliente(String codigoCliente);
+    List<ItemNegocioDTO> findAllByCodigoCliente(String codigoCliente);
 
  }

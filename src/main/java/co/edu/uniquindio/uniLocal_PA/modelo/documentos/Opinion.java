@@ -20,6 +20,7 @@ public class Opinion extends Comentario {
     @Id
     @EqualsAndHashCode.Include
     private String codigoOpinion;
+    private String codigoPublicacion;
     private List<String> listaMeGustas = new ArrayList<>();
 
     public Opinion(String codigoCliente, LocalDateTime fecha, String mensaje, String codigoOpinion) {

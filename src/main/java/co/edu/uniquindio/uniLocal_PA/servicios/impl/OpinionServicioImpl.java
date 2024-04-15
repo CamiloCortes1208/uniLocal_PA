@@ -35,49 +35,40 @@ public class OpinionServicioImpl implements OpinionServicio {
 
 
     @Override
-    public String opinarPublicacion(String idPublicacion, String idCliente, OpinarPublicacionDTO opinarPublicacionDTO) throws Exception {
+    public String opinarPublicacion(OpinarPublicacionDTO opinarPublicacionDTO) throws Exception {
 
-        if (!existePublicacion(idPublicacion)){
-            throw new ResourceNotFoundException(idPublicacion);
+        if (!publicacionServicio.existePublicacion(opinarPublicacionDTO.codigoPublicacion())){
+            throw new ResourceNotFoundException(opinarPublicacionDTO.codigoPublicacion());
         }
-        if (clienteServicio.obtenerCliente(idCliente) != null){
-            throw new ResourceNotFoundException(idCliente);
+
+        if(!clienteServicio.existeCliente(opinarPublicacionDTO.codigoCliente())){
+            throw new ResourceNotFoundException(opinarPublicacionDTO.codigoCliente());
         }
 
         Opinion opinion = new Opinion();
 
-        opinion.setMensaje(opinarPublicacionDTO.mensaje());
+        opinion.setCodigoPublicacion(opinarPublicacionDTO.codigoPublicacion());
+        opinion.setCodigoCliente(opinarPublicacionDTO.codigoCliente());
         opinion.setFecha(LocalDateTime.now());
-        opinion.setCodigoCliente(idCliente);
+        opinion.setMensaje(opinarPublicacionDTO.mensaje());
 
         Opinion opinionGuardada = opinionRepo.save(opinion);
-
-        Publicacion publicacion = publicacionServicio.o
-        publicacion.getListaOpiniones().add(opinionGuardada.getCodigoOpinion());
 
         return opinionGuardada.getCodigoOpinion();
     }
 
     @Override
     public List<ItemOpinionDTO> listarOpinionesPublicacion(String idPublicacion) throws ResourceNotFoundException {
-        Publicacion publicacion = buscarPublicacionID(idPublicacion);
-
-        List<ItemOpinionDTO> items = new ArrayList<>();
-
-        for (String opinionID: publicacion.getListaOpiniones()){
-            Opinion opinion = buscarOpinionID(opinionID);
-
-            items.add(new ItemOpinionDTO(opinion.getCodigoCliente(),opinion.getCodigoOpinion()
-                    ,opinion.getMensaje(),opinion.getFecha(),opinion.getListaMeGustas()));
-        }
-        return items;
+        return opinionRepo.findAllByCodigoPublicacion(idPublicacion);
     }
 
     @Override
     public void reaccionarOpinion(String idOpinion, String idCliente) throws Exception {
-        if (!existeCliente(idCliente)){
+
+        if(!clienteServicio.existeCliente(idCliente)){
             throw new ResourceNotFoundException(idCliente);
         }
+
         Opinion opinion = obtenerOpinionID(idOpinion);
 
         if (opinion.getListaMeGustas().contains(idCliente)){
@@ -89,18 +80,7 @@ public class OpinionServicioImpl implements OpinionServicio {
 
     @Override
     public List<ItemOpinionDTO> listarOpinionesCliente(String idCliente) throws Exception {
-        if (!existeCliente(idCliente)){
-            throw new ResourceNotFoundException(idCliente);
-        }
-        List<Opinion> listaOpinionesCliente = opinionRepo.findAllByCodigoCliente(idCliente);
-
-        List<ItemOpinionDTO> items = new ArrayList<>();
-
-        for (Opinion opinion: listaOpinionesCliente){
-            items.add(new ItemOpinionDTO(opinion.getCodigoCliente(),opinion.getCodigoOpinion()
-                    ,opinion.getMensaje(),opinion.getFecha(),opinion.getListaMeGustas()));
-        }
-        return items;
+        return opinionRepo.findAllByCodigoCliente(idCliente);
     }
 
     //Metodos para verificar existencia de datos
@@ -113,9 +93,5 @@ public class OpinionServicioImpl implements OpinionServicio {
         }
 
         return optionalOpinion.get();
-    }
-
-    private boolean existePublicacion(String idPublicacion){
-        return publicacionRepo.findById(idPublicacion).isPresent();
     }
 }

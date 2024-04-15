@@ -40,8 +40,6 @@ public class PublicacionServicioImpl implements PublicacionServicio {
 
         Publicacion publicacionGuardada = publicacionRepo.save(publicacion);
 
-        clienteServicio.agregarPublicacionCliente(agregarPublicacionDTO.idCliente());
-
         return publicacionGuardada.getCodigoPublicacion();
 
     }
@@ -83,6 +81,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
 
     }
 
+    //Metodos para verificar la existencia de un recurso
     private Publicacion obtenerPublicacionID(String idPublicacion) throws ResourceNotFoundException {
 
         Optional<Publicacion> optionalPublicacion = publicacionRepo.findById(idPublicacion);
@@ -92,5 +91,10 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         }
 
         return optionalPublicacion.get();
+    }
+
+    @Override
+    public boolean existePublicacion(String idPublicacion) {
+        return publicacionRepo.findById(idPublicacion).isPresent();
     }
 }

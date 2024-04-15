@@ -8,7 +8,7 @@ import co.edu.uniquindio.uniLocal_PA.servicios.dto.eventoDTO.ItemEventoDTO;
 import java.util.List;
 
 public interface EventoServicio {
-    void agregarEvento(AgregarEventoDTO agregarEventoDTO) throws Exception;
+    String agregarEvento(AgregarEventoDTO agregarEventoDTO) throws Exception;
     void actualizarEvento(ActualizarEventoDTO actualizarEventoDTO) throws Exception;
     void terminarEvento(String codigoEvento) throws ResourceNotFoundException;
     List<ItemEventoDTO> listarEventosNegocio(String idNegocio) throws Exception;

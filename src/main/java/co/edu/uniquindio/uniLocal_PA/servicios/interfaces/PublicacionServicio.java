@@ -10,4 +10,5 @@ public interface PublicacionServicio {
     ItemPublicacionDTO obtenerPublicacion(String idPublicacion) throws ResourceNotFoundException;
     void actualizarPublicacion(ActualizarPublicacionDTO actualizarPublicacionDTO) throws Exception;
     void eliminarPublicacion(String idPublicacion) throws Exception;
+    boolean existePublicacion(String idPublicacion);
 }
