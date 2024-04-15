@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class Horario {
-    private LocalDateTime horaApertura;
-    private LocalDateTime horaCierre;
+    private String horaApertura;
+    private String horaCierre;
     private String diaSemana;
 }

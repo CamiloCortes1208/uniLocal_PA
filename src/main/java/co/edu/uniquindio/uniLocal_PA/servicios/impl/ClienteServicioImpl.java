@@ -70,7 +70,7 @@ public class ClienteServicioImpl implements ClienteServicio {
         ItemNegocioDTO itemNegocioDTO = negocioServicio.obtenerNegocio(idNegocio);
 
         //Se agrega el codigo del negocio a la lista de favoritos del cliente
-        cliente.getListaFavoritos().add(itemNegocioDTO.codigo());
+        cliente.getListaNegociosFavoritos().add(itemNegocioDTO.codigo());
 
         //Se actualiza la información del cliente en el repositorio
         clienteRepo.save(cliente);
@@ -85,7 +85,7 @@ public class ClienteServicioImpl implements ClienteServicio {
 
         Cliente cliente = obtenerClienteID(idCliente);
 
-        cliente.getListaFavoritos().remove(idNegocio);
+        cliente.getListaNegociosFavoritos().remove(idNegocio);
 
         clienteRepo.save(cliente);
     }
@@ -122,7 +122,7 @@ public class ClienteServicioImpl implements ClienteServicio {
         //Retornamos el cliente en formato DTO
         return new ItemClienteDTO(cliente.getCodigoCliente(), cliente.getNombre(),
                 cliente.getFotoPerfil(), cliente.getNickname(), cliente.getEmail(),
-                cliente.getCiudadResidencia(),cliente.getListaFavoritos());
+                cliente.getCiudadResidencia(),cliente.getListaNegociosFavoritos());
     }
 
     @Override
@@ -141,7 +141,7 @@ public class ClienteServicioImpl implements ClienteServicio {
                 listaItemClienteDTO.add(new ItemClienteDTO(cliente.getCodigoCliente(),
                         cliente.getNombre(), cliente.getFotoPerfil(), cliente.getNickname(),
                         cliente.getEmail(), cliente.getCiudadResidencia(),
-                        cliente.getListaFavoritos()));
+                        cliente.getListaNegociosFavoritos()));
             }
         }
         return listaItemClienteDTO;
@@ -179,9 +179,7 @@ public class ClienteServicioImpl implements ClienteServicio {
             throw new ResourceNotFoundException(idCliente);
         }
 
-        Cliente cliente = optionalCliente.get();
-
-        return cliente;
+        return optionalCliente.get();
     }
 
     private boolean existeEmail(String email) {

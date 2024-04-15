@@ -23,6 +23,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         if (optionalModerador.isEmpty()){
             throw new Exception("El moderador con el id"+actualizarModeradorDTO.id());
         }
+
         Moderador moderador = optionalModerador.get();
         moderador.setNombre(actualizarModeradorDTO.nombre());
         moderador.setEmail(actualizarModeradorDTO.email());
