@@ -13,7 +13,7 @@ public interface ClienteServicio extends CuentaServicio{
     void eliminarCuenta(String idCuenta)throws Exception;
     ItemClienteDTO obtenerCliente(String idCliente) throws Exception;
     List<ItemClienteDTO> listarClientes();
-    void agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception;
+    String agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception;
     void eliminarNegocioFavorito(String idCliente, String idNegocio) throws Exception;
 
 

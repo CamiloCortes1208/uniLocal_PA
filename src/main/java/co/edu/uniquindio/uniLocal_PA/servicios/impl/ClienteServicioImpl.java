@@ -5,7 +5,10 @@ import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.*;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
+import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +20,9 @@ import java.util.Optional;
 @Transactional
 public class ClienteServicioImpl implements ClienteServicio {
     private final ClienteRepo clienteRepo;
+
+    @Autowired
+    NegocioServicio negocioServicio;
     public ClienteServicioImpl(ClienteRepo clienteRepo) {
         this.clienteRepo = clienteRepo;
     }
@@ -52,35 +58,32 @@ public class ClienteServicioImpl implements ClienteServicio {
     }
 
     @Override
-    public void agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception {
+    public String agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception {
 
-        //Buscamos el cliente al que se le quiere agregar el favorito
-        Optional<Cliente> optionalCliente = clienteRepo.findById( idCliente );
+        //Se obtiene el cliente al cual se le va a agregar el negocio favorito
+        Cliente cliente = obtenerClienteID(idCliente);
 
-        //Si no se encontró el cliente, lanzamos una excepción
-        if(optionalCliente.isEmpty()){
-            throw new Exception("No se encontró el cliente a con el id "+idCliente);
-        }
+        /*
+        Se obtiene el DTO del negocio que se va a agregar a la lista de
+        favoritos del cliente
+         */
+        ItemNegocioDTO itemNegocioDTO = negocioServicio.obtenerNegocio(idNegocio);
 
-        //Obtenemos el cliente
-        Cliente cliente = optionalCliente.get();
+        //Se agrega el codigo del negocio a la lista de favoritos del cliente
+        cliente.getListaFavoritos().add(itemNegocioDTO.codigo());
 
-        cliente.getListaFavoritos().add(idNegocio);
-
+        //Se actualiza la información del cliente en el repositorio
         clienteRepo.save(cliente);
+
+        //Se retorna el código del negocio para verificar en los tests
+        return itemNegocioDTO.codigo();
+
     }
 
     @Override
     public void eliminarNegocioFavorito(String idCliente, String idNegocio) throws Exception {
 
-        //Buscamos el cliente al que se le quiere agregar el favorito
-        Optional<Cliente> optionalCliente = clienteRepo.findById( idCliente );
-        //Si no se encontró el cliente, lanzamos una excepción
-        if(optionalCliente.isEmpty()){
-            throw new Exception("No se encontró el cliente a con el id "+idCliente);
-        }
-        //Obtenemos el cliente
-        Cliente cliente = optionalCliente.get();
+        Cliente cliente = obtenerClienteID(idCliente);
 
         cliente.getListaFavoritos().remove(idNegocio);
 
@@ -119,7 +122,7 @@ public class ClienteServicioImpl implements ClienteServicio {
         //Retornamos el cliente en formato DTO
         return new ItemClienteDTO(cliente.getCodigoCliente(), cliente.getNombre(),
                 cliente.getFotoPerfil(), cliente.getNickname(), cliente.getEmail(),
-                cliente.getCiudadResidencia());
+                cliente.getCiudadResidencia(),cliente.getListaFavoritos());
     }
 
     @Override
@@ -137,7 +140,8 @@ public class ClienteServicioImpl implements ClienteServicio {
             if(cliente.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)){
                 listaItemClienteDTO.add(new ItemClienteDTO(cliente.getCodigoCliente(),
                         cliente.getNombre(), cliente.getFotoPerfil(), cliente.getNickname(),
-                        cliente.getEmail(), cliente.getCiudadResidencia()));
+                        cliente.getEmail(), cliente.getCiudadResidencia(),
+                        cliente.getListaFavoritos()));
             }
         }
         return listaItemClienteDTO;

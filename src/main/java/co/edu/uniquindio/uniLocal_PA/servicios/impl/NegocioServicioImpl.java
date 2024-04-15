@@ -46,6 +46,7 @@ public class NegocioServicioImpl implements NegocioServicio {
         negocio.setListaTelefonos(agregarNegocioDTO.listaTelefonos());
         negocio.setListaHorarios(agregarNegocioDTO.listaHorarios());
         negocio.setEstadoNegocio(EstadoNegocio.PENDIENTE);
+        negocio.setEstadoRegistro(EstadoRegistro.ACTIVO);
 
         //Se guarda en la base de datos
         Negocio negocioGuardado = negocioRepo.save(negocio);
@@ -53,6 +54,22 @@ public class NegocioServicioImpl implements NegocioServicio {
         //Se obtiene el código del negocio guardado
         return negocioGuardado.getCodigoNegocio();
 
+    }
+
+    @Override
+    public ItemNegocioDTO obtenerNegocio(String idNegocio) throws Exception {
+
+        Negocio negocio = obtenerNegocioID(idNegocio);
+
+        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(
+                negocio.getCodigoNegocio(),
+                negocio.getNombre(),
+                negocio.getDescripcion(),
+                negocio.getCategoriaNegocio(),
+                negocio.getUbicacion()
+        );
+
+        return itemNegocioDTO;
     }
 
     @Override
@@ -97,45 +114,9 @@ public class NegocioServicioImpl implements NegocioServicio {
     public List<ItemNegocioDTO> buscarNegociosPorCategoria(String categoria) {
         List<Negocio> negocios =  negocioRepo.findAllByCategoriaNegocio(categoria);
 
-        //Creamos una lista de DTOs de negocios
-        List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
+        List<ItemNegocioDTO> listaItemNegocioDTO = listarNegocios(negocios);
 
-        for (Negocio negocio : negocios) {
-            if(negocio.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)){
-                itemNegocioDTOS.add(
-                        new ItemNegocioDTO(
-                                negocio.getNombre(),
-                                negocio.getDescripcion(),
-                                negocio.getCategoriaNegocio(),
-                                negocio.getUbicacion()
-                        )
-                );
-            }
-        }
-        return itemNegocioDTOS;
-    }
-
-    @Override
-    public List<ItemNegocioDTO> buscarNegociosPorNombre(String nombre) {
-
-        List<Negocio> negocios = negocioRepo.findAllByNombre(nombre);
-
-        //Creamos una lista de DTOs de negocios
-        List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
-
-        for (Negocio negocio : negocios) {
-            if(negocio.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)){
-                itemNegocioDTOS.add(
-                        new ItemNegocioDTO(
-                                negocio.getNombre(),
-                                negocio.getDescripcion(),
-                                negocio.getCategoriaNegocio(),
-                                negocio.getUbicacion()
-                        )
-                );
-            }
-        }
-        return itemNegocioDTOS;
+        return listaItemNegocioDTO;
     }
 
     //En caso de que no se dé un nombre exacto, busca por aquellos que tengan
@@ -146,21 +127,9 @@ public class NegocioServicioImpl implements NegocioServicio {
         List<Negocio> negocios = negocioRepo.findAllByNombreLikeIgnoreCase(nombre);
 
         //Creamos una lista de DTOs de negocios
-        List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
+        List<ItemNegocioDTO> listaItemNegocioDTO = listarNegocios(negocios);
 
-        for (Negocio negocio : negocios) {
-            if(negocio.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)){
-                itemNegocioDTOS.add(
-                        new ItemNegocioDTO(
-                                negocio.getNombre(),
-                                negocio.getDescripcion(),
-                                negocio.getCategoriaNegocio(),
-                                negocio.getUbicacion()
-                        )
-                );
-            }
-        }
-        return itemNegocioDTOS;
+        return listaItemNegocioDTO;
     }
 
     @Override
@@ -169,21 +138,10 @@ public class NegocioServicioImpl implements NegocioServicio {
         List<Negocio> negocios =  negocioRepo.findAllByEstadoNegocio(estadoNegocio);
 
         //Creamos una lista de DTOs de negocios
-        List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
+        List<ItemNegocioDTO> listaNegociosDTO = listarNegocios(negocios);
 
-        for (Negocio negocio : negocios) {
-            if(negocio.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)){
-                itemNegocioDTOS.add(
-                        new ItemNegocioDTO(
-                                negocio.getNombre(),
-                                negocio.getDescripcion(),
-                                negocio.getCategoriaNegocio(),
-                                negocio.getUbicacion()
-                        )
-                );
-            }
-        }
-        return itemNegocioDTOS;
+        return listaNegociosDTO;
+
     }
 
     @Override
@@ -262,5 +220,27 @@ public class NegocioServicioImpl implements NegocioServicio {
         Negocio negocio = optionalNegocio.get();
 
         return negocio;
+    }
+
+    private List<ItemNegocioDTO> listarNegocios(List<Negocio> negocios) {
+
+        //Creamos una lista de DTOs de negocios
+        List<ItemNegocioDTO> itemNegocioDTOS = new ArrayList<>();
+
+        for (Negocio negocio : negocios) {
+            if(negocio.getEstadoRegistro().equals(EstadoRegistro.ACTIVO) &&
+            negocio.getEstadoNegocio().equals(EstadoNegocio.APROBADO)){
+                itemNegocioDTOS.add(
+                        new ItemNegocioDTO(
+                                negocio.getCodigoNegocio(),
+                                negocio.getNombre(),
+                                negocio.getDescripcion(),
+                                negocio.getCategoriaNegocio(),
+                                negocio.getUbicacion()
+                        )
+                );
+            }
+        }
+        return itemNegocioDTOS;
     }
 }
