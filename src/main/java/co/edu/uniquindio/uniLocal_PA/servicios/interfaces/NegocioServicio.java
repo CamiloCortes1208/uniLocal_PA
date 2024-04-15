@@ -1,5 +1,6 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.interfaces;
 
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ActualizarNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.AgregarNegocioDTO;
@@ -18,9 +19,11 @@ public interface NegocioServicio {
 
     void eliminarNegocio(String idNegocio) throws Exception;
 
+    boolean existeNegocio(String idNegocio);
+
     void rechazarNegocio(String idNegocio) throws Exception;
 
-    List<ItemNegocioDTO> buscarNegociosPorCategoria(String categoria);
+    List<ItemNegocioDTO> buscarNegociosPorCategoria(CategoriaNegocio categoriaNegocio);
 
     List<ItemNegocioDTO> buscarNegociosPorNombreSimilar(String nombre);
 
@@ -29,8 +32,6 @@ public interface NegocioServicio {
     List<ItemNegocioDTO> listarNegociosPropietario(String idPropietario) throws Exception;
 
     void cambiarEstado(String idNegocio, EstadoNegocio estadoNegocio) throws Exception;
-
-    void registrarRevision(String idNegocio, RegistrarRevisionDTO registrarRevisionDTO) throws Exception;
 
     void reactivarNegocio(String idNegocio) throws Exception;
 

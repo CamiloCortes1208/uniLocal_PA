@@ -20,8 +20,6 @@ import java.util.Optional;
 @Transactional
 public class ClienteServicioImpl implements ClienteServicio {
     private final ClienteRepo clienteRepo;
-
-    @Autowired
     NegocioServicio negocioServicio;
     public ClienteServicioImpl(ClienteRepo clienteRepo) {
         this.clienteRepo = clienteRepo;
@@ -64,30 +62,28 @@ public class ClienteServicioImpl implements ClienteServicio {
         Cliente cliente = obtenerClienteID(idCliente);
 
         /*
-        Se obtiene el DTO del negocio que se va a agregar a la lista de
-        favoritos del cliente
+        Se arroja una excepción en caso de que no exista el negocio que se quiere
+        agregar a los favoritos del cliente
          */
-        ItemNegocioDTO itemNegocioDTO = negocioServicio.obtenerNegocio(idNegocio);
+        if(!negocioServicio.existeNegocio(idNegocio)){
+            throw new ResourceNotFoundException(idNegocio);
+        }
 
-        //Se agrega el codigo del negocio a la lista de favoritos del cliente
-        cliente.getListaNegociosFavoritos().add(itemNegocioDTO.codigo());
+        //En caso de ya estar en la lista de favoritos, se elimina
+        if(cliente.getListaNegociosFavoritos().contains(idNegocio)) {
+            cliente.getListaNegociosFavoritos().remove(idNegocio);
+        }
+        //En caso contrario, se quita de la lista
+        else{
+            cliente.getListaNegociosFavoritos().add(idNegocio);
+        }
 
         //Se actualiza la información del cliente en el repositorio
         clienteRepo.save(cliente);
 
         //Se retorna el código del negocio para verificar en los tests
-        return itemNegocioDTO.codigo();
+        return idNegocio;
 
-    }
-
-    @Override
-    public void eliminarNegocioFavorito(String idCliente, String idNegocio) throws Exception {
-
-        Cliente cliente = obtenerClienteID(idCliente);
-
-        cliente.getListaNegociosFavoritos().remove(idNegocio);
-
-        clienteRepo.save(cliente);
     }
 
     @Override
@@ -161,18 +157,13 @@ public class ClienteServicioImpl implements ClienteServicio {
     }
 
     @Override
-    public void enviarLinkRecuperacion(String email) throws Exception {
-
-    }
-
-    @Override
     public void cambiarPassword(CambioPasswordDTO cambioPasswordDTO) throws Exception {
 
     }
 
 
     //Metodos para verificar existencia de datos
-    private Cliente obtenerClienteID(String idCliente) throws ResourceNotFoundException {
+    public Cliente obtenerClienteID(String idCliente) throws ResourceNotFoundException {
         Optional<Cliente> optionalCliente = clienteRepo.findById(idCliente);
 
         if (optionalCliente.isEmpty()){

@@ -21,4 +21,9 @@ public class InicioSesionImpl implements InicioSesionServicio {
     public void inicioSesionModerador(InicioSesionModeradorDTO inicioSesionModeradorDTO) {
 
     }
+
+    @Override
+    public void enviarLinkRecuperacion(String email) throws Exception {
+
+    }
 }

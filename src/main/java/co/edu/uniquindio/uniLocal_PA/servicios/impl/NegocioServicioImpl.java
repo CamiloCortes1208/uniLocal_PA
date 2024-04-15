@@ -2,6 +2,7 @@ package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
@@ -108,8 +109,8 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
-    public List<ItemNegocioDTO> buscarNegociosPorCategoria(String categoria) {
-        List<Negocio> negocios =  negocioRepo.findAllByCategoriaNegocio(categoria);
+    public List<ItemNegocioDTO> buscarNegociosPorCategoria(CategoriaNegocio categoriaNegocio) {
+        List<Negocio> negocios =  negocioRepo.findAllByCategoriaNegocio(categoriaNegocio);
 
         List<ItemNegocioDTO> listaItemNegocioDTO = listarNegocios(negocios);
 
@@ -158,24 +159,6 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
-    public void registrarRevision(String idNegocio, RegistrarRevisionDTO registrarRevisionDTO) throws Exception {
-
-        Negocio negocio = obtenerNegocioID(idNegocio);
-
-        //Se crea la revisión del negocio
-        Revision revision = new Revision();
-        revision.setEstadoNegocio( registrarRevisionDTO.estadoNegocio() );
-        revision.setDescripcion( registrarRevisionDTO.descripcion() );
-
-        //Se añade la revisión a la lista de revisiones del negocio
-        negocio.getListaRevisiones().add(revision);
-
-        //Se actualiza la información del negocio en la base de datos
-        negocioRepo.save(negocio);
-
-    }
-
-    @Override
     public void reactivarNegocio(String idNegocio) throws Exception {
 
         Negocio negocio = obtenerNegocioID(idNegocio);
@@ -217,6 +200,11 @@ public class NegocioServicioImpl implements NegocioServicio {
         Negocio negocio = optionalNegocio.get();
 
         return negocio;
+    }
+
+    @Override
+    public boolean existeNegocio(String idNegocio) {
+        return negocioRepo.findById(idNegocio).isPresent();
     }
 
     private List<ItemNegocioDTO> listarNegocios(List<Negocio> negocios) {

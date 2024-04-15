@@ -1,14 +1,18 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
+import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal_PA.repositorios.OpinionRepo;
 import co.edu.uniquindio.uniLocal_PA.repositorios.PublicacionRepo;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.ItemClienteDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.opinionDTO.ItemOpinionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.opinionDTO.OpinarPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.OpinionServicio;
+import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.PublicacionServicio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +26,11 @@ import java.util.Optional;
 public class OpinionServicioImpl implements OpinionServicio {
 
     private final OpinionRepo opinionRepo;
-    private final PublicacionRepo publicacionRepo;
-    private final ClienteRepo clienteRepo;
+    ClienteServicio clienteServicio;
+    PublicacionServicio publicacionServicio;
 
     public OpinionServicioImpl(OpinionRepo opinionRepo, PublicacionRepo publicacionRepo, ClienteRepo clienteRepo) {
         this.opinionRepo = opinionRepo;
-        this.publicacionRepo = publicacionRepo;
-        this.clienteRepo = clienteRepo;
     }
 
 
@@ -38,7 +40,7 @@ public class OpinionServicioImpl implements OpinionServicio {
         if (!existePublicacion(idPublicacion)){
             throw new ResourceNotFoundException(idPublicacion);
         }
-        if (!existeCliente(idCliente)){
+        if (clienteServicio.obtenerCliente(idCliente) != null){
             throw new ResourceNotFoundException(idCliente);
         }
 
@@ -50,7 +52,7 @@ public class OpinionServicioImpl implements OpinionServicio {
 
         Opinion opinionGuardada = opinionRepo.save(opinion);
 
-        Publicacion publicacion = buscarPublicacionID(idPublicacion);
+        Publicacion publicacion = publicacionServicio.o
         publicacion.getListaOpiniones().add(opinionGuardada.getCodigoOpinion());
 
         return opinionGuardada.getCodigoOpinion();
@@ -110,44 +112,10 @@ public class OpinionServicioImpl implements OpinionServicio {
             throw new ResourceNotFoundException(idOpinion);
         }
 
-        Opinion opinion = optionalOpinion.get();
-
-        return opinion;
-    }
-    private Publicacion obtenerPublicacionID(String idPublicacion) throws ResourceNotFoundException {
-
-        Optional<Publicacion> optionalPublicacion = publicacionRepo.findById(idPublicacion);
-
-        if (optionalPublicacion.isEmpty()){
-            throw new ResourceNotFoundException(idPublicacion);
-        }
-
-        Publicacion publicacion = optionalPublicacion.get();
-
-        return publicacion;
-    }
-
-    private Publicacion buscarPublicacionID(String idPublicacion) throws ResourceNotFoundException {
-        Optional<Publicacion> optionalPublicacion = publicacionRepo.findById(idPublicacion);
-
-        if (optionalPublicacion.isEmpty()){
-            throw new ResourceNotFoundException(idPublicacion);
-        }
-
-        return optionalPublicacion.get();
-    }
-    private Opinion buscarOpinionID(String idOpinion) throws ResourceNotFoundException {
-        Optional<Opinion> optionalOpinion = opinionRepo.findById(idOpinion);
-
-        if (optionalOpinion.isEmpty()){
-            throw new ResourceNotFoundException(idOpinion);
-        }
         return optionalOpinion.get();
     }
+
     private boolean existePublicacion(String idPublicacion){
         return publicacionRepo.findById(idPublicacion).isPresent();
-    }
-    private boolean existeCliente(String idCliente) {
-        return clienteRepo.findById(idCliente).isPresent();
     }
 }

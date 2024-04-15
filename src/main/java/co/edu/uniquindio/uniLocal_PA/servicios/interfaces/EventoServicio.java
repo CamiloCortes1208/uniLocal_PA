@@ -11,6 +11,5 @@ public interface EventoServicio {
     void agregarEvento(AgregarEventoDTO agregarEventoDTO) throws Exception;
     void actualizarEvento(ActualizarEventoDTO actualizarEventoDTO) throws Exception;
     void terminarEvento(String codigoEvento) throws ResourceNotFoundException;
-    void elimninarEvento(String codigoEvento) throws ResourceNotFoundException;
     List<ItemEventoDTO> listarEventosNegocio(String idNegocio) throws Exception;
 }

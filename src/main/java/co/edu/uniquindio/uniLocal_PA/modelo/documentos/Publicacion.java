@@ -1,5 +1,6 @@
 package co.edu.uniquindio.uniLocal_PA.modelo.documentos;
 
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,8 +22,9 @@ public class Publicacion {
     private String codigoPublicacion;
     private String codigoCliente;
     private String descripcion;
-    private int cantidadMeGusta = 0;
+    private List<String> listaMeGustas = new ArrayList<>();
     private String rutaImagen;
     private List<String> listaOpiniones = new ArrayList<>();
     private LocalDateTime fechaPublicacion;
+    private EstadoRegistro estadoRegistro;
 }

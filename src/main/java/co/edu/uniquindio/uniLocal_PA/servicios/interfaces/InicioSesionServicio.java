@@ -6,4 +6,5 @@ import co.edu.uniquindio.uniLocal_PA.servicios.dto.moderadorDTO.InicioSesionMode
 public interface InicioSesionServicio {
     void inicioSesionCliente(InicioSesionClienteDTO inicioSesionClienteDTO);
     void inicioSesionModerador(InicioSesionModeradorDTO inicioSesionModeradorDTO);
+    void enviarLinkRecuperacion(String email)throws Exception;
 }

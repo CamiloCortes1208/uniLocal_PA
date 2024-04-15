@@ -28,7 +28,6 @@ public class EventoServicioImpl implements EventoServicio {
         this.negocioRepo = negocioRepo;
     }
 
-
     @Override
     public void agregarEvento(AgregarEventoDTO agregarEventoDTO) throws Exception {
         Negocio negocio = obtenerNegocioID(agregarEventoDTO.idNegocio());
@@ -67,17 +66,6 @@ public class EventoServicioImpl implements EventoServicio {
         evento.setEstadoEvento(EstadoEvento.FINALIZADO);
 
         eventoRepo.save(evento);
-    }
-
-    @Override
-    public void elimninarEvento(String codigoEvento) throws ResourceNotFoundException {
-        Evento evento = obtenerEventoID(codigoEvento);
-        Negocio negocio = obtenerNegocioID(evento.getCodigoNegocio());
-
-        negocio.getListaEventos().remove(evento.getCodigoEvento());
-
-        eventoRepo.delete(evento);
-        negocioRepo.save(negocio);
     }
 
     @Override

@@ -21,10 +21,6 @@ public class Cliente extends Cuenta {
 
     private String nickname;
     private String ciudadResidencia;
-    private List<String> listaPublicaciones = new ArrayList<>();
-    private List<String> listaOpiniones = new ArrayList<>();
-    private List<String> listaCalificaciones = new ArrayList<>();
-    private List<String> listaNegocios = new ArrayList<>();
     private List<String> listaNegociosFavoritos = new ArrayList<>();
     private List<String> listaPublicacionesFavoritas = new ArrayList<>();
 
