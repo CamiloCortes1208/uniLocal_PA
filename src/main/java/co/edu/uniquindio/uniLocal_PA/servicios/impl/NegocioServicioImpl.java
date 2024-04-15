@@ -1,13 +1,11 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
-import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.NegocioRepo;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.ItemClienteDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ActualizarNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.AgregarNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ItemNegocioDTO;
@@ -26,7 +24,7 @@ import java.util.Optional;
 public class NegocioServicioImpl implements NegocioServicio {
 
     private final NegocioRepo negocioRepo;
-    ClienteServicio clienteServicio;
+    private ClienteServicio clienteServicio;
 
     public NegocioServicioImpl(NegocioRepo negocioRepo) {
         this.negocioRepo = negocioRepo;
@@ -34,7 +32,6 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public String agregarNegocio(AgregarNegocioDTO agregarNegocioDTO) throws Exception {
-
         //Se crea el negocio
         Negocio negocio = new Negocio();
 

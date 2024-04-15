@@ -1,6 +1,7 @@
 package co.edu.uniquindio.uniLocal_PA.modelo.documentos;
 
 import co.edu.uniquindio.uniLocal_PA.modelo.Horario;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoEvento;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.TipoEvento;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -25,4 +26,5 @@ public class Evento {
     private String descripcion;
     private TipoEvento tipoEvento;
     private List<Horario> diasDisponible;
+    private EstadoEvento estadoEvento;
 }

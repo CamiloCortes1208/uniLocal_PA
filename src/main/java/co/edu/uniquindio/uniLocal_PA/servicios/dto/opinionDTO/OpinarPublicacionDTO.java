@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
-public record ComentarPublicacionDTO(
-        @NotBlank @Min(30) @Max(300) String mensaje
+public record OpinarPublicacionDTO(
+        @NotBlank @Min(1) @Max(300) String mensaje
 ) {
 }

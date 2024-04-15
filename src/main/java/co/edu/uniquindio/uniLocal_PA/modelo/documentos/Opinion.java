@@ -20,16 +20,10 @@ public class Opinion extends Comentario {
     @Id
     @EqualsAndHashCode.Include
     private String codigoOpinion;
+    private List<String> listaMeGustas = new ArrayList<>();
 
-    //private String codigoCalificacion;
-    private List<Opinion> listaRespuestas = new ArrayList<>();
-    private int numeroMeGusta;
-
-    public Opinion(String codigoCliente, LocalDateTime fecha, String mensaje, String codigoOpinion, String codigoCalificacion, List<Opinion> listaRespuestas, int numeroMeGusta) {
+    public Opinion(String codigoCliente, LocalDateTime fecha, String mensaje, String codigoOpinion) {
         super(codigoCliente, fecha, mensaje);
         this.codigoOpinion = codigoOpinion;
-        //this.codigoCalificacion = codigoCalificacion;
-        this.listaRespuestas = listaRespuestas;
-        this.numeroMeGusta = numeroMeGusta;
     }
 }

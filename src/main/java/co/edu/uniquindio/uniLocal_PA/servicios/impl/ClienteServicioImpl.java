@@ -55,17 +55,9 @@ public class ClienteServicioImpl implements ClienteServicio {
     public void agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception {
 
         //Buscamos el cliente al que se le quiere agregar el favorito
-        Optional<Cliente> optionalCliente = clienteRepo.findById( idCliente );
+        Cliente cliente = obtenerClienteID(idCliente);
 
-        //Si no se encontró el cliente, lanzamos una excepción
-        if(optionalCliente.isEmpty()){
-            throw new Exception("No se encontró el cliente a con el id "+idCliente);
-        }
-
-        //Obtenemos el cliente
-        Cliente cliente = optionalCliente.get();
-
-        cliente.getListaFavoritos().add(idNegocio);
+        cliente.getListaNegociosFavoritos().add(idNegocio);
 
         clienteRepo.save(cliente);
     }
@@ -74,15 +66,9 @@ public class ClienteServicioImpl implements ClienteServicio {
     public void eliminarNegocioFavorito(String idCliente, String idNegocio) throws Exception {
 
         //Buscamos el cliente al que se le quiere agregar el favorito
-        Optional<Cliente> optionalCliente = clienteRepo.findById( idCliente );
-        //Si no se encontró el cliente, lanzamos una excepción
-        if(optionalCliente.isEmpty()){
-            throw new Exception("No se encontró el cliente a con el id "+idCliente);
-        }
-        //Obtenemos el cliente
-        Cliente cliente = optionalCliente.get();
+        Cliente cliente = obtenerClienteID(idCliente);
 
-        cliente.getListaFavoritos().remove(idNegocio);
+        cliente.getListaNegociosFavoritos().remove(idNegocio);
 
         clienteRepo.save(cliente);
     }
@@ -97,6 +83,7 @@ public class ClienteServicioImpl implements ClienteServicio {
         //Obtenemos el cliente que se quiere actualizar y le asignamos los nuevos valores (el
         //nickname no se puede cambiar)
         Cliente cliente = obtenerClienteID(actualizarClienteDTO.id());
+
         cliente.setNombre( actualizarClienteDTO.nombre() );
         cliente.setFotoPerfil( actualizarClienteDTO.fotoPerfil() );
         cliente.setEmail( actualizarClienteDTO.email() );
