@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 public record ItemNegocioDTO(
+        @NotBlank String codigo,
         @NotBlank @Min(10) @Max(50) String nombre,
         @NotBlank @Min(50) @Max(300) String descripcion,
         @NotBlank CategoriaNegocio categoriaNegocio,

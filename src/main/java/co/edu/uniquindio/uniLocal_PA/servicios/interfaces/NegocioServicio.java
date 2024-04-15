@@ -12,6 +12,8 @@ public interface NegocioServicio {
 
     String agregarNegocio(AgregarNegocioDTO agregarNegocioDTO) throws Exception;
 
+    ItemNegocioDTO obtenerNegocio(String idNegocio) throws Exception;
+
     void actualizarNegocio(ActualizarNegocioDTO actualizarNegocioDTO) throws Exception;
 
     void eliminarNegocio(String idNegocio) throws Exception;
@@ -19,8 +21,6 @@ public interface NegocioServicio {
     void rechazarNegocio(String idNegocio) throws Exception;
 
     List<ItemNegocioDTO> buscarNegociosPorCategoria(String categoria);
-
-    List<ItemNegocioDTO> buscarNegociosPorNombre(String nombre);
 
     List<ItemNegocioDTO> buscarNegociosPorNombreSimilar(String nombre);
 
