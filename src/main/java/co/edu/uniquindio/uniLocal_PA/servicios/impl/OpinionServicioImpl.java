@@ -2,13 +2,18 @@ package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion;
+import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
+import co.edu.uniquindio.uniLocal_PA.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal_PA.repositorios.OpinionRepo;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.opinionDTO.ComentarPublicacionDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.opinionDTO.ResponderOpinionDTO;
+import co.edu.uniquindio.uniLocal_PA.repositorios.PublicacionRepo;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.opinionDTO.ItemOpinionDTO;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.opinionDTO.OpinarPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.OpinionServicio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,73 +22,132 @@ import java.util.Optional;
 public class OpinionServicioImpl implements OpinionServicio {
 
     private final OpinionRepo opinionRepo;
+    private final PublicacionRepo publicacionRepo;
+    private final ClienteRepo clienteRepo;
 
-    public OpinionServicioImpl(OpinionRepo opinionRepo) {
+    public OpinionServicioImpl(OpinionRepo opinionRepo, PublicacionRepo publicacionRepo, ClienteRepo clienteRepo) {
         this.opinionRepo = opinionRepo;
+        this.publicacionRepo = publicacionRepo;
+        this.clienteRepo = clienteRepo;
     }
 
 
     @Override
-    public String comentarPublicacion(String idPublicacion, ComentarPublicacionDTO comentarPublicacionDTO) throws Exception {
-        return "a";
+    public String opinarPublicacion(String idPublicacion, String idCliente, OpinarPublicacionDTO opinarPublicacionDTO) throws Exception {
+
+        if (!existePublicacion(idPublicacion)){
+            throw new ResourceNotFoundException(idPublicacion);
+        }
+        if (!existeCliente(idCliente)){
+            throw new ResourceNotFoundException(idCliente);
+        }
+
+        Opinion opinion = new Opinion();
+
+        opinion.setMensaje(opinarPublicacionDTO.mensaje());
+        opinion.setFecha(LocalDateTime.now());
+        opinion.setCodigoCliente(idCliente);
+
+        Opinion opinionGuardada = opinionRepo.save(opinion);
+
+        Publicacion publicacion = buscarPublicacionID(idPublicacion);
+        publicacion.getListaOpiniones().add(opinionGuardada.getCodigoOpinion());
+
+        return opinionGuardada.getCodigoOpinion();
     }
 
     @Override
-    public void responderOpinion(String idOpinion, ResponderOpinionDTO responderOpinionDTO) throws Exception {
+    public List<ItemOpinionDTO> listarOpinionesPublicacion(String idPublicacion) throws ResourceNotFoundException {
+        Publicacion publicacion = buscarPublicacionID(idPublicacion);
 
+        List<ItemOpinionDTO> items = new ArrayList<>();
+
+        for (String opinionID: publicacion.getListaOpiniones()){
+            Opinion opinion = buscarOpinionID(opinionID);
+
+            items.add(new ItemOpinionDTO(opinion.getCodigoCliente(),opinion.getCodigoOpinion()
+                    ,opinion.getMensaje(),opinion.getFecha(),opinion.getListaMeGustas()));
+        }
+        return items;
+    }
+
+    @Override
+    public void reaccionarOpinion(String idOpinion, String idCliente) throws Exception {
+        if (!existeCliente(idCliente)){
+            throw new ResourceNotFoundException(idCliente);
+        }
+        Opinion opinion = obtenerOpinionID(idOpinion);
+
+        if (opinion.getListaMeGustas().contains(idCliente)){
+            opinion.getListaMeGustas().remove(idCliente);
+        }else{
+            opinion.getListaMeGustas().add(idCliente);
+        }
+    }
+
+    @Override
+    public List<ItemOpinionDTO> listarOpinionesCliente(String idCliente) throws Exception {
+        if (!existeCliente(idCliente)){
+            throw new ResourceNotFoundException(idCliente);
+        }
+        List<Opinion> listaOpinionesCliente = opinionRepo.findAllByCodigoCliente(idCliente);
+
+        List<ItemOpinionDTO> items = new ArrayList<>();
+
+        for (Opinion opinion: listaOpinionesCliente){
+            items.add(new ItemOpinionDTO(opinion.getCodigoCliente(),opinion.getCodigoOpinion()
+                    ,opinion.getMensaje(),opinion.getFecha(),opinion.getListaMeGustas()));
+        }
+        return items;
+    }
+
+    //Metodos para verificar existencia de datos
+    private Opinion obtenerOpinionID(String idOpinion) throws ResourceNotFoundException {
 
         Optional<Opinion> optionalOpinion = opinionRepo.findById(idOpinion);
 
-        if(optionalOpinion.isEmpty()){
-            throw new Exception("No existe una opinión con el id "+idOpinion);
+        if (optionalOpinion.isEmpty()){
+            throw new ResourceNotFoundException(idOpinion);
         }
-
-        //Se obtiene la opinión
 
         Opinion opinion = optionalOpinion.get();
 
-        //Se crea la respuesta
-        Opinion respuesta = new Opinion();
-        respuesta.setMensaje( responderOpinionDTO.respuesta() );
+        return opinion;
+    }
+    private Publicacion obtenerPublicacionID(String idPublicacion) throws ResourceNotFoundException {
 
-        //Se agrega la respuesta
-        opinion.getListaRespuestas().add( respuesta );
+        Optional<Publicacion> optionalPublicacion = publicacionRepo.findById(idPublicacion);
 
-        //Se actualiza la información de la opinión en el repositorio
-        opinionRepo.save(opinion);
+        if (optionalPublicacion.isEmpty()){
+            throw new ResourceNotFoundException(idPublicacion);
+        }
 
+        Publicacion publicacion = optionalPublicacion.get();
+
+        return publicacion;
     }
 
-    @Override
-    public void eliminarOpinion(String idOpinion) throws Exception {
+    private Publicacion buscarPublicacionID(String idPublicacion) throws ResourceNotFoundException {
+        Optional<Publicacion> optionalPublicacion = publicacionRepo.findById(idPublicacion);
 
-        //Se busca la opinión a eliminar
+        if (optionalPublicacion.isEmpty()){
+            throw new ResourceNotFoundException(idPublicacion);
+        }
+
+        return optionalPublicacion.get();
+    }
+    private Opinion buscarOpinionID(String idOpinion) throws ResourceNotFoundException {
         Optional<Opinion> optionalOpinion = opinionRepo.findById(idOpinion);
 
-        if(optionalOpinion.isEmpty()){
-            throw new Exception("No existe una opinión con el id "+idOpinion);
+        if (optionalOpinion.isEmpty()){
+            throw new ResourceNotFoundException(idOpinion);
         }
-
-        //Se obtiene la opinión a eliminar
-        Opinion opinion = optionalOpinion.get();
-
-        //Se elimina la opinión de la base de datos
-        opinionRepo.delete(opinion);
-
+        return optionalOpinion.get();
     }
-
-    @Override
-    public List<Opinion> listarOpinionesPublicacion(String idPublicacion) {
-        return null;
+    private boolean existePublicacion(String idPublicacion){
+        return publicacionRepo.findById(idPublicacion).isPresent();
     }
-
-    @Override
-    public List<Opinion> listarRespuestasOpinion(String idOpinion) {
-        return null;
-    }
-
-    @Override
-    public List<Opinion> listarOpinionesCliente(String idCliente) throws Exception {
-        return null;
+    private boolean existeCliente(String idCliente) {
+        return clienteRepo.findById(idCliente).isPresent();
     }
 }

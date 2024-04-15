@@ -7,7 +7,11 @@ import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 public record ItemCalificacionDTO(
+        @NotBlank String codigoCalificacion,
+        @NotBlank String codigoNegocio,
+        @NotBlank String codigoCliente,
         @NotBlank LocalDateTime fecha,
         @NotBlank int valoracion,
-        @NotBlank @Min(20) @Max(300) String mensaje) {
+        @NotBlank @Min(20) @Max(300) String mensaje,
+        @NotBlank String respuesta) {
 }
