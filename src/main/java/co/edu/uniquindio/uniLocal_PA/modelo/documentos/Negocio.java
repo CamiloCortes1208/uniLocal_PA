@@ -33,9 +33,6 @@ public class Negocio {
     private List<String> listaTelefonos = new ArrayList<>();
     private List<String> listaRutasImagenes = new ArrayList<>();
     private List<Horario> listaHorarios = new ArrayList<>();
-    private List<String> listaCalificaciones = new ArrayList<>();
-    private List<Revision> listaRevisiones = new ArrayList<>();
-    private List<String> listaEventos = new ArrayList<>();
     private EstadoRegistro estadoRegistro;
 
 }

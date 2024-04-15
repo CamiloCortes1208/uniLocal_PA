@@ -21,17 +21,13 @@ import java.util.Optional;
 @Transactional
 public class EventoServicioImpl implements EventoServicio {
     private final EventoRepo eventoRepo;
-    private final NegocioRepo negocioRepo;
 
     public EventoServicioImpl(EventoRepo eventoRepo, NegocioRepo negocioRepo) {
         this.eventoRepo = eventoRepo;
-        this.negocioRepo = negocioRepo;
     }
 
-
     @Override
-    public void agregarEvento(AgregarEventoDTO agregarEventoDTO) throws Exception {
-        Negocio negocio = obtenerNegocioID(agregarEventoDTO.idNegocio());
+    public String agregarEvento(AgregarEventoDTO agregarEventoDTO) throws Exception {
 
         Evento evento = new Evento();
 
@@ -43,9 +39,7 @@ public class EventoServicioImpl implements EventoServicio {
         evento.setCodigoNegocio(agregarEventoDTO.idNegocio());
 
         Evento eventoGuardado = eventoRepo.save(evento);
-
-        negocio.getListaEventos().add(eventoGuardado.getCodigoEvento());
-        negocioRepo.save(negocio);
+        return eventoGuardado.getCodigoEvento();
     }
 
     @Override
@@ -70,40 +64,10 @@ public class EventoServicioImpl implements EventoServicio {
     }
 
     @Override
-    public void elimninarEvento(String codigoEvento) throws ResourceNotFoundException {
-        Evento evento = obtenerEventoID(codigoEvento);
-        Negocio negocio = obtenerNegocioID(evento.getCodigoNegocio());
-
-        negocio.getListaEventos().remove(evento.getCodigoEvento());
-
-        eventoRepo.delete(evento);
-        negocioRepo.save(negocio);
-    }
-
-    @Override
     public List<ItemEventoDTO> listarEventosNegocio(String idNegocio) throws Exception {
-        Negocio negocio = obtenerNegocioID(idNegocio);
-
-        List<ItemEventoDTO> items = new ArrayList<>();
-        for (String idEvento : negocio.getListaEventos()){
-            Evento evento = obtenerEventoID(idEvento);
-            items.add(new ItemEventoDTO(evento.getCodigoEvento(), evento.getCodigoNegocio(), evento.getNombre(),
-                    evento.getDescripcion(), evento.getTipoEvento(), evento.getDiasDisponible(), evento.getEstadoEvento()));
-        }
-        return items;
+        return null;
     }
 
-
-    private Negocio obtenerNegocioID(String idNegocio) throws ResourceNotFoundException {
-
-        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
-
-        if (optionalNegocio.isEmpty()){
-            throw new ResourceNotFoundException(idNegocio);
-        }
-
-        return optionalNegocio.get();
-    }
     private Evento obtenerEventoID(String idEvento) throws ResourceNotFoundException {
 
         Optional<Evento> optionalEvento = eventoRepo.findById(idEvento);

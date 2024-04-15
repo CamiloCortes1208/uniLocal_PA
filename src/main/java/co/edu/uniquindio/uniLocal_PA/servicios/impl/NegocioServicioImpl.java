@@ -2,14 +2,12 @@ package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.NegocioRepo;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ActualizarNegocioDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.AgregarNegocioDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ItemNegocioDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.RegistrarRevisionDTO;
+import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.*;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
 import org.springframework.stereotype.Service;
@@ -36,11 +34,12 @@ public class NegocioServicioImpl implements NegocioServicio {
         Negocio negocio = new Negocio();
 
         //Se asignan los datos
+        negocio.setCodigoCliente(agregarNegocioDTO.codigoCliente());
         negocio.setNombre(agregarNegocioDTO.nombreNegocio());
         negocio.setDescripcion(agregarNegocioDTO.descripcion());
         negocio.setCategoriaNegocio(agregarNegocioDTO.categoriaNegocio());
-        negocio.setListaRutasImagenes(agregarNegocioDTO.listaImagenesNegocio());
         negocio.setListaTelefonos(agregarNegocioDTO.listaTelefonos());
+        negocio.setListaRutasImagenes(agregarNegocioDTO.listaImagenesNegocio());
         negocio.setListaHorarios(agregarNegocioDTO.listaHorarios());
         negocio.setEstadoNegocio(EstadoNegocio.PENDIENTE);
         negocio.setEstadoRegistro(EstadoRegistro.ACTIVO);
@@ -54,19 +53,25 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
-    public ItemNegocioDTO obtenerNegocio(String idNegocio) throws Exception {
+    public DetalleNegocioDTO obtenerNegocio(String idNegocio) throws Exception {
 
         Negocio negocio = obtenerNegocioID(idNegocio);
 
-        ItemNegocioDTO itemNegocioDTO = new ItemNegocioDTO(
+        DetalleNegocioDTO detalleNegocioDTO = new DetalleNegocioDTO(
                 negocio.getCodigoNegocio(),
+                negocio.getCodigoCliente(),
                 negocio.getNombre(),
                 negocio.getDescripcion(),
                 negocio.getCategoriaNegocio(),
-                negocio.getUbicacion()
+                negocio.getEstadoNegocio(),
+                negocio.getUbicacion(),
+                negocio.getListaTelefonos(),
+                negocio.getListaRutasImagenes(),
+                negocio.getListaHorarios(),
+                negocio.getEstadoRegistro()
         );
 
-        return itemNegocioDTO;
+        return detalleNegocioDTO;
     }
 
     @Override
@@ -108,8 +113,8 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
-    public List<ItemNegocioDTO> buscarNegociosPorCategoria(String categoria) {
-        List<Negocio> negocios =  negocioRepo.findAllByCategoriaNegocio(categoria);
+    public List<ItemNegocioDTO> buscarNegociosPorCategoria(CategoriaNegocio categoriaNegocio) {
+        List<Negocio> negocios =  negocioRepo.findAllByCategoriaNegocio(categoriaNegocio);
 
         List<ItemNegocioDTO> listaItemNegocioDTO = listarNegocios(negocios);
 
@@ -143,7 +148,7 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public List<ItemNegocioDTO> listarNegociosPropietario(String idPropietario) throws Exception {
-        return negocioRepo.listarNegociosCliente(idPropietario);
+        return negocioRepo.findAllByCodigoCliente(idPropietario);
     }
 
     @Override
@@ -155,24 +160,6 @@ public class NegocioServicioImpl implements NegocioServicio {
 
         //Se actualiza el repositorio con el estado del negocio actualizado
         negocioRepo.save(negocio);
-    }
-
-    @Override
-    public void registrarRevision(String idNegocio, RegistrarRevisionDTO registrarRevisionDTO) throws Exception {
-
-        Negocio negocio = obtenerNegocioID(idNegocio);
-
-        //Se crea la revisión del negocio
-        Revision revision = new Revision();
-        revision.setEstadoNegocio( registrarRevisionDTO.estadoNegocio() );
-        revision.setDescripcion( registrarRevisionDTO.descripcion() );
-
-        //Se añade la revisión a la lista de revisiones del negocio
-        negocio.getListaRevisiones().add(revision);
-
-        //Se actualiza la información del negocio en la base de datos
-        negocioRepo.save(negocio);
-
     }
 
     @Override
@@ -219,6 +206,11 @@ public class NegocioServicioImpl implements NegocioServicio {
         return negocio;
     }
 
+    @Override
+    public boolean existeNegocio(String idNegocio) {
+        return negocioRepo.findById(idNegocio).isPresent();
+    }
+
     private List<ItemNegocioDTO> listarNegocios(List<Negocio> negocios) {
 
         //Creamos una lista de DTOs de negocios
@@ -230,10 +222,16 @@ public class NegocioServicioImpl implements NegocioServicio {
                 itemNegocioDTOS.add(
                         new ItemNegocioDTO(
                                 negocio.getCodigoNegocio(),
+                                negocio.getCodigoCliente(),
                                 negocio.getNombre(),
                                 negocio.getDescripcion(),
                                 negocio.getCategoriaNegocio(),
-                                negocio.getUbicacion()
+                                negocio.getEstadoNegocio(),
+                                negocio.getUbicacion(),
+                                negocio.getListaTelefonos(),
+                                negocio.getListaRutasImagenes(),
+                                negocio.getListaHorarios(),
+                                negocio.getEstadoRegistro()
                         )
                 );
             }

@@ -7,8 +7,7 @@ import co.edu.uniquindio.uniLocal_PA.servicios.dto.opinionDTO.OpinarPublicacionD
 import java.util.List;
 
 public interface OpinionServicio {
-
-    String opinarPublicacion(String idPublicacion, String idCliente, OpinarPublicacionDTO opinarPublicacionDTO) throws Exception;
+    String opinarPublicacion(OpinarPublicacionDTO opinarPublicacionDTO) throws Exception;
     List<ItemOpinionDTO> listarOpinionesPublicacion(String idPublicacion) throws ResourceNotFoundException;
     void reaccionarOpinion(String idOpinion, String idCliente) throws Exception;
     List<ItemOpinionDTO> listarOpinionesCliente(String idCliente) throws Exception;

@@ -34,8 +34,7 @@ public class CalificacionServicioImpl implements CalificacionServicio {
 
     @Override
     public String agregarCalificacion(AgregarCalificacionDTO agregarCalificacionDTO) throws Exception {
-        Negocio negocio = obtenerNegocioID(agregarCalificacionDTO.codigoNegocio());
-        Cliente cliente = obtenerClienteID(agregarCalificacionDTO.codigoCliente());
+
         //Se crea la calificación
         Calificacion calificacion = new Calificacion();
 
@@ -49,14 +48,8 @@ public class CalificacionServicioImpl implements CalificacionServicio {
         //Se agrega a la base de datos
         Calificacion calificacionGuardada = calificacionRepo.save(calificacion);
 
-        negocio.getListaCalificaciones().add(calificacionGuardada.getCodigoCalificacion());
-        cliente.getListaCalificaciones().add(calificacionGuardada.getCodigoCalificacion());
-
-        negocioRepo.save(negocio);
-        clienteRepo.save(cliente);
-
         //Se obtiene el codigo de la calificación para verificar su funcionamiento
-        return calificacion.getCodigoCalificacion();
+        return calificacionGuardada.getCodigoCalificacion();
     }
 
     @Override
@@ -74,18 +67,7 @@ public class CalificacionServicioImpl implements CalificacionServicio {
 
     @Override
     public List<ItemCalificacionDTO> listarCalificacionesNegocio(String idNegocio) throws ResourceNotFoundException {
-        Negocio negocio = obtenerNegocioID(idNegocio);
-
-        List<ItemCalificacionDTO> items = new ArrayList<>();
-
-        for (String calificacionID: negocio.getListaCalificaciones()){
-            Calificacion calificacion = obtenerCalificacionID(calificacionID);
-
-            items.add(new ItemCalificacionDTO(calificacion.getCodigoCliente(), calificacion.getCodigoNegocio(),
-                    calificacion.getCodigoCliente(), calificacion.getFecha(),calificacion.getValoracion(),
-                    calificacion.getMensaje(), calificacion.getRespuesta()));
-        }
-        return items;
+        return calificacionRepo.listarCalificacionesNegocio(idNegocio);
     }
 
     @Override
@@ -98,35 +80,11 @@ public class CalificacionServicioImpl implements CalificacionServicio {
     }
 
     @Override
-    public float obtenerCalificacionPromedioNegocio(List<ItemCalificacionDTO> listaItemCalificacionDTO) {
-        List<Calificacion> listaCalificaciones = calificacionRepo.findAll();
-        float promedio = 0;
-        for (Calificacion calificacion: listaCalificaciones){
-            promedio+=calificacion.getValoracion();
-        }
-        return (promedio == 0) ? 0: promedio/listaCalificaciones.size();
+    public float obtenerCalificacionPromedioNegocio(String codigoNegocio) {
+        return calificacionRepo.obtenerCalificacionPromedio(codigoNegocio);
     }
 
-    private Cliente obtenerClienteID(String idCliente) throws ResourceNotFoundException {
-
-        Optional<Cliente> optionalCliente = clienteRepo.findById(idCliente);
-
-        if (optionalCliente.isEmpty()){
-            throw new ResourceNotFoundException(idCliente);
-        }
-
-        return optionalCliente.get();
-    }
-    private Negocio obtenerNegocioID(String idNegocio) throws ResourceNotFoundException {
-
-        Optional<Negocio> optionalNegocio = negocioRepo.findById(idNegocio);
-
-        if (optionalNegocio.isEmpty()){
-            throw new ResourceNotFoundException(idNegocio);
-        }
-
-        return optionalNegocio.get();
-    }
+    //Metodos para verificar la existencia de un recurso
     private Calificacion obtenerCalificacionID(String idCalificacion) throws ResourceNotFoundException {
 
         Optional<Calificacion> optionalCalificacion = calificacionRepo.findById(idCalificacion);
@@ -137,7 +95,5 @@ public class CalificacionServicioImpl implements CalificacionServicio {
 
         return optionalCalificacion.get();
     }
-    private boolean existeCliente(String idCliente) {
-        return clienteRepo.findById(idCliente).isPresent();
-    }
+
 }

@@ -16,5 +16,5 @@ public interface CalificacionServicio {
 
     void responderCalificacion(ResponderCalificacionDTO responderCalificacionDTO) throws Exception;
 
-    float obtenerCalificacionPromedioNegocio(List<ItemCalificacionDTO> listaItemCalificacionDTO);
+    float obtenerCalificacionPromedioNegocio(String codigoNegocio);
 }
