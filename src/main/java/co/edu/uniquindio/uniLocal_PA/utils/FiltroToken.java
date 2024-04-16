@@ -23,10 +23,10 @@ public class FiltroToken extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        // Configuración de cabeceras para CORS
+// Configuración de cabeceras para CORS
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.addHeader("Access-Control-Allow-Headers", "Origin, Accept, Content-Type,Authorization");
+        response.addHeader("Access-Control-Allow-Headers", "Origin, Accept, Content-Type, Authorization");
         if (request.getMethod().equals("OPTIONS")) {
             response.setStatus(HttpServletResponse.SC_OK);
         }else {
@@ -56,8 +56,14 @@ public class FiltroToken extends OncePerRequestFilter {
                                 HttpServletResponse.SC_FORBIDDEN, response);
 
                     }
-                    //Validación para peticiones de moderador
-                } else if (requestURI.startsWith("/api/moderadores")) {
+                } else {
+                    error = false;
+                }
+
+            //Agregar más validaciones para otros roles y recursos (rutas de la API) aquí
+
+                //Validación para moderador
+                if (requestURI.startsWith("/api/moderadores")) {
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
                         if (!jws.getPayload().get("rol").equals("MODERADOR")) {
@@ -74,16 +80,11 @@ public class FiltroToken extends OncePerRequestFilter {
                                 HttpServletResponse.SC_FORBIDDEN, response);
 
                     }
-                    //En caso de que la petición no sea de cliente, ni de moderador
-                    // puede hacerse sin error
-                } else if (requestURI.startsWith("/api/auth")){
+                } else {
                     error = false;
                 }
-                else {
-                    error = false;
-                }
-            //Agregar más validaciones para otros roles y recursos (rutas de la API) aquí
 
+            //-----------------------------------------------------------------
             } catch (MalformedJwtException | SignatureException e) {
                 crearRespuestaError("El token es incorrecto",
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response);
@@ -102,12 +103,14 @@ public class FiltroToken extends OncePerRequestFilter {
             }
         }
     }
+
     private String getToken(HttpServletRequest req) {
         String header = req.getHeader("Authorization");
         if(header != null && header.startsWith("Bearer "))
             return header.replace("Bearer ", "");
         return null;
     }
+
     private void crearRespuestaError(String mensaje, int codigoError, HttpServletResponse
             response) throws IOException {
         MensajeDTO<String> dto = new MensajeDTO<>(true, mensaje);
@@ -117,4 +120,5 @@ public class FiltroToken extends OncePerRequestFilter {
         response.getWriter().flush();
         response.getWriter().close();
     }
+
 }
