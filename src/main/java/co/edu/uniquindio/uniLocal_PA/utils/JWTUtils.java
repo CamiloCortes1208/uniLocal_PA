@@ -19,7 +19,6 @@ public class JWTUtils {
                 .expiration(Date.from(now.plus(1L, ChronoUnit.HOURS)))
                 .signWith( getKey() )
                 .compact();
-
     }
 
     public Jws<Claims> parseJwt(String jwtString) throws ExpiredJwtException,
