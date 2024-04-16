@@ -1,15 +1,12 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
-import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
-import co.edu.uniquindio.uniLocal_PA.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal_PA.repositorios.PublicacionRepo;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.ItemClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.publicacionDTO.ActualizarPublicacionDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.publicacionDTO.AgregarPublicacionDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.publicacionDTO.ItemPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ActualizarPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.AgregarPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ItemPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.PublicacionServicio;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.interfaces;
 
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.InicioSesionClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.moderadorDTO.InicioSesionModeradorDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.InicioSesionClienteDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.moderadorDTO.InicioSesionModeradorDTO;
 
 public interface InicioSesionServicio {
     void inicioSesionCliente(InicioSesionClienteDTO inicioSesionClienteDTO);

@@ -1,8 +1,7 @@
 package co.edu.uniquindio.uniLocal_PA.repositorios;
 
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.calificacionDTO.ItemCalificacionDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ItemNegocioDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ItemCalificacionDTO;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

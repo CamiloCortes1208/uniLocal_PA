@@ -1,9 +1,9 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.interfaces;
 
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.eventoDTO.ActualizarEventoDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.eventoDTO.AgregarEventoDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.eventoDTO.ItemEventoDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ActualizarEventoDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.AgregarEventoDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ItemEventoDTO;
 
 import java.util.List;
 

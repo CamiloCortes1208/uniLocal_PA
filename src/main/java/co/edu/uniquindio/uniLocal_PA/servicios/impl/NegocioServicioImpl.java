@@ -1,13 +1,15 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
+import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.ActualizarNegocioDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.AgregarNegocioDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.DetalleNegocioDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio;
-import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.NegocioRepo;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.*;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
 import org.springframework.stereotype.Service;
