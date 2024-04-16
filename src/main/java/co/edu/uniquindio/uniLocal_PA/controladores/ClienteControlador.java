@@ -42,14 +42,13 @@ public class ClienteControlador {
 
     @GetMapping("/listar-todos")
     public ResponseEntity<MensajeDTO<List<ItemClienteDTO>>> listarClientes() {
-        return ResponseEntity.ok().body( new MensajeDTO<>(
-                false, clienteServicio.listarClientes() ));
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                clienteServicio.listarClientes() ));
     }
 
     @PostMapping("/agregar-negocio-favoritos/{idCliente}/{idNegocio}")
     public ResponseEntity<MensajeDTO<String>>
-    agregarNegocioFavorito(@PathVariable String idCliente
-            , @PathVariable String idNegocio) throws Exception {
+    agregarNegocioFavorito(@PathVariable String idCliente, @PathVariable String idNegocio) throws Exception {
         clienteServicio.agregarNegocioFavorito(idCliente,idNegocio);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Negocio agregado a favoritos correctamente"));
