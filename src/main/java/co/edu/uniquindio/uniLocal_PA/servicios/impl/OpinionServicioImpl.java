@@ -1,5 +1,6 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
+import co.edu.uniquindio.uniLocal_PA.dto.opinionDTO.ReaccionarOpinionDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.ClienteRepo;
@@ -59,18 +60,18 @@ public class OpinionServicioImpl implements OpinionServicio {
     }
 
     @Override
-    public void reaccionarOpinion(String idOpinion, String idCliente) throws Exception {
+    public void reaccionarOpinion(ReaccionarOpinionDTO reaccionarOpinionDTO) throws Exception {
 
-        if(!clienteServicio.existeCliente(idCliente)){
-            throw new ResourceNotFoundException(idCliente);
+        if(!clienteServicio.existeCliente(reaccionarOpinionDTO.idCliente())){
+            throw new ResourceNotFoundException(reaccionarOpinionDTO.idCliente());
         }
 
-        Opinion opinion = obtenerOpinionID(idOpinion);
+        Opinion opinion = obtenerOpinionID(reaccionarOpinionDTO.idOpinion());
 
-        if (opinion.getListaMeGustas().contains(idCliente)){
-            opinion.getListaMeGustas().remove(idCliente);
+        if (opinion.getListaMeGustas().contains(reaccionarOpinionDTO.idCliente())){
+            opinion.getListaMeGustas().remove(reaccionarOpinionDTO.idCliente());
         }else{
-            opinion.getListaMeGustas().add(idCliente);
+            opinion.getListaMeGustas().add(reaccionarOpinionDTO.idCliente());
         }
     }
 

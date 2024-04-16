@@ -30,14 +30,14 @@ public class FiltroToken extends OncePerRequestFilter {
         if (request.getMethod().equals("OPTIONS")) {
             response.setStatus(HttpServletResponse.SC_OK);
         }else {
-        //Obtener la URI de la petición que se está realizando
+            //Obtener la URI de la petición que se está realizando
             String requestURI = request.getRequestURI();
-        //Se obtiene el token de la petición del encabezado del mensaje HTTP
+            //Se obtiene el token de la petición del encabezado del mensaje HTTP
             String token = getToken(request);
             boolean error = true;
             try {
-        //Si la petición es para la ruta /api/clientes se verifica que el token sea
-        // correcto y que el rol sea CLIENTE
+                //Si la petición es para la ruta /api/clientes se verifica que el token sea
+                // correcto y que el rol sea CLIENTE
 
                 if (requestURI.startsWith("/api/clientes")) {
                     if (token != null) {
@@ -56,10 +56,34 @@ public class FiltroToken extends OncePerRequestFilter {
                                 HttpServletResponse.SC_FORBIDDEN, response);
 
                     }
-                } else {
+                    //Validación para peticiones de moderador
+                } else if (requestURI.startsWith("/api/moderadores")) {
+                    if (token != null) {
+                        Jws<Claims> jws = jwtUtils.parseJwt(token);
+                        if (!jws.getPayload().get("rol").equals("MODERADOR")) {
+                            crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                    HttpServletResponse.SC_FORBIDDEN, response);
+
+                        } else {
+                            error = false;
+                        }
+                    } else {
+                        crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                HttpServletResponse.SC_FORBIDDEN, response);
+
+                    }
+                    //En caso de que la petición no sea de cliente, ni de moderador
+                    // puede hacerse sin error
+                } else if (requestURI.startsWith("/api/auth")){
                     error = false;
                 }
-//Agregar más validaciones para otros roles y recursos (rutas de la API) aquí
+                else {
+                    error = false;
+                }
+            //Agregar más validaciones para otros roles y recursos (rutas de la API) aquí
+
             } catch (MalformedJwtException | SignatureException e) {
                 crearRespuestaError("El token es incorrecto",
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response);

@@ -1,8 +1,7 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
 import co.edu.uniquindio.uniLocal_PA.dto.JWT_DTO.TokenDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.LoginClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.moderadorDTO.LoginModeradorDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.LoginDTO.LoginDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador;
 import co.edu.uniquindio.uniLocal_PA.repositorios.ClienteRepo;
@@ -26,14 +25,14 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
     private final ModeradorRepo moderadorRepo;
     private final JWTUtils jwtUtils;
     @Override
-    public TokenDTO iniciarSesionCliente(LoginClienteDTO loginClienteDTO) throws Exception {
-        Optional<Cliente> clienteOptional = clienteRepo.findByEmail(loginClienteDTO.email());
+    public TokenDTO iniciarSesionCliente(LoginDTO loginDTO) throws Exception {
+        Optional<Cliente> clienteOptional = clienteRepo.findByEmail(loginDTO.email());
         if (clienteOptional.isEmpty()) {
             throw new Exception("El correo no se encuentra registrado");
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Cliente cliente = clienteOptional.get();
-        if( !passwordEncoder.matches(loginClienteDTO.password(), cliente.getPassword()) ) {
+        if( !passwordEncoder.matches(loginDTO.password(), cliente.getPassword()) ) {
             throw new Exception("La contraseña es incorrecta");
         }
         Map<String, Object> map = new HashMap<>();
@@ -44,14 +43,14 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
     }
 
     @Override
-    public TokenDTO iniciarSesionModerador(LoginModeradorDTO loginModeradorDTO) throws Exception {
-        Optional<Moderador> moderadorOptional = moderadorRepo.findByEmail(loginModeradorDTO.email());
+    public TokenDTO iniciarSesionModerador(LoginDTO loginDTO) throws Exception {
+        Optional<Moderador> moderadorOptional = moderadorRepo.findByEmail(loginDTO.email());
         if (moderadorOptional.isEmpty()) {
             throw new Exception("El correo no se encuentra registrado");
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Moderador moderador = moderadorOptional.get();
-        if( !passwordEncoder.matches(loginModeradorDTO.password(), moderador.getPassword())) {
+        if( !passwordEncoder.matches(loginDTO.password(), moderador.getPassword())) {
             throw new Exception("La contraseña es incorrecta");
         }
         Map<String, Object> map = new HashMap<>();
