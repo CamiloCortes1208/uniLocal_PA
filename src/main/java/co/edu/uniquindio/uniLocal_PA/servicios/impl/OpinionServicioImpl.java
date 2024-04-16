@@ -1,15 +1,12 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
-import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion;
-import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal_PA.repositorios.OpinionRepo;
 import co.edu.uniquindio.uniLocal_PA.repositorios.PublicacionRepo;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.ItemClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.opinionDTO.ItemOpinionDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.opinionDTO.OpinarPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.opinionDTO.ItemOpinionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.opinionDTO.OpinarPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.OpinionServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.PublicacionServicio;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

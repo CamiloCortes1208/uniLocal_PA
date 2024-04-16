@@ -1,8 +1,8 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.interfaces;
 
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.opinionDTO.ItemOpinionDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.opinionDTO.OpinarPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.opinionDTO.ItemOpinionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.opinionDTO.OpinarPublicacionDTO;
 
 import java.util.List;
 

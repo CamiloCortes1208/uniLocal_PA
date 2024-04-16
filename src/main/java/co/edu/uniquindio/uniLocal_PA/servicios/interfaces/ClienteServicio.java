@@ -1,7 +1,6 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.interfaces;
 
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.*;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.publicacionDTO.AgregarPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.*;
 
 import java.util.List;
 

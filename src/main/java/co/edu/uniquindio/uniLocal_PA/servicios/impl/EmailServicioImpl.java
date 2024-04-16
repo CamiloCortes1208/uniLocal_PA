@@ -1,6 +1,6 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.emailDTO.EmailDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.emailDTO.EmailDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.EmailServicio;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;

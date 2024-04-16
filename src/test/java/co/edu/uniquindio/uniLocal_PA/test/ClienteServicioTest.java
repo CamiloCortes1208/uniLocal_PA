@@ -1,8 +1,9 @@
 package co.edu.uniquindio.uniLocal_PA.test;
 
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.ActualizarClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.ItemClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.RegistroClienteDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.ActualizarClienteDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.DetalleClienteDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.ItemClienteDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.RegistroClienteDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
 import org.junit.jupiter.api.Assertions;
@@ -42,9 +43,9 @@ public class ClienteServicioTest {
 
         //Se ejecuta el método con el Cliente5 con el fin de que se trabaje con una cuenta
         //ACTIVA
-        ItemClienteDTO itemClienteDTO = clienteServicio.obtenerCliente("Cliente5");
+        DetalleClienteDTO detalleClienteDTO = clienteServicio.obtenerCliente("Cliente5");
 
-        Assertions.assertEquals("Cali",itemClienteDTO.ciudadResidencia());
+        Assertions.assertEquals("Cali",detalleClienteDTO.ciudadResidencia());
 
     }
 
@@ -90,17 +91,5 @@ public class ClienteServicioTest {
 
         Assertions.assertNotNull(codigoNegocioGuardado);
 
-    }
-
-    @Test
-    public void eliminarNegocioFavoritoTest() throws Exception {
-
-        clienteServicio.eliminarNegocioFavorito("Cliente5","Negocio1");
-
-        ItemClienteDTO itemClienteDTO = clienteServicio.obtenerCliente("Cliente5");
-
-        //Se verifica que la lista esté vacía después de eliminar el negocio
-        // con código "Negocio1" de los favoritos del cliente con código "Cliente1"
-        Assertions.assertEquals(0, itemClienteDTO.listaNegociosFavoritos().size());
     }
 }

@@ -1,19 +1,17 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Evento;
-import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoEvento;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.EventoRepo;
 import co.edu.uniquindio.uniLocal_PA.repositorios.NegocioRepo;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.eventoDTO.ActualizarEventoDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.eventoDTO.AgregarEventoDTO;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.eventoDTO.ItemEventoDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ActualizarEventoDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.AgregarEventoDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ItemEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.EventoServicio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,14 +1,13 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
+import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.*;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.ClienteRepo;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.clienteDTO.*;
-import co.edu.uniquindio.uniLocal_PA.servicios.dto.negocioDTO.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,8 +44,12 @@ public class ClienteServicioImpl implements ClienteServicio {
         cliente.setCiudadResidencia( registroClienteDTO.ciudadResidencia() );
         cliente.setFotoPerfil( registroClienteDTO.fotoPerfil() );
         cliente.setEmail( registroClienteDTO.email() );
-        cliente.setPassword( registroClienteDTO.password() );
         cliente.setEstadoRegistro(EstadoRegistro.ACTIVO);
+
+        //Para la contraseña
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String passwordEncriptada = passwordEncoder.encode( registroClienteDTO.password() );
+        cliente.setPassword( passwordEncriptada );
 
         //Se guarda en la base de datos y obtenemos el objeto registrado
         Cliente clienteGuardado = clienteRepo.save(cliente);
