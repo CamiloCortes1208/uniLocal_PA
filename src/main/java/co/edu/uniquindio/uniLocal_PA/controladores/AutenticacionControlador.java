@@ -3,8 +3,10 @@ package co.edu.uniquindio.uniLocal_PA.controladores;
 import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.LoginClienteDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.JWT_DTO.MensajeDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.JWT_DTO.TokenDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.RegistroClienteDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.moderadorDTO.LoginModeradorDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.AutenticacionServicio;
+import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class AutenticacionControlador {
 
     private final AutenticacionServicio autenticacionServicio;
+    private final ClienteServicio clienteServicio;
+
+    @PostMapping("/registrar-cliente")
+    public ResponseEntity<MensajeDTO<String>>
+    registrarCliente(@Valid @RequestBody
+                     RegistroClienteDTO registroClienteDTO) throws Exception {
+        clienteServicio.registrarCliente(registroClienteDTO);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                "Cliente registrado correctamente"));
+    }
 
     @PostMapping("/login-cliente")
     public ResponseEntity<MensajeDTO<TokenDTO>>

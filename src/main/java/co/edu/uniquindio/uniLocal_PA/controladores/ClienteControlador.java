@@ -17,15 +17,6 @@ public class ClienteControlador {
 
     private final ClienteServicio clienteServicio;
 
-    @PostMapping("/registrar-cliente")
-    public ResponseEntity<MensajeDTO<String>>
-    registrarCliente(@Valid @RequestBody
-        RegistroClienteDTO registroClienteDTO) throws Exception {
-        clienteServicio.registrarCliente(registroClienteDTO);
-        return ResponseEntity.ok().body( new MensajeDTO<>(false,
-                "Cliente registrado correctamente"));
-    }
-
     @PutMapping("/editar-perfil")
     public ResponseEntity<MensajeDTO<String>>
     editarPerfil(@Valid @RequestBody ActualizarClienteDTO actualizarClienteDTO) throws Exception {
@@ -51,14 +42,13 @@ public class ClienteControlador {
 
     @GetMapping("/listar-todos")
     public ResponseEntity<MensajeDTO<List<ItemClienteDTO>>> listarClientes() {
-        return ResponseEntity.ok().body( new MensajeDTO<>(
-                false, clienteServicio.listarClientes() ));
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                clienteServicio.listarClientes() ));
     }
 
     @PostMapping("/agregar-negocio-favoritos/{idCliente}/{idNegocio}")
     public ResponseEntity<MensajeDTO<String>>
-    agregarNegocioFavorito(@PathVariable String idCliente
-            , @PathVariable String idNegocio) throws Exception {
+    agregarNegocioFavorito(@PathVariable String idCliente, @PathVariable String idNegocio) throws Exception {
         clienteServicio.agregarNegocioFavorito(idCliente,idNegocio);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Negocio agregado a favoritos correctamente"));
