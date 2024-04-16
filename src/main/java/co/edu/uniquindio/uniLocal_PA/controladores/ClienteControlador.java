@@ -55,7 +55,7 @@ public class ClienteControlador {
     }
 
     @PutMapping("/editar-password")
-    void cambiarPassword(CambioPasswordDTO cambioPasswordDTO) {
+    void cambiarPassword(@Valid @RequestBody CambioPasswordDTO cambioPasswordDTO) {
 
     }
 }

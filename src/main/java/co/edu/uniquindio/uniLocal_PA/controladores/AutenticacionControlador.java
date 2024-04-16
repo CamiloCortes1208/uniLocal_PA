@@ -1,10 +1,9 @@
 package co.edu.uniquindio.uniLocal_PA.controladores;
 
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.LoginClienteDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.JWT_DTO.MensajeDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.JWT_DTO.TokenDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.LoginDTO.LoginDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.RegistroClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.moderadorDTO.LoginModeradorDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.AutenticacionServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import jakarta.validation.Valid;
@@ -33,15 +32,15 @@ public class AutenticacionControlador {
 
     @PostMapping("/login-cliente")
     public ResponseEntity<MensajeDTO<TokenDTO>>
-    iniciarSesionCliente(@Valid @RequestBody LoginClienteDTO loginClienteDTO) throws Exception {
-        TokenDTO tokenDTO = autenticacionServicio.iniciarSesionCliente(loginClienteDTO);
+    iniciarSesionCliente(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
+        TokenDTO tokenDTO = autenticacionServicio.iniciarSesionCliente(loginDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, tokenDTO));
     }
 
     @PostMapping("/login-moderador")
     public ResponseEntity<MensajeDTO<TokenDTO>>
-    iniciarSesionModerador(@Valid @RequestBody LoginModeradorDTO loginModeradorDTO) throws Exception {
-        TokenDTO tokenDTO = autenticacionServicio.iniciarSesionModerador(loginModeradorDTO);
+    iniciarSesionModerador(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
+        TokenDTO tokenDTO = autenticacionServicio.iniciarSesionModerador(loginDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, tokenDTO));
     }
 
