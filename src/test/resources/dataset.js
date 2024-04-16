@@ -1,53 +1,4 @@
-db = connect( 'mongodb://root:example@localhost:27017/proyecto?authSource=admin' );
-
-db.moderadores.insertMany([
-    {
-        _id: 'Moderador1',
-        nombre: 'Jhon',
-        fotoPerfil: 'mi foto',
-        password: 'mipassword',
-        email: 'jhon@email.com',
-        estadoRegistro: 'ACTIVO',
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador'
-    },
-    {
-        _id: 'Moderador2',
-        nombre: 'Paula',
-        fotoPerfil: 'mi foto',
-        password: 'mipassword',
-        email: 'paula@email.com',
-        estadoRegistro: 'ACTIVO',
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador'
-    },
-    {
-        _id: 'Moderador3',
-        nombre: 'Mariana',
-        fotoPerfil: 'mi foto',
-        password: 'mipassword',
-        email: 'mariana@email.com',
-        estadoRegistro: 'ACTIVO',
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador'
-    },
-    {
-        _id: 'Moderador4',
-        nombre: 'Maicol',
-        fotoPerfil: 'mi foto',
-        password: 'mipassword',
-        email: 'maicol@email.com',
-        estadoRegistro: 'ACTIVO',
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador'
-    },
-    {
-        _id: 'Moderador5',
-        nombre: 'Luis',
-        fotoPerfil: 'mi foto',
-        password: 'mipassword',
-        email: 'luis@email.com',
-        estadoRegistro: 'ACTIVO',
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador'
-    }
-]);
-
+db = connect( 'mongodb://root:example@localhost:27017/uniLocal_PA?authSource=admin' );
 db.clientes.insertMany([
     {
         _id: 'Cliente1',
@@ -58,50 +9,60 @@ db.clientes.insertMany([
         password: 'mipassword',
         nombre: 'Juan',
         estadoRegistro: 'ACTIVO',
+        listaNegociosFavoritos: ['Negocio5'],
+        listaPublicacionesFavoritas: ['Publicacion5'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente'
     },
     {
         _id: 'Cliente2',
-        nickname: 'pablo',
+        nickname: 'Pepito',
         ciudadResidencia: 'Pereira',
         fotoPerfil: 'mi foto',
-        email: 'pablo@email.com',
+        email: 'Pepe@email.com',
         password: 'mipassword',
-        nombre: 'Pablo',
-        estadoRegistro: 'ACTIVO',
+        nombre: 'Pepe',
+        estadoRegistro: 'INACTIVO',
+        listaNegociosFavoritos: ['Negocio4'],
+        listaPublicacionesFavoritas: ['Publicacion4'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente'
     },
     {
         _id: 'Cliente3',
-        nickname: 'sofía',
+        nickname: 'Carlitos',
         ciudadResidencia: 'Bogotá',
         fotoPerfil: 'mi foto',
-        email: 'sofia@email.com',
+        email: 'carlos@email.com',
         password: 'mipassword',
-        nombre: 'Guillermo',
+        nombre: 'Carlos',
         estadoRegistro: 'ACTIVO',
+        listaNegociosFavoritos: ['Negocio2'],
+        listaPublicacionesFavoritas: ['Publicacion3'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente'
     },
     {
         _id: 'Cliente4',
-        nickname: 'alejandro',
-        ciudadResidencia: 'Armenia',
+        nickname: 'Luisito',
+        ciudadResidencia: 'Medellin',
         fotoPerfil: 'mi foto',
-        email: 'alejandro@email.com',
+        email: 'luis@email.com',
         password: 'mipassword',
-        nombre: 'Alejandro',
-        estadoRegistro: 'ACTIVO',
+        nombre: 'Luis',
+        estadoRegistro: 'INACTIVO',
+        listaNegociosFavoritos: ['Negocio2'],
+        listaPublicacionesFavoritas: ['Publicacion2'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente'
     },
     {
         _id: 'Cliente5',
-        nickname: 'laura',
-        ciudadResidencia: 'Cali',
+        nickname: 'Julanita',
+        ciudadResidencia: 'Cartagena',
         fotoPerfil: 'mi foto',
-        email: 'laura@email.com',
+        email: 'julana@email.com',
         password: 'mipassword',
-        nombre: 'Laura',
+        nombre: 'Julana',
         estadoRegistro: 'ACTIVO',
+        listaNegociosFavoritos: ['Negocio1'],
+        listaPublicacionesFavoritas: ['Publicacion1'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente'
     }
 ]);
@@ -109,192 +70,118 @@ db.clientes.insertMany([
 db.negocios.insertMany([
     {
         _id: 'Negocio1',
-        nombre: 'Restaurante Mexicano',
-        descripcion: 'Restaurante de comida mexicana en Armenia',
         codigoCliente: 'Cliente1',
+        nombre: 'Cafeteria la esperanza',
+        decripcion: 'Cafeteria de Armenia con los mejores cafés',
+        categoriaNegocio: 'CAFETERIA',
+        estadoNegocio: 'APROBADO',
         ubicacion: {
-            latitud: 4.540130,
-            longitud: -75.665660
+            longitud: 4.12355,
+            latitud: -75.12305
         },
-        listaRutasImagenes: ['imagen1', 'imagen2'],
-        categoriaNegocio: 'RESTAURANTE',
+        listaTelefonos: ['3101234567'],
+        listaRutasImagenes: ['host.com/miimagen'],
         listaHorarios: [
             {
                 diaSemana: 'LUNES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
+                horaApertura: '9:30',
+                horaCierre: '21:00'
             }
         ],
-        listaTelefonos: ['1234567', '7654321'],
         estadoRegistro: 'ACTIVO',
-        estadoNegocio: 'PENDIENTE',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio'
+
     },
     {
         _id: 'Negocio2',
-        nombre: 'Mundo Computo',
-        descripcion: 'Tienda de computadores y servicio técnico',
         codigoCliente: 'Cliente2',
+        nombre: 'Panzetti',
+        decripcion: 'El mejor pan aliñado',
+        categoriaNegocio: 'PANADERIA',
+        estadoNegocio: 'RECHAZADO',
         ubicacion: {
-            latitud: 4.540130,
-            longitud: -75.665660
+            longitud: 1.12355,
+            latitud: -55.12305
         },
-        listaRutasImagenes: ['imagen1', 'imagen2'],
-        categoriaNegocio: 'TIENDA_TECNOLOGICA',
+        listaTelefonos: ['3101234567','3209876543'],
+        listaRutasImagenes: ['host.com/miimagen','host.com/miimagen2'],
         listaHorarios: [
             {
-                diaSemana: 'LUNES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
-            },
-            {
                 diaSemana: 'MARTES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
+                horaApertura: '9:30',
+                horaCierre: '21:00'
             }
         ],
-        listaTelefonos: ['1234567'],
-        estadoRegistro: 'ACTIVO',
-        estadoNegocio: 'PENDIENTE',
+        estadoRegistro: 'INACTIVO',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio'
     },
     {
         _id: 'Negocio3',
-        nombre: 'El palacio',
-        descripcion: 'Hotel lujoso en Pereira',
-        codigoCliente: 'Cliente1',
+        codigoCliente: 'Cliente3',
+        nombre: 'Ferreteria la ilusión',
+        decripcion: 'La mejor ferretería de Pereira',
+        categoriaNegocio: 'FERRETERIA',
+        estadoNegocio: 'PENDIENTE',
         ubicacion: {
-            latitud: 4.540130,
-            longitud: -75.665660
+            longitud: 7.12355,
+            latitud: -10.12305
         },
-        listaRutasImagenes: ['imagen1', 'imagen2'],
-        categoriaNegocio: 'HOTEL',
+        listaTelefonos: ['3111269342'],
+        listaRutasImagenes: ['host.com/miimagen'],
         listaHorarios: [
             {
-                diaSemana: 'LUNES',
-                horaApertura: '06:00',
-                horaCierre: '22:00'
-            },
-            {
-                diaSemana: 'MARTES',
-                horaApertura: '06:00',
-                horaCierre: '22:00'
-            },
-            {
                 diaSemana: 'MIERCOLES',
-                horaApertura: '06:00',
-                horaCierre: '22:00'
-            },
-            {
-                diaSemana: 'JUEVES',
-                horaApertura: '06:00',
-                horaCierre: '22:00'
-            },
-            {
-                diaSemana: 'VIERNES',
-                horaApertura: '06:00',
-                horaCierre: '22:00'
-            },
-            {
-                diaSemana: 'SABADO',
-                horaApertura: '06:00',
-                horaCierre: '22:00'
-            },
-            {
-                diaSemana: 'DOMINGO',
-                horaApertura: '06:00',
-                horaCierre: '22:00'
-            },
+                horaApertura: '9:30',
+                horaCierre: '21:00'
+            }
         ],
-        listaTelefonos: ['1234567', '7654321', '7483121'],
-        estadoRegistro: 'ACTIVO',
-        estadoNegocio: 'PENDIENTE',
+        estadoRegistro: 'INACTIVO',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio'
     },
     {
         _id: 'Negocio4',
-        nombre: 'Adrenaline center',
-        descripcion: 'Tienda de artículos deportivos en Medellín',
         codigoCliente: 'Cliente4',
+        nombre: 'Tecnologic S.A.S',
+        decripcion: 'El almacen donde encuentras todo de tecnologia',
+        categoriaNegocio: 'TIENDA_TECNOLOGICA',
+        estadoNegocio: 'APROBADO',
         ubicacion: {
-            latitud: 4.540130,
-            longitud: -75.665660
+            longitud: 7.12355,
+            latitud: -90.12305
         },
-        listaRutasImagenes: ['imagen1', 'imagen2'],
-        categoriaNegocio: 'TIENDA_DEPORTIVA',
+        listaTelefonos: ['3101234567'],
+        listaRutasImagenes: ['host.com/miimagen'],
         listaHorarios: [
             {
-                diaSemana: 'LUNES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
-            },
-            {
-                diaSemana: 'MARTES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
-            },
-            {
-                diaSemana: 'MIERCOLES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
-            },
-            {
                 diaSemana: 'JUEVES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
-            },
-            {
-                diaSemana: 'VIERNES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
+                horaApertura: '9:30',
+                horaCierre: '21:00'
             }
         ],
-        listaTelefonos: ['1234567', '7654321'],
         estadoRegistro: 'ACTIVO',
-        estadoNegocio: 'PENDIENTE',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio'
     },
     {
         _id: 'Negocio5',
-        nombre: 'Museo pequeña Grecia',
-        descripcion: 'Centro cultural de historias y esculturas griegas',
         codigoCliente: 'Cliente5',
+        nombre: 'Nike sucursal norte',
+        decripcion: 'Sucursal nike norte',
+        categoriaNegocio: 'TIENDA_DEPORTIVA',
+        estadoNegocio: 'RECHAZADO',
         ubicacion: {
-            latitud: 4.540130,
-            longitud: -75.665660
+            longitud: 0.12355,
+            latitud: -15.12305
         },
-        listaRutasImagenes: ['imagen1', 'imagen2'],
-        categoriaNegocio: 'MUSEO',
+        listaTelefonos: ['3217512867'],
+        listaRutasImagenes: ['host.com/miimagen'],
         listaHorarios: [
             {
-                diaSemana: 'LUNES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
-            },
-            {
-                diaSemana: 'MIERCOLES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
-            },
-            {
-                diaSemana: 'JUEVES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
-            },
-            {
                 diaSemana: 'VIERNES',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
-            },
-            {
-                diaSemana: 'SABADO',
-                horaApertura: '08:00',
-                horaCierre: '20:00'
+                horaApertura: '9:30',
+                horaCierre: '21:00'
             }
         ],
-        listaTelefonos: ['7654321'],
-        estadoRegistro: 'ACTIVO',
-        estadoNegocio: 'PENDIENTE',
+        estadoRegistro: 'INACTIVO',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Negocio'
     }
 ]);
@@ -302,57 +189,184 @@ db.negocios.insertMany([
 db.calificaciones.insertMany([
     {
         _id: 'Calificacion1',
-        mensaje: "Excelente sitio, muy buena atención",
+        codigoCliente: 'Cliente1',
         fecha: new Date(),
-        codigoCliente: 'Cliente2',
+        mensaje: 'Muy buen local',
         codigoNegocio: 'Negocio1',
-        calificacion: 5,
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Comentario'
+        valoracion: 5,
+        respuesta: '',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion'
     },
     {
         _id: 'Calificacion2',
-        mensaje: "Se demoran mucho en atender, pero la comida es exquisita",
-        fehca: new Date(),
-        codigoCliente : 'Cliente3',
+        codigoCliente: 'Cliente2',
+        fecha: new Date(),
+        mensaje: 'Muy buena cafeteria, sirven un café muy bueno',
         codigoNegocio: 'Negocio1',
-        calificacion: 3,
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Comentario'
+        valoracion: 5,
+        respuesta: '',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion'
     },
     {
         _id: 'Calificacion3',
-        mensaje: "Gran tienda, se encuentra cualquier cosa que se necesite",
-        fehca: new Date(),
-        codigoCliente : 'Cliente3',
-        codigoNegocio: 'Negocio2',
-        calificacion: 5,
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Comentario'
-    },
-    {
-        _id: 'Calificacion3',
-        mensaje: "Pésima atención, y precios excesivos pare la calidad de las habitaciones",
-        fehca: new Date(),
-        codigoCliente : 'Cliente4',
-        codigoNegocio: 'Negocio3',
-        calificacion: 1,
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Comentario'
+        codigoCliente: 'Cliente3',
+        fecha: new Date(),
+        mensaje: 'Productos demasiado costosos!',
+        codigoNegocio: 'Negocio4',
+        valoracion: 2,
+        respuesta: '',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion'
     },
     {
         _id: 'Calificacion4',
-        mensaje: "Excelentes precios y atención, pero faltan artículos como raquetas",
-        fehca: new Date(),
-        codigoCliente : 'Cliente1',
-        codigoNegocio: 'Negocio4',
-        calificacion: 3,
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Comentario'
+        codigoCliente: 'Cliente4',
+        fecha: new Date(),
+        mensaje: 'Sirven buen café, sin embargo, la comida no es tan buena',
+        codigoNegocio: 'Negocio1',
+        valoracion: 3,
+        respuesta: '',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion'
     },
     {
         _id: 'Calificacion5',
-        mensaje: "Muy buen lugar, bastante informativo",
-        fehca: new Date(),
-        codigoCliente : 'Cliente1',
-        codigoNegocio: 'Negocio5',
-        calificacion: 4,
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Comentario'
+        codigoCliente: 'Cliente5',
+        fecha: new Date(),
+        mensaje: 'Execelente, me ayudaron a armar mi primer computador',
+        codigoNegocio: 'Negocio4',
+        valoracion: 5,
+        respuesta: '',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion'
+    }
+]);
+
+db.eventos.insertMany([
+    {
+        _id: 'Evento1',
+        codigoNegocio: 'Negocio1',
+        nombre: 'Feria del pan',
+        descripcion: 'Ven a probar todos los tipos de panes de otros paises!',
+        tipoEvento: 'CULTURAL',
+        diasDisponible: [
+            {
+                diaSemana: 'LUNES',
+                horaApertura: '14:00',
+                horaCierre: '18:30'
+            }
+        ],
+        estadoEvento: 'EN_CURSO',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Evento'
+    },
+    {
+        _id: 'Evento2',
+        codigoNegocio: 'Negocio1',
+        nombre: 'El chocolatazo',
+        descripcion: 'Ven a tomar chocolate y te prestamos un libro!',
+        tipoEvento: 'SOCIAL',
+        diasDisponible: [
+            {
+                diaSemana: 'MARTES',
+                horaApertura: '16:00',
+                horaCierre: '20:30'
+            }
+        ],
+        estadoEvento: 'EN_CURSO',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Evento'
+    },
+    {
+        _id: 'Evento3',
+        codigoNegocio: 'Negocio4',
+        nombre: 'Descuentos en procesadores intel',
+        descripcion: 'Descuento en todo tipo de procesador intel!',
+        tipoEvento: 'DESCUENTO',
+        diasDisponible: [
+            {
+                diaSemana: 'JUEVES',
+                horaApertura: '9:30',
+                horaCierre: '21:00'
+            }
+        ],
+        estadoEvento: 'EN_CURSO',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Evento'
+    },
+    {
+        _id: 'Evento4',
+        codigoNegocio: 'Negocio4',
+        nombre: 'Obsequio en compras! Armado de computador',
+        descripcion: 'Te armamos el computador si compras con nosotros',
+        tipoEvento: 'DESCUENTO',
+        diasDisponible: [
+            {
+                diaSemana: 'JUEVES',
+                horaApertura: '14:00',
+                horaCierre: '18:30'
+            }
+        ],
+        estadoEvento: 'FINALIZADO',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Evento'
+    },
+    {
+        _id: 'Evento5',
+        codigoNegocio: 'Negocio4',
+        nombre: 'Taller de armado de reparación',
+        descripcion: 'Te enseñamos a reparar un computador y como identificar las causas mas comunes!',
+        tipoEvento: 'SOCIAL',
+        diasDisponible: [
+            {
+                diaSemana: 'JUEVES',
+                horaApertura: '15:00',
+                horaCierre: '16:30'
+            }
+        ],
+        estadoEvento: 'EN_CURSO',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Evento'
+    }
+]);
+
+db.moderadores.insertMany([
+    {
+        _id: 'Moderador1',
+        nombre: 'Juan Aguilar',
+        fotoPerfil: 'mifotodeperfil',
+        password: 'password',
+        email: 'JuanAg@unilocal.com',
+        estadoRegistro: 'ACTIVO',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador'
+    },
+    {
+        _id: 'Moderador2',
+        nombre: 'Ernesto Martinez',
+        fotoPerfil: 'mifotodeperfil',
+        password: 'ernesto321953',
+        email: 'ernestomar@unilocal.com',
+        estadoRegistro: 'ACTIVO',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador'
+    },
+    {
+        _id: 'Moderador3',
+        nombre: 'Alba Herrera',
+        fotoPerfil: 'mifotodeperfil',
+        password: 'herrera123alba',
+        email: 'albaher@unilocal.com',
+        estadoRegistro: 'ACTIVO',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador'
+    },
+    {
+        _id: 'Moderador4',
+        nombre: 'Manuel Cardona',
+        fotoPerfil: 'mifotodeperfil',
+        password: 'password',
+        email: 'manuelcar@unilocal.com',
+        estadoRegistro: 'INACTIVO',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador'
+    },
+    {
+        _id: 'Moderador5',
+        nombre: 'Laura Cardona',
+        fotoPerfil: 'mifotodeperfil',
+        password: 'laucar9',
+        email: 'lauracar@unilocal.com',
+        estadoRegistro: 'ACTIVO',
+        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador'
     }
 ]);
 
@@ -362,27 +376,26 @@ db.revisiones.insertMany([
         fecha: new Date(),
         codigoModerador: 'Moderador1',
         codigoNegocio: 'Negocio1',
-        descripcion: "El negocio cumple con las normas de la página",
-        estadoNegocio: 'APROBADO',
+        descripcion: 'Todo cumple con los requisitos y normas de la pagina',
+        EstadoNegocio: 'APROBADO',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision'
     },
     {
         _id: 'Revision2',
         fecha: new Date(),
-        codigoModerador: 'Moderador2',
+        codigoModerador: 'Moderador1',
         codigoNegocio: 'Negocio2',
-        descripcion: "El negocio cumple con las normas de la página",
-        estadoNegocio: 'APROBADO',
+        descripcion: 'No se cumplen con las normas de la pagina, por favor, revisar lo suministrado',
+        EstadoNegocio: 'RECHAZADO',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision'
     },
     {
         _id: 'Revision3',
         fecha: new Date(),
-        codigoModerador: 'Moderador1',
+        codigoModerador: 'Moderador2',
         codigoNegocio: 'Negocio3',
-        descripcion: "Las fotos proporcionadas para este negocio incumplen las normas" +
-            "de la página",
-        estadoNegocio: 'RECHAZADO',
+        descripcion: 'Falta adjuntar los horarios',
+        EstadoNegocio: 'PENDIENTE',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision'
     },
     {
@@ -390,72 +403,72 @@ db.revisiones.insertMany([
         fecha: new Date(),
         codigoModerador: 'Moderador3',
         codigoNegocio: 'Negocio4',
-        descripcion: "El negocio cumple con las normas de la página",
-        estadoNegocio: 'APROBADO',
+        descripcion: 'Todo cumple con los requisitos y normas de la pagina',
+        EstadoNegocio: 'APROBADO',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision'
+
     },
     {
         _id: 'Revision5',
         fecha: new Date(),
         codigoModerador: 'Moderador5',
         codigoNegocio: 'Negocio5',
-        descripcion: "La descripción proporcionada para este negocio incumple" +
-            " con las normas de la página",
-        estadoNegocio: 'RECHAZADO',
+        descripcion: 'No se cumplen con las normas de la pagina, por favor, revisar lo suministrado',
+        EstadoNegocio: 'RECHAZADO',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Revision'
-    }
 
+    }
 ]);
 
 db.publicaciones.insertMany([
     {
         _id: 'Publicacion1',
-        fecha: new Date(),
         codigoCliente: 'Cliente1',
-        descripcion: "Ven y conoce el mejor restaurante de Armenia",
-        cantidadMeGusta: 20,
-        listaRutasImagenes: ['imagen1','imagen2'],
-        listaOpiniones: ['Opinion1','Opinion2'],
+        descripcion: 'El mejor sitio para tomar un café',
+        rutaImagen: 'rutaimagen',
+        fechaPublicacion: new Date(),
+        estadoRegistro: 'ACTIVO',
+        listaMeGustas: ['Cliente3'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion'
     },
     {
         _id: 'Publicacion2',
-        fecha: new Date(),
-        codigoCliente: 'Cliente2',
-        descripcion: "El mejor lugar para comprar un PC es aquí ;)",
-        cantidadMeGusta: 32,
-        listaRutasImagenes: ['imagen1','imagen2'],
-        listaOpiniones: ['Opinion3'],
+        codigoCliente: 'Cliente1',
+        descripcion: 'Mi primer compra! Computador gamer!',
+        rutaImagen: 'rutaimagen',
+        fechaPublicacion: new Date(),
+        estadoRegistro: 'ACTIVO',
+        listaMeGustas: ['Cliente3','Cliente5'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion'
     },
     {
         _id: 'Publicacion3',
-        fecha: new Date(),
-        codigoCliente: 'Cliente1',
-        descripcion: "Aquí explorando la historia griega",
-        cantidadMeGusta: 20,
-        listaRutasImagenes: ['imagen1'],
-        listaOpiniones: ['Opinion4'],
+        codigoCliente: 'Cliente3',
+        descripcion: 'Me encanta la comida de aquí!',
+        rutaImagen: 'rutaimagen',
+        fechaPublicacion: new Date(),
+        estadoRegistro: 'ACTIVO',
+        listaMeGustas: ['Cliente1','Cliente5'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion'
     },
     {
         _id: 'Publicacion4',
-        fecha: new Date(),
-        codigoCliente: 'Cliente4',
-        descripcion: "Disfrutando de mi nuevo computador gracias a Mundo Computo",
-        cantidadMeGusta: 8,
-        listaRutasImagenes: ['imagen1','imagen2','imagen3','imagen4'],
-        listaOpiniones: ['Opinion5'],
+        codigoCliente: 'Cliente5',
+        descripcion: 'Me gusta el café pero me gusta mas el té',
+        rutaImagen: 'rutaimagen',
+        fechaPublicacion: new Date(),
+        estadoRegistro: 'INACTIVO',
+        listaMeGustas: ['Cliente1'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion'
     },
     {
         _id: 'Publicacion5',
-        fecha: new Date(),
         codigoCliente: 'Cliente5',
-        descripcion: "La mejor tienda de artículos deportivos",
-        cantidadMeGusta: 17,
-        listaRutasImagenes: ['imagen1','imagen2'],
-        listaOpiniones: ['Opinion6'],
+        descripcion: 'No sé qué computador comprar',
+        rutaImagen: 'rutaimagen',
+        fechaPublicacion: new Date(),
+        estadoRegistro: 'INACTIVO',
+        listaMeGustas: ['Cliente3'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion'
     }
 ]);
@@ -463,50 +476,42 @@ db.publicaciones.insertMany([
 db.opiniones.insertMany([
     {
         _id: 'Opinion1',
+        codigoCliente: 'Cliente3',
+        codigoPublicacion: 'Publicacion1',
         fecha: new Date(),
-        codigoCliente: 'Cliente2',
-        mensaje: 'Puedo confirmar que es un gran restaurante',
-        numeroMeGusta: 10,
+        mensaje: 'Lo mejor es tomar café con pan!',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion'
     },
     {
         _id: 'Opinion2',
-        fecha: new Date(),
         codigoCliente: 'Cliente3',
-        mensaje: 'La verdad no es tan bueno',
-        numeroMeGusta: 4,
+        codigoPublicacion: 'Publicacion2',
+        fecha: new Date(),
+        mensaje: 'Felicidades!',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion'
     },
     {
         _id: 'Opinion3',
+        codigoCliente: 'Cliente5',
+        codigoPublicacion: 'Publicacion2',
         fecha: new Date(),
-        codigoCliente: 'Cliente3',
-        mensaje: 'Ahí compré mi primer PC, super recomendado',
-        numeroMeGusta: 8,
+        mensaje: 'Allí dan los mejores precios!',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion'
     },
     {
         _id: 'Opinion4',
+        codigoCliente: 'Cliente1',
+        codigoPublicacion: 'Publicacion3',
         fecha: new Date(),
-        codigoCliente: 'Cliente2',
-        mensaje: 'Que lugar tan aburrido...',
-        numeroMeGusta: 1,
+        mensaje: 'Sabe delicioso!',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion'
     },
     {
         _id: 'Opinion5',
+        codigoCliente: 'Cliente5',
+        codigoPublicacion: 'Publicacion3',
         fecha: new Date(),
-        codigoCliente: 'Cliente1',
-        mensaje: 'Hay mejores lugares para comprar',
-        numeroMeGusta: 3,
-        _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion'
-    },
-    {
-        _id: 'Opinion6',
-        fecha: new Date(),
-        codigoCliente: 'Cliente3',
-        mensaje: 'De lo mejor en deportes, gran lugar',
-        numeroMeGusta: 12,
+        mensaje: 'Espero poder ir algun día',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion'
     }
 ]);
