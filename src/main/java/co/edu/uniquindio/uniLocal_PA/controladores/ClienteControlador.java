@@ -25,7 +25,7 @@ public class ClienteControlador {
                 "Cliente actualizado correctamente"));
     }
 
-    @DeleteMapping("/eliminar/{idCuenta}")
+    @PutMapping("/eliminar/{idCuenta}")
     public ResponseEntity<MensajeDTO<String>>
     eliminarCliente(@PathVariable String idCuenta) throws Exception {
         clienteServicio.eliminarCliente(idCuenta);

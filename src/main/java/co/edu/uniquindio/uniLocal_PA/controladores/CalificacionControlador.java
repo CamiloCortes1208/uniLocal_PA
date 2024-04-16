@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clientes")
+@RequestMapping("/api/calificaciones")
 @RequiredArgsConstructor
 public class CalificacionControlador {
 
