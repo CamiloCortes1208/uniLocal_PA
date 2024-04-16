@@ -153,7 +153,7 @@ public class ClienteServicioImpl implements ClienteServicio {
 
 
     @Override
-    public void eliminarCuenta(String idCuenta) throws Exception {
+    public void eliminarCliente(String idCuenta) throws Exception {
 
         Cliente cliente = obtenerClienteID(idCuenta);
 

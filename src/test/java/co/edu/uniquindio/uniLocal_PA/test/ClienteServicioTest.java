@@ -68,7 +68,7 @@ public class ClienteServicioTest {
     public void eliminarClienteTest() throws Exception{
 
         //Se elimina el cliente con el id "Cliente1"
-        clienteServicio.eliminarCuenta("Cliente1");
+        clienteServicio.eliminarCliente("Cliente1");
 
         //Al intentar obtener el cliente con el id "Cliente1" se debe lanzar una excepción
         Assertions.assertThrows(Exception.class, () -> clienteServicio.obtenerCliente("Cliente1") );

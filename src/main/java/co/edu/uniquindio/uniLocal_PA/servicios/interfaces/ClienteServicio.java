@@ -8,7 +8,7 @@ public interface ClienteServicio {
 
     String registrarCliente(RegistroClienteDTO registroClienteDTO)throws Exception;
     void editarPerfil(ActualizarClienteDTO actualizarClienteDTO)throws Exception;
-    void eliminarCuenta(String idCuenta)throws Exception;
+    void eliminarCliente(String idCuenta)throws Exception;
     DetalleClienteDTO obtenerCliente(String idCliente) throws Exception;
     boolean existeCliente(String idCliente);
     List<ItemClienteDTO> listarClientes();
