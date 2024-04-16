@@ -1,8 +1,11 @@
 package co.edu.uniquindio.uniLocal_PA.controladores;
 
+import co.edu.uniquindio.uniLocal_PA.dto.JWT_DTO.MensajeDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.*;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,33 +18,50 @@ public class ClienteControlador {
     private final ClienteServicio clienteServicio;
 
     @PostMapping("/registrar-cliente")
-    String registrarCliente(RegistroClienteDTO registroClienteDTO) throws Exception {
-
+    public ResponseEntity<MensajeDTO<String>>
+    registrarCliente(@Valid @RequestBody
+        RegistroClienteDTO registroClienteDTO) throws Exception {
+        clienteServicio.registrarCliente(registroClienteDTO);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                "Cliente registrado correctamente"));
     }
 
     @PutMapping("/editar-perfil")
-    void editarPerfil(ActualizarClienteDTO actualizarClienteDTO) throws Exception {
-
+    public ResponseEntity<MensajeDTO<String>>
+    editarPerfil(@Valid @RequestBody ActualizarClienteDTO actualizarClienteDTO) throws Exception {
+        clienteServicio.editarPerfil(actualizarClienteDTO);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                "Cliente actualizado correctamente"));
     }
 
     @DeleteMapping("/eliminar/{idCuenta}")
-    void eliminarCliente(String idCuenta) throws Exception {
-
+    public ResponseEntity<MensajeDTO<String>>
+    eliminarCliente(@PathVariable String idCuenta) throws Exception {
+        clienteServicio.eliminarCliente(idCuenta);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                "Cliente eliminado correctamente"));
     }
 
     @GetMapping("/obtener/{idCliente}")
-    DetalleClienteDTO obtenerCliente(String idCliente) throws Exception {
-
+    public ResponseEntity<MensajeDTO<DetalleClienteDTO>>
+    obtenerCliente(@PathVariable String idCliente) throws Exception {
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                clienteServicio.obtenerCliente(idCliente)));
     }
 
     @GetMapping("/listar-todos")
-    List<ItemClienteDTO> listarClientes() {
-
+    public ResponseEntity<MensajeDTO<List<ItemClienteDTO>>> listarClientes() {
+        return ResponseEntity.ok().body( new MensajeDTO<>(
+                false, clienteServicio.listarClientes() ));
     }
 
-    @PostMapping("/agregar-negocio-favoritos/{idCliente},{idNegocio}")
-    String agregarNegocioFavorito(String idCliente, String idNegocio) {
-
+    @PostMapping("/agregar-negocio-favoritos/{idCliente}/{idNegocio}")
+    public ResponseEntity<MensajeDTO<String>>
+    agregarNegocioFavorito(@PathVariable String idCliente
+            , @PathVariable String idNegocio) throws Exception {
+        clienteServicio.agregarNegocioFavorito(idCliente,idNegocio);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                "Negocio agregado a favoritos correctamente"));
     }
 
     @PutMapping("/editar-password")
