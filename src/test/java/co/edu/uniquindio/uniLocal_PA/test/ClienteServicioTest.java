@@ -34,8 +34,13 @@ public class ClienteServicioTest {
     @Test
     public void agregarNegocioFavoritoTest() throws Exception {
 
+        AgregarNegocioFavoritosDTO agregarNegocioFavoritosDTO = new AgregarNegocioFavoritosDTO(
+                "Cliente5",
+                "Negocio1"
+        );
+
         clienteServicio
-                .agregarNegocioFavorito("Cliente5", "Negocio1");
+                .agregarNegocioFavorito(agregarNegocioFavoritosDTO);
 
         Assertions.assertEquals(1,clienteServicio.obtenerCliente("Cliente5").listaFavoritos().size());
     }

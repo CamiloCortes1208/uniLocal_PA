@@ -4,10 +4,7 @@ import co.edu.uniquindio.uniLocal_PA.dto.JWT_DTO.MensajeDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ActualizarCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.AgregarCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ResponderCalificacionDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.ActualizarClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.CambioPasswordDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.DetalleClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.ItemClienteDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.*;
 import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ActualizarEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.AgregarEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.ActualizarNegocioDTO;
@@ -65,8 +62,8 @@ public class ClienteControlador {
 
     @PostMapping("/agregar-negocio-favoritos/{idCliente}/{idNegocio}")
     public ResponseEntity<MensajeDTO<String>>
-    agregarNegocioFavorito(@PathVariable String idCliente, @PathVariable String idNegocio) throws Exception {
-        clienteServicio.agregarNegocioFavorito(idCliente,idNegocio);
+    agregarNegocioFavorito(@Valid @RequestBody AgregarNegocioFavoritosDTO agregarNegocioFavoritosDTO) throws Exception {
+        clienteServicio.agregarNegocioFavorito(agregarNegocioFavoritosDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Negocio agregado a favoritos correctamente"));
     }

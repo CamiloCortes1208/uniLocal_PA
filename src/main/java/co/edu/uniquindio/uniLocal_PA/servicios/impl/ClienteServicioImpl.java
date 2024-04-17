@@ -70,37 +70,37 @@ public class ClienteServicioImpl implements ClienteServicio {
     }
 
     @Override
-    public String agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception {
+    public String agregarNegocioFavorito(AgregarNegocioFavoritosDTO agregarNegocioFavoritosDTO) throws Exception {
         //Se obtiene el cliente al cual se le va a agregar el negocio favorito
-        Cliente cliente = obtenerClienteID(idCliente);
+        Cliente cliente = obtenerClienteID(agregarNegocioFavoritosDTO.idCliente());
 
         /*
         Se arroja una excepción en caso de que no exista el negocio que se quiere
         agregar a los favoritos del cliente
          */
-        if (!negocioServicio.existeNegocio(idNegocio)) {
-            throw new ResourceNotFoundException(idNegocio);
+        if (!negocioServicio.existeNegocio(agregarNegocioFavoritosDTO.idNegocio())) {
+            throw new ResourceNotFoundException(agregarNegocioFavoritosDTO.idNegocio());
         }
-        if (negocioServicio.obtenerNegocio(idNegocio).estadoNegocio() != EstadoNegocio.APROBADO && negocioServicio.obtenerNegocio(idNegocio).estadoRegistro() == EstadoRegistro.INACTIVO){
+        if (negocioServicio.obtenerNegocio(agregarNegocioFavoritosDTO.idNegocio()).estadoNegocio() != EstadoNegocio.APROBADO && negocioServicio.obtenerNegocio(agregarNegocioFavoritosDTO.idNegocio()).estadoRegistro() == EstadoRegistro.INACTIVO){
             throw new Exception("No se puede añadir a favoritos un negocio no aprobado o inactivo");
         }
         if (cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO){
             throw new Exception("Un usuario inactivo no puede agregar negocios a favoritos");
         }
         //En caso de ya estar en la lista de favoritos, se elimina
-        if (cliente.getListaNegociosFavoritos().contains(idNegocio)) {
-            cliente.getListaNegociosFavoritos().remove(idNegocio);
+        if (cliente.getListaNegociosFavoritos().contains(agregarNegocioFavoritosDTO.idNegocio())) {
+            cliente.getListaNegociosFavoritos().remove(agregarNegocioFavoritosDTO.idNegocio());
         }
         //En caso contrario, se quita de la lista
         else {
-            cliente.getListaNegociosFavoritos().add(idNegocio);
+            cliente.getListaNegociosFavoritos().add(agregarNegocioFavoritosDTO.idNegocio());
         }
 
         //Se actualiza la información del cliente en el repositorio
         clienteRepo.save(cliente);
 
         //Se retorna el código del negocio para verificar en los tests
-        return idNegocio;
+        return agregarNegocioFavoritosDTO.idNegocio();
 
     }
 
