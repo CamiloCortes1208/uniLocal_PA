@@ -204,7 +204,7 @@ public class ClienteControlador {
 
     @PutMapping("/eventos/terminar-evento/{codigoEvento}")
     public ResponseEntity<MensajeDTO<String>>
-    terminarEvento(@PathVariable String codigoEvento) throws ResourceNotFoundException {
+    terminarEvento(@PathVariable String codigoEvento) throws Exception {
         eventoServicio.terminarEvento(codigoEvento);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Evento terminado correctamente"));
