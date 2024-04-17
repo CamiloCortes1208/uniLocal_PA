@@ -1,5 +1,6 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
+import co.edu.uniquindio.uniLocal_PA.dto.emailDTO.EmailDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.CalificacionRepo;
@@ -10,6 +11,8 @@ import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.AgregarCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ItemCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ResponderCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.CalificacionServicio;
+import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.EmailServicio;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,16 +21,12 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CalificacionServicioImpl implements CalificacionServicio {
     private final CalificacionRepo calificacionRepo;
     private final NegocioRepo negocioRepo;
     private final ClienteRepo clienteRepo;
-
-    public CalificacionServicioImpl(CalificacionRepo calificacionRepo, NegocioRepo negocioRepo, ClienteRepo clienteRepo) {
-        this.calificacionRepo = calificacionRepo;
-        this.negocioRepo = negocioRepo;
-        this.clienteRepo = clienteRepo;
-    }
+    private final EmailServicio emailServicio;
 
     @Override
     public String agregarCalificacion(AgregarCalificacionDTO agregarCalificacionDTO) throws Exception {
@@ -44,6 +43,13 @@ public class CalificacionServicioImpl implements CalificacionServicio {
 
         //Se agrega a la base de datos
         Calificacion calificacionGuardada = calificacionRepo.save(calificacion);
+
+        //TODO Obtener el correo del propietario
+        emailServicio.enviarCorreo(new EmailDTO(
+                "Nuevo comentario",
+                "Se ha registrado un comentario nuevo",
+                "poner correo"
+        ));
 
         //Se obtiene el codigo de la calificación para verificar su funcionamiento
         return calificacionGuardada.getCodigoCalificacion();
