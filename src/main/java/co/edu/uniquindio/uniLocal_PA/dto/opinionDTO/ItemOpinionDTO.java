@@ -11,6 +11,6 @@ public record ItemOpinionDTO(
         @NotBlank String codigoPublicacion,
         @NotBlank String mensaje,
         @NotBlank LocalDateTime fecha,
-        List<String> cantidadMeGusta
+        List<String> listaMeGustas
 ) {
 }
