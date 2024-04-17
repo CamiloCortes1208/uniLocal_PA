@@ -30,6 +30,9 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public String agregarNegocio(AgregarNegocioDTO agregarNegocioDTO) throws Exception {
+        if (!clienteServicio.existeCliente(agregarNegocioDTO.codigoCliente())){
+            throw new ResourceNotFoundException(agregarNegocioDTO.codigoCliente());
+        }
         //Se crea el negocio
         Negocio negocio = new Negocio();
 
