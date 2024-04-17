@@ -113,7 +113,7 @@ public class ClienteControlador {
     //Acciones que puede ejecutar un cliente respecto a las calificaciones
     @PostMapping("/agregar-Calificacion")
     public ResponseEntity<MensajeDTO<String>>
-    agregarCalificacion(AgregarCalificacionDTO agregarCalificacionDTO) throws Exception{
+    agregarCalificacion(@Valid @RequestBody AgregarCalificacionDTO agregarCalificacionDTO) throws Exception{
         calificacionServicio.agregarCalificacion(agregarCalificacionDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Calificación agregada correctamente"));
