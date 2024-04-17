@@ -60,7 +60,7 @@ public class ClienteControlador {
                 clienteServicio.obtenerCliente(idCliente)));
     }
 
-    @PostMapping("/agregar-negocio-favoritos/")
+    @PostMapping("/agregar-negocio-favoritos")
     public ResponseEntity<MensajeDTO<String>>
     agregarNegocioFavorito(@Valid @RequestBody AgregarNegocioFavoritosDTO agregarNegocioFavoritosDTO) throws Exception {
         clienteServicio.agregarNegocioFavorito(agregarNegocioFavoritosDTO);
