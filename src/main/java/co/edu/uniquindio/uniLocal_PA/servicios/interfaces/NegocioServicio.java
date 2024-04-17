@@ -31,10 +31,6 @@ public interface NegocioServicio {
 
     List<ItemNegocioDTO> listarNegociosPropietario(String idPropietario) throws Exception;
 
-    void cambiarEstado(String idNegocio, EstadoNegocio estadoNegocio) throws Exception;
-
-    void reactivarNegocio(String idNegocio) throws Exception;
-
     void aprobarNegocio(String idNegocio) throws Exception;
 
 }

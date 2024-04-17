@@ -1,9 +1,6 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.interfaces;
 
-import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ActualizarCalificacionDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.AgregarCalificacionDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ItemCalificacionDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ResponderCalificacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.*;
 
 import java.util.List;
 
@@ -17,4 +14,8 @@ public interface CalificacionServicio {
     void responderCalificacion(ResponderCalificacionDTO responderCalificacionDTO) throws Exception;
 
     float obtenerCalificacionPromedioNegocio(String codigoNegocio);
+
+    DetalleCalificacionDTO obtenerCalificacion(String codigoCalificacion) throws Exception;
+
+    List<ItemCalificacionDTO> listarCalificaciones() throws Exception;
 }

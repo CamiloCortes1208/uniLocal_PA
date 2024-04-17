@@ -1,6 +1,7 @@
 package co.edu.uniquindio.uniLocal_PA.dto.negocioDTO;
 
 import co.edu.uniquindio.uniLocal_PA.modelo.Horario;
+import co.edu.uniquindio.uniLocal_PA.modelo.Ubicacion;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -20,6 +21,7 @@ public record ActualizarNegocioDTO(
         //Revisar lo de lista de telefonos
         List<String> listaTelefonos,
         //Revisar lo de horarios
-        @NotEmpty List<Horario> listaHorarios
+        @NotEmpty List<Horario> listaHorarios,
+        @NotBlank Ubicacion ubicacion
 ) {
 }

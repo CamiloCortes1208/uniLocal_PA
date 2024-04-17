@@ -10,12 +10,11 @@ import java.util.List;
 
 public record AgregarEventoDTO(
         @NotBlank String idNegocio,
-        @NotBlank String rutaImagen,
         @NotBlank List<Horario> horario,
         @NotBlank @Min(10) @Max(30) String nombre,
         @NotBlank @Min(30) @Max(300) String descripcion,
         @NotBlank TipoEvento tipoEvento
 
         //Revisar lo de horario
-        ) {
+) {
 }

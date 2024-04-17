@@ -1,8 +1,8 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
+import co.edu.uniquindio.uniLocal_PA.dto.moderadorDTO.ActualizarModeradorDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador;
 import co.edu.uniquindio.uniLocal_PA.repositorios.ModeradorRepo;
-import co.edu.uniquindio.uniLocal_PA.dto.moderadorDTO.ActualizarModeradorDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ModeradorServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,8 @@ public class ModeradorServicioImpl implements ModeradorServicio {
     @Override
     public void actualizarModerador(ActualizarModeradorDTO actualizarModeradorDTO) throws Exception {
         Optional<Moderador> optionalModerador = moderadorRepo.findById(actualizarModeradorDTO.id());
-        if (optionalModerador.isEmpty()){
-            throw new Exception("El moderador con el id"+actualizarModeradorDTO.id());
+        if (optionalModerador.isEmpty()) {
+            throw new Exception("El moderador con el id" + actualizarModeradorDTO.id());
         }
 
         Moderador moderador = optionalModerador.get();
@@ -29,5 +29,10 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         moderador.setEmail(actualizarModeradorDTO.email());
 
         moderadorRepo.save(moderador);
+    }
+
+    @Override
+    public boolean existeModerador(String codigoModerador) {
+        return moderadorRepo.findById(codigoModerador).isPresent();
     }
 }

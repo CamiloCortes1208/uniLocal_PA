@@ -2,7 +2,10 @@ package co.edu.uniquindio.uniLocal_PA.modelo.documentos;
 
 import co.edu.uniquindio.uniLocal_PA.modelo.Cuenta;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
