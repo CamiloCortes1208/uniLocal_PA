@@ -1,19 +1,20 @@
 package co.edu.uniquindio.uniLocal_PA.repositorios;
 
-import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion;
 import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ItemCalificacionDTO;
+import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CalificacionRepo extends MongoRepository<Calificacion, String> {
     @Aggregation({"{ $match: { codigoNegocio: ?0 } }", "{ $lookup: { from: 'negocios', localField: " +
             "'codigoNegocio', foreignField: '_id', as: 'negocio' } }", "{ $unwind: '$negocio' }", "{ " +
             "$project: { fecha: '$fecha', valoracion: '$valoracion', mensaje: '$mensaje', " +
-            "nombreNegocio: '$negocio.nombre', ubicacionNegocio: '$negocio.ubicacion' } }" })
+            "nombreNegocio: '$negocio.nombre', ubicacionNegocio: '$negocio.ubicacion' } }"})
     List<ItemCalificacionDTO> listarCalificacionesNegocio(String codigoNegocio);
 
     @Aggregation({"{ $match: { codigoNegocio: ?0 } }",
@@ -23,5 +24,5 @@ public interface CalificacionRepo extends MongoRepository<Calificacion, String> 
             "{ $project: { _id: 0, calificacionPromedio: '$promedioValoracion' } }"})
     float obtenerCalificacionPromedio(String codigoNegocio);
 
-
+    Optional<Calificacion> findByCodigoNegocioAndCodigoCliente(String codigoNegocio, String codigoCliente);
 }

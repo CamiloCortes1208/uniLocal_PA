@@ -24,7 +24,6 @@ public class Publicacion {
     private String descripcion;
     private List<String> listaMeGustas = new ArrayList<>();
     private String rutaImagen;
-    private List<String> listaOpiniones = new ArrayList<>();
     private LocalDateTime fechaPublicacion;
     private EstadoRegistro estadoRegistro;
 }

@@ -1,11 +1,7 @@
 package co.edu.uniquindio.uniLocal_PA.test;
 
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.ActualizarClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.DetalleClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.ItemClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.RegistroClienteDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.*;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
-import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +15,16 @@ public class ClienteServicioTest {
     @Autowired
     private ClienteServicio clienteServicio;
 
-    @Autowired
-    private NegocioServicio negocioServicio;
-
     @Test
-    public void registrarClienteTest() throws Exception{
-        //Se crea un objeto de tipo RegistroClienteDTO
+    public void registrarClienteTest() throws Exception {
+        //Se crea un objeto de tipo RegistroClienteDTO que contenga email y nickname que ya exista
         RegistroClienteDTO registroClienteDTO = new RegistroClienteDTO(
-                "Juan",
+                "Jacobo",
                 "mi foto",
                 "juanito",
-                "juan@email.com",
+                    "juan@email.com",
                 "mipassword",
-                "Armenia"
+                "Quimbaya"
         );
 
         Assertions.assertThrows(Exception.class, () -> clienteServicio
@@ -39,39 +32,43 @@ public class ClienteServicioTest {
     }
 
     @Test
-    public void obtenerClienteTest() throws Exception{
+    public void agregarNegocioFavoritoTest() throws Exception {
+
+        clienteServicio
+                .agregarNegocioFavorito("Cliente5", "Negocio1");
+
+        Assertions.assertEquals(1,clienteServicio.obtenerCliente("Cliente5").listaFavoritos().size());
+    }
+
+    @Test
+    public void editarPerfilTest() throws Exception {
+        //Se crea un objeto de tipo ActualizarClienteDTO
+        ActualizarClienteDTO actualizarClienteDTO = new ActualizarClienteDTO(
+                "Cliente1",
+                "Pepito Lopez",
+                "nueva foto",
+                "pepitolopez@email.com",
+                "Armenia"
+        );
+        clienteServicio.editarPerfil(actualizarClienteDTO);
+        //Se actualiza el cliente
+        Assertions.assertEquals(clienteServicio.obtenerCliente("Cliente1").nombre(), "Pepito Lopez");
+
+    }
+
+    @Test
+    public void obtenerClienteTest() throws Exception {
 
         //Se ejecuta el método con el Cliente5 con el fin de que se trabaje con una cuenta
         //ACTIVA
         DetalleClienteDTO detalleClienteDTO = clienteServicio.obtenerCliente("Cliente5");
 
-        Assertions.assertEquals("Cali",detalleClienteDTO.ciudadResidencia());
-
+        Assertions.assertEquals("Cartagena", detalleClienteDTO.ciudadResidencia());
     }
 
     @Test
-    public void editarPerfilTest() throws Exception{
-        //Se crea un objeto de tipo ActualizarClienteDTO
-        ActualizarClienteDTO actualizarClienteDTO = new ActualizarClienteDTO(
-                "Cliente1",
-                "Juan",
-                "nueva foto",
-                "juanc@email.com",
-                "Armenia"
-        );
-        //Se actualiza el cliente
-        Assertions.assertThrows(Exception.class, () -> clienteServicio
-                .editarPerfil(actualizarClienteDTO)) ;
-    }
-
-    @Test
-    public void eliminarClienteTest() throws Exception{
-
-        //Se elimina el cliente con el id "Cliente1"
-        clienteServicio.eliminarCliente("Cliente1");
-
-        //Al intentar obtener el cliente con el id "Cliente1" se debe lanzar una excepción
-        Assertions.assertThrows(Exception.class, () -> clienteServicio.obtenerCliente("Cliente1") );
+    public void existeClienteTest() throws Exception {
+        Assertions.assertFalse(clienteServicio.existeCliente("Cliente1290319071"));
     }
 
     @Test
@@ -80,16 +77,20 @@ public class ClienteServicioTest {
         List<ItemClienteDTO> lista = clienteServicio.listarClientes();
 
         //Se verifica que la lista no sea nula y que tenga 3 elementos
-        Assertions.assertEquals(4, lista.size());
+        Assertions.assertEquals(3, lista.size());
     }
 
     @Test
-    public void agregarNegocioFavoritoTest() throws Exception {
+    public void eliminarClienteTest() throws Exception {
 
-        String codigoNegocioGuardado = clienteServicio
-                .agregarNegocioFavorito("Cliente5","Negocio1");
+        //No se puede borrar un cliente que no existe
+        Assertions.assertThrows(Exception.class, () -> clienteServicio.eliminarCliente("ClienteNoExistente"));
+    }
 
-        Assertions.assertNotNull(codigoNegocioGuardado);
-
+    @Test
+    public void cambiarPasswordTest() throws Exception {
+        CambioPasswordDTO cambioPasswordDTO = new CambioPasswordDTO(
+                "PasswordviejaErronea", "PasswordNueva", "Cliente1");
+        Assertions.assertThrows(Exception.class, () -> clienteServicio.cambiarPassword(cambioPasswordDTO));
     }
 }

@@ -12,5 +12,5 @@ public record ItemClienteDTO(
         @NotBlank String email,
         @NotBlank String ciudadResidencia,
         List<String> listaNegociosFavoritos
-){
+) {
 }

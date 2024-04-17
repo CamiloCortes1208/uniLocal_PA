@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Opinion extends Comentario {
     @Id
     @EqualsAndHashCode.Include
@@ -23,8 +23,9 @@ public class Opinion extends Comentario {
     private String codigoPublicacion;
     private List<String> listaMeGustas = new ArrayList<>();
 
-    public Opinion(String codigoCliente, LocalDateTime fecha, String mensaje, String codigoOpinion) {
+    public Opinion(String codigoCliente, LocalDateTime fecha, String mensaje, String codigoOpinion, String codigoPublicacion) {
         super(codigoCliente, fecha, mensaje);
         this.codigoOpinion = codigoOpinion;
+        this.codigoPublicacion = codigoPublicacion;
     }
 }

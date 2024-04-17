@@ -1,8 +1,8 @@
 package co.edu.uniquindio.uniLocal_PA.modelo.documentos;
 
 import co.edu.uniquindio.uniLocal_PA.modelo.Horario;
-import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.Ubicacion;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import lombok.*;
