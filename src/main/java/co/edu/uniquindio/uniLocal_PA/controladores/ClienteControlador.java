@@ -18,6 +18,7 @@ import co.edu.uniquindio.uniLocal_PA.dto.opinionDTO.ReaccionarOpinionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ActualizarPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.AgregarPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ItemPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ReaccionarPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.*;
 import jakarta.validation.Valid;
@@ -62,12 +63,6 @@ public class ClienteControlador {
                 clienteServicio.obtenerCliente(idCliente)));
     }
 
-    @GetMapping("/listar-todos")
-    public ResponseEntity<MensajeDTO<List<ItemClienteDTO>>> listarClientes() {
-        return ResponseEntity.ok().body( new MensajeDTO<>(false,
-                clienteServicio.listarClientes() ));
-    }
-
     @PostMapping("/agregar-negocio-favoritos/{idCliente}/{idNegocio}")
     public ResponseEntity<MensajeDTO<String>>
     agregarNegocioFavorito(@PathVariable String idCliente, @PathVariable String idNegocio) throws Exception {
@@ -77,8 +72,11 @@ public class ClienteControlador {
     }
 
     @PutMapping("/editar-password")
-    void cambiarPassword(@Valid @RequestBody CambioPasswordDTO cambioPasswordDTO) {
-
+    public ResponseEntity<MensajeDTO<String>>
+    cambiarPassword(@Valid @RequestBody CambioPasswordDTO cambioPasswordDTO) throws Exception {
+        clienteServicio.cambiarPassword(cambioPasswordDTO);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                "Contraseña actualizada correctamente"));
     }
 
     //Acciones que puede ejecutar un cliente respecto a los negocios
@@ -150,6 +148,14 @@ public class ClienteControlador {
                 "Publicación creada correctamente"));
     }
 
+    @PostMapping("/reaccionar-publicacion")
+    public ResponseEntity<MensajeDTO<String>>
+    reaccionarPublicacion(@Valid @RequestBody ReaccionarPublicacionDTO reaccionarPublicacionDTO) throws Exception {
+        publicacionServicio.reaccionarPublicacion(reaccionarPublicacionDTO);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                "Reacción agregada correctamente"));
+    }
+
     @PutMapping("/actualizar-publicacion")
     public ResponseEntity<MensajeDTO<String>>
     actualizarPublicacion(@Valid @RequestBody ActualizarPublicacionDTO actualizarPublicacionDTO) throws Exception {
@@ -204,7 +210,7 @@ public class ClienteControlador {
 
     @PutMapping("/eventos/terminar-evento/{codigoEvento}")
     public ResponseEntity<MensajeDTO<String>>
-    terminarEvento(@PathVariable String codigoEvento) throws ResourceNotFoundException {
+    terminarEvento(@PathVariable String codigoEvento) throws Exception {
         eventoServicio.terminarEvento(codigoEvento);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Evento terminado correctamente"));

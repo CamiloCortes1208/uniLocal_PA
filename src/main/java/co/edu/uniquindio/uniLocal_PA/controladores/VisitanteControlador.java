@@ -2,7 +2,9 @@ package co.edu.uniquindio.uniLocal_PA.controladores;
 
 import co.edu.uniquindio.uniLocal_PA.dto.JWT_DTO.MensajeDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ItemCalificacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.DetalleEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ItemEventoDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.DetalleNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.opinionDTO.ItemOpinionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ItemPublicacionDTO;
@@ -31,6 +33,13 @@ public class VisitanteControlador {
 
     //Acciones que puede realizar un usuario no registrado respecto a negocios
 
+    @GetMapping("/obtener-negocio/{idNegocio}")
+    public ResponseEntity<MensajeDTO<DetalleNegocioDTO>>
+    obtenerNegocio(@PathVariable String idNegocio) throws Exception {
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                negocioServicio.obtenerNegocio(idNegocio)));
+    }
+
     @GetMapping("/listar-negocios-nombre/{nombre}")
     public ResponseEntity<MensajeDTO<List<ItemNegocioDTO>>>
     buscarNegociosPorNombreSimilar(@PathVariable String nombre) {
@@ -47,9 +56,9 @@ public class VisitanteControlador {
 
     //Acciones que puede realizar un usuario no registrado respecto a las calificaciones
 
-    @GetMapping("/listar-calificaciones-negocio")
+    @GetMapping("/listar-calificaciones-negocio/{idNegocio}")
     public ResponseEntity<MensajeDTO<List<ItemCalificacionDTO>>>
-    listarCalificacionesNegocio(String idNegocio) throws Exception {
+    listarCalificacionesNegocio(@PathVariable String idNegocio) throws Exception {
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 calificacionServicio.listarCalificacionesNegocio(idNegocio)));
     }
@@ -86,6 +95,13 @@ public class VisitanteControlador {
     listarEventosNegocio(@PathVariable String idNegocio) throws Exception {
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 eventoServicio.listarEventosNegocio(idNegocio) ));
+    }
+
+    @GetMapping("/eventos/obtener-evento/{idEvento}")
+    public ResponseEntity<MensajeDTO<DetalleEventoDTO>>
+    obtenerEvento(@PathVariable String idEvento) throws Exception {
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                eventoServicio.obtenerEvento(idEvento)));
     }
 
 }
