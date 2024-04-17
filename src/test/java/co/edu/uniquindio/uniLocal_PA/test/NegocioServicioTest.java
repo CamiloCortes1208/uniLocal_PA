@@ -1,10 +1,22 @@
 package co.edu.uniquindio.uniLocal_PA.test;
 
+import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.ActualizarNegocioDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.AgregarNegocioDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.ItemNegocioDTO;
+import co.edu.uniquindio.uniLocal_PA.modelo.Horario;
+import co.edu.uniquindio.uniLocal_PA.modelo.Ubicacion;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 public class NegocioServicioTest {
@@ -16,68 +28,110 @@ public class NegocioServicioTest {
     private NegocioServicio negocioServicio;
 
     @Test
-    public void agregarNegocioTest() {
+    public void agregarNegocioTest() throws Exception {
+        List<String> listaImagenesNegocio = new ArrayList<>();
+        listaImagenesNegocio.add("rutaimagennegocio1");
+
+        List<String> listaTelefonos = new ArrayList<>();
+        listaTelefonos.add("3091238764");
+
+        List<Horario> listaHorarios = new ArrayList<>();
+        listaHorarios.add(new Horario("7:00", "22:00", "MIERCOLES"));
+
+        Ubicacion ubicacion = new Ubicacion(10.023, -65.2138);
+
+        AgregarNegocioDTO agregarNegocioDTO = new AgregarNegocioDTO(
+                "Cliente1",
+                "Restaurante Mexicano el chilito",
+                "Restaurante de comida mexicana en Armnia",
+                CategoriaNegocio.RESTAURANTE,
+                listaImagenesNegocio,
+                listaTelefonos,
+                listaHorarios,
+                ubicacion);
+
+        String codigoNegocio = negocioServicio.agregarNegocio(agregarNegocioDTO);
+        Assertions.assertEquals("Restaurante Mexicano el chilito", negocioServicio.obtenerNegocio(codigoNegocio).nombre());
+    }
+
+    @Test
+    public void actualizarNegocioTest() throws Exception {
+        List<String> listaImagenesNegocio = new ArrayList<>();
+        listaImagenesNegocio.add("rutaimagennegocio1");
+
+        List<String> listaTelefonos = new ArrayList<>();
+        listaTelefonos.add("3091238764");
+
+        List<Horario> listaHorarios = new ArrayList<>();
+        listaHorarios.add(new Horario("7:00", "22:00", "MIERCOLES"));
+
+        Ubicacion ubicacion = new Ubicacion(10.023, -65.2138);
+
+        ActualizarNegocioDTO actualizarNegocioDTO = new ActualizarNegocioDTO(
+                "Negocio3",
+                "Ferreteria los milagros",
+                "Ferreteria ubicada en el barrio los milagros",
+                CategoriaNegocio.FERRETERIA,
+                listaImagenesNegocio,
+                listaTelefonos,
+                listaHorarios,
+                ubicacion);
+
+        negocioServicio.actualizarNegocio(actualizarNegocioDTO);
+        Assertions.assertEquals("Ferreteria los milagros", negocioServicio.obtenerNegocio(actualizarNegocioDTO.codigoNegocio()).nombre());
 
     }
 
     @Test
-    public void obtenerNegocioTest() {
-
+    public void eliminarNegocioTest() throws Exception {
+        negocioServicio.eliminarNegocio("Negocio4");
+        Assertions.assertEquals(EstadoRegistro.INACTIVO, negocioServicio.obtenerNegocio("Negocio4").estadoRegistro());
     }
 
     @Test
-    public void actualizarNegocioTest() {
-
+    public void rechazarNegocioTest() throws Exception {
+        negocioServicio.rechazarNegocio("Negocio4");
+        Assertions.assertEquals(EstadoNegocio.RECHAZADO, negocioServicio.obtenerNegocio("Negocio4").estadoNegocio());
     }
 
     @Test
-    public void eliminarNegocioTest() {
-
+    public void aprobarNegocioTest() throws Exception {
+        negocioServicio.aprobarNegocio("Negocio4");
+        Assertions.assertEquals(EstadoNegocio.APROBADO, negocioServicio.obtenerNegocio("Negocio4").estadoNegocio());
     }
 
     @Test
-    public void rechazarNegocioTest() {
+    public void obtenerNegocioTest() throws Exception {
+        Assertions.assertEquals("Tecnologic S.A.S", negocioServicio.obtenerNegocio("Negocio4").nombre());
 
     }
 
     @Test
     public void buscarNegociosPorCategoriaTest() {
-
+        List<ItemNegocioDTO> listaNegocios = negocioServicio.buscarNegociosPorCategoria(CategoriaNegocio.CAFETERIA);
+        Assertions.assertEquals(1, listaNegocios.size());
     }
 
     @Test
     public void buscarNegociosPorNombreSimilarTest() {
-
+        List<ItemNegocioDTO> listaNegocios = negocioServicio.buscarNegociosPorNombreSimilar("cafeteria");
+        Assertions.assertEquals(1, listaNegocios.size());
     }
 
     @Test
     public void filtrarPorEstadoTest() {
-
+        Assertions.assertEquals(1, negocioServicio.filtrarPorEstado(EstadoNegocio.APROBADO).size());
     }
 
     @Test
-    public void listarNegociosPropietarioTest() {
-
+    public void listarNegociosPropietarioTest() throws Exception {
+        Assertions.assertEquals(2, negocioServicio.listarNegociosPropietario("Cliente1").size());
     }
 
     @Test
-    public void cambiarEstadoTest() {
-
+    public void existeNegocio() {
+        Assertions.assertThrows(Exception.class, () -> negocioServicio.existeNegocio("Negocio10231823"));
     }
 
-    @Test
-    public void registrarRevisionTest() {
-
-    }
-
-    @Test
-    public void reactivarNegocioTest() {
-
-    }
-
-    @Test
-    public void aprobarNegocioTest() {
-
-    }
 
 }

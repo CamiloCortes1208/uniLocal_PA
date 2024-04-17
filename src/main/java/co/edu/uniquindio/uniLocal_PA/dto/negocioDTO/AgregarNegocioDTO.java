@@ -23,5 +23,5 @@ public record AgregarNegocioDTO(
         //Revisar lo de horarios
         @NotEmpty List<Horario> listaHorarios,
         @NotBlank Ubicacion ubicacion
-        ) {
+) {
 }

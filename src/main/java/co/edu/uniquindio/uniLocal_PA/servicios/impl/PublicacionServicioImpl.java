@@ -1,14 +1,16 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
+import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ActualizarPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.AgregarPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ItemPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ReaccionarPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.PublicacionRepo;
-import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ActualizarPublicacionDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.AgregarPublicacionDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ItemPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.PublicacionServicio;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,17 +18,14 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class PublicacionServicioImpl implements PublicacionServicio {
+
     private final PublicacionRepo publicacionRepo;
-
-    ClienteServicio clienteServicio;
-
-    public PublicacionServicioImpl(PublicacionRepo publicacionRepo) {
-        this.publicacionRepo = publicacionRepo;
-    }
+    private final ClienteServicio clienteServicio;
 
     @Override
-    public String agregarPublicacion(AgregarPublicacionDTO agregarPublicacionDTO) throws Exception {
+    public String agregarPublicacion(AgregarPublicacionDTO agregarPublicacionDTO) {
 
         Publicacion publicacion = new Publicacion();
 
@@ -45,27 +44,26 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     public ItemPublicacionDTO obtenerPublicacion(String idPublicacion) throws ResourceNotFoundException {
         Publicacion publicacion = obtenerPublicacionID(idPublicacion);
 
-        ItemPublicacionDTO itemPublicacionDTO = new ItemPublicacionDTO(
+        return new ItemPublicacionDTO(
                 publicacion.getCodigoPublicacion(),
                 publicacion.getCodigoCliente(),
                 publicacion.getDescripcion(),
                 publicacion.getListaMeGustas(),
                 publicacion.getRutaImagen(),
-                publicacion.getListaOpiniones(),
                 publicacion.getFechaPublicacion()
         );
-
-        return itemPublicacionDTO;
     }
 
     @Override
-    public void actualizarPublicacion(ActualizarPublicacionDTO actualizarPublicacionDTO) throws Exception {
+    public String actualizarPublicacion(ActualizarPublicacionDTO actualizarPublicacionDTO) throws Exception {
         Publicacion publicacion = obtenerPublicacionID(actualizarPublicacionDTO.idPublicacion());
 
         publicacion.setDescripcion(actualizarPublicacionDTO.descripcion());
         publicacion.setRutaImagen(actualizarPublicacionDTO.rutaImagen());
 
-        publicacionRepo.save(publicacion);
+        Publicacion publicacionGuardada = publicacionRepo.save(publicacion);
+
+        return publicacionGuardada.getCodigoPublicacion();
     }
 
     @Override
@@ -83,7 +81,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
 
         Optional<Publicacion> optionalPublicacion = publicacionRepo.findById(idPublicacion);
 
-        if (optionalPublicacion.isEmpty()){
+        if (optionalPublicacion.isEmpty()) {
             throw new ResourceNotFoundException(idPublicacion);
         }
 
@@ -93,5 +91,23 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     @Override
     public boolean existePublicacion(String idPublicacion) {
         return publicacionRepo.findById(idPublicacion).isPresent();
+    }
+
+    @Override
+    public void reaccionarPublicacion(ReaccionarPublicacionDTO reaccionarPublicacionDTO) throws Exception {
+
+        if (!clienteServicio.existeCliente(reaccionarPublicacionDTO.idCliente())) {
+            throw new ResourceNotFoundException(reaccionarPublicacionDTO.idCliente());
+        }
+
+        Publicacion publicacion = obtenerPublicacionID(reaccionarPublicacionDTO.idPublicacion());
+
+        if (publicacion.getListaMeGustas().contains(reaccionarPublicacionDTO.idCliente())) {
+            publicacion.getListaMeGustas().remove(reaccionarPublicacionDTO.idCliente());
+        } else {
+            publicacion.getListaMeGustas().add(reaccionarPublicacionDTO.idCliente());
+        }
+
+        publicacionRepo.save(publicacion);
     }
 }

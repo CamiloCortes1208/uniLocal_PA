@@ -1,28 +1,28 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
+import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ActualizarEventoDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.AgregarEventoDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.DetalleEventoDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ItemEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Evento;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoEvento;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.EventoRepo;
-import co.edu.uniquindio.uniLocal_PA.repositorios.NegocioRepo;
-import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ActualizarEventoDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.AgregarEventoDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ItemEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.EventoServicio;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class EventoServicioImpl implements EventoServicio {
-    private final EventoRepo eventoRepo;
 
-    public EventoServicioImpl(EventoRepo eventoRepo, NegocioRepo negocioRepo) {
-        this.eventoRepo = eventoRepo;
-    }
+    private final EventoRepo eventoRepo;
 
     @Override
     public String agregarEvento(AgregarEventoDTO agregarEventoDTO) throws Exception {
@@ -53,9 +53,11 @@ public class EventoServicioImpl implements EventoServicio {
     }
 
     @Override
-    public void terminarEvento(String codigoEvento) throws ResourceNotFoundException {
+    public void terminarEvento(String codigoEvento) throws Exception {
         Evento evento = obtenerEventoID(codigoEvento);
-
+        if (evento.getEstadoEvento() == EstadoEvento.FINALIZADO) {
+            throw new Exception("El evento ya ha sido finalizado");
+        }
         evento.setEstadoEvento(EstadoEvento.FINALIZADO);
 
         eventoRepo.save(evento);
@@ -63,20 +65,48 @@ public class EventoServicioImpl implements EventoServicio {
 
     @Override
     public List<ItemEventoDTO> listarEventosNegocio(String idNegocio) throws Exception {
-        return null;
+        List<Evento> listaEventos = eventoRepo.findAllByCodigoNegocio(idNegocio);
+        List<ItemEventoDTO> itemsEventoDTO = new ArrayList<>();
+        for (Evento evento : listaEventos) {
+            itemsEventoDTO.add(new ItemEventoDTO(
+                    evento.getCodigoEvento(),
+                    evento.getCodigoNegocio(),
+                    evento.getNombre(),
+                    evento.getDescripcion(),
+                    evento.getTipoEvento(),
+                    evento.getDiasDisponible(),
+                    evento.getEstadoEvento()
+            ));
+        }
+        return itemsEventoDTO;
+    }
+
+    @Override
+    public DetalleEventoDTO obtenerEvento(String idEvento) throws Exception {
+        Evento evento = obtenerEventoID(idEvento);
+        return new DetalleEventoDTO(
+                evento.getCodigoEvento(),
+                evento.getCodigoNegocio(),
+                evento.getNombre(),
+                evento.getDescripcion(),
+                evento.getTipoEvento(),
+                evento.getDiasDisponible(),
+                evento.getEstadoEvento()
+        );
     }
 
     private Evento obtenerEventoID(String idEvento) throws ResourceNotFoundException {
 
         Optional<Evento> optionalEvento = eventoRepo.findById(idEvento);
 
-        if (optionalEvento.isEmpty()){
+        if (optionalEvento.isEmpty()) {
             throw new ResourceNotFoundException(idEvento);
         }
 
         return optionalEvento.get();
     }
-    private boolean existeEvento(String idEvento){
+
+    private boolean existeEvento(String idEvento) {
         return eventoRepo.findById(idEvento).isPresent();
     }
 }

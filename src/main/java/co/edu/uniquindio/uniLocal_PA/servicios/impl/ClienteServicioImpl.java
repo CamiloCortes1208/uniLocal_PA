@@ -1,12 +1,15 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
 import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.*;
+import co.edu.uniquindio.uniLocal_PA.dto.emailDTO.EmailDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
+import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.EmailServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,21 +20,21 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ClienteServicioImpl implements ClienteServicio {
+
     private final ClienteRepo clienteRepo;
-    NegocioServicio negocioServicio;
-    public ClienteServicioImpl(ClienteRepo clienteRepo) {
-        this.clienteRepo = clienteRepo;
-    }
+    private final NegocioServicio negocioServicio;
+    private final EmailServicio emailServicio;
 
     @Override
     public String registrarCliente(RegistroClienteDTO registroClienteDTO) throws Exception {
 
-        if( existeEmail(registroClienteDTO.email()) ){
+        if (existeEmail(registroClienteDTO.email())) {
             throw new Exception("El correo ya se encuentra registrado");
         }
 
-        if( existeNickname(registroClienteDTO.nickname()) ){
+        if (existeNickname(registroClienteDTO.nickname())) {
             throw new Exception("El nickname ya se encuentra registrado por otro usuario");
         }
 
@@ -39,20 +42,26 @@ public class ClienteServicioImpl implements ClienteServicio {
         Cliente cliente = new Cliente();
 
         //Se le asignan sus campos
-        cliente.setNombre( registroClienteDTO.nombre() );
-        cliente.setNickname( registroClienteDTO.nickname() );
-        cliente.setCiudadResidencia( registroClienteDTO.ciudadResidencia() );
-        cliente.setFotoPerfil( registroClienteDTO.fotoPerfil() );
-        cliente.setEmail( registroClienteDTO.email() );
+        cliente.setNombre(registroClienteDTO.nombre());
+        cliente.setNickname(registroClienteDTO.nickname());
+        cliente.setCiudadResidencia(registroClienteDTO.ciudadResidencia());
+        cliente.setFotoPerfil(registroClienteDTO.fotoPerfil());
+        cliente.setEmail(registroClienteDTO.email());
         cliente.setEstadoRegistro(EstadoRegistro.ACTIVO);
 
         //Para la contraseña
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String passwordEncriptada = passwordEncoder.encode( registroClienteDTO.password() );
-        cliente.setPassword( passwordEncriptada );
+        String passwordEncriptada = passwordEncoder.encode(registroClienteDTO.password());
+        cliente.setPassword(passwordEncriptada);
 
         //Se guarda en la base de datos y obtenemos el objeto registrado
         Cliente clienteGuardado = clienteRepo.save(cliente);
+
+        emailServicio.enviarCorreo(new EmailDTO(
+                "Bienvenido a Unilocal",
+                "Bienvenido a unilocal " + registroClienteDTO.nickname() + " disfruta de tu instancia :)",
+                registroClienteDTO.email()
+        ));
 
         //Retornamos el id (código) del cliente registrado
         return clienteGuardado.getCodigoCliente();
@@ -60,7 +69,6 @@ public class ClienteServicioImpl implements ClienteServicio {
 
     @Override
     public String agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception {
-
         //Se obtiene el cliente al cual se le va a agregar el negocio favorito
         Cliente cliente = obtenerClienteID(idCliente);
 
@@ -68,16 +76,16 @@ public class ClienteServicioImpl implements ClienteServicio {
         Se arroja una excepción en caso de que no exista el negocio que se quiere
         agregar a los favoritos del cliente
          */
-        if(!negocioServicio.existeNegocio(idNegocio)){
+        if (!negocioServicio.existeNegocio(idNegocio)) {
             throw new ResourceNotFoundException(idNegocio);
         }
 
         //En caso de ya estar en la lista de favoritos, se elimina
-        if(cliente.getListaNegociosFavoritos().contains(idNegocio)) {
+        if (cliente.getListaNegociosFavoritos().contains(idNegocio)) {
             cliente.getListaNegociosFavoritos().remove(idNegocio);
         }
         //En caso contrario, se quita de la lista
-        else{
+        else {
             cliente.getListaNegociosFavoritos().add(idNegocio);
         }
 
@@ -92,17 +100,17 @@ public class ClienteServicioImpl implements ClienteServicio {
     @Override
     public void editarPerfil(ActualizarClienteDTO actualizarClienteDTO) throws Exception {
 
-        if(existeEmail(actualizarClienteDTO.email())){
+        if (existeEmail(actualizarClienteDTO.email())) {
             throw new Exception("El email ya está en uso");
         }
 
         //Obtenemos el cliente que se quiere actualizar y le asignamos los nuevos valores (el
         //nickname no se puede cambiar)
         Cliente cliente = obtenerClienteID(actualizarClienteDTO.id());
-        cliente.setNombre( actualizarClienteDTO.nombre() );
-        cliente.setFotoPerfil( actualizarClienteDTO.fotoPerfil() );
-        cliente.setEmail( actualizarClienteDTO.email() );
-        cliente.setCiudadResidencia( actualizarClienteDTO.ciudadResidencia() );
+        cliente.setNombre(actualizarClienteDTO.nombre());
+        cliente.setFotoPerfil(actualizarClienteDTO.fotoPerfil());
+        cliente.setEmail(actualizarClienteDTO.email());
+        cliente.setCiudadResidencia(actualizarClienteDTO.ciudadResidencia());
 
         //Como el objeto cliente ya tiene un id, el save() no crea un nuevo registro sino que
         // actualiza el que ya existe
@@ -114,14 +122,14 @@ public class ClienteServicioImpl implements ClienteServicio {
 
         Cliente cliente = obtenerClienteID(idCliente);
 
-        if(cliente.getEstadoRegistro().equals(EstadoRegistro.INACTIVO)){
-            throw new Exception("El cliente con el id "+idCliente+" tiene su cuenta inactiva");
+        if (cliente.getEstadoRegistro().equals(EstadoRegistro.INACTIVO)) {
+            throw new Exception("El cliente con el id " + idCliente + " tiene su cuenta inactiva");
         }
 
         //Retornamos el cliente en formato DTO
         return new DetalleClienteDTO(cliente.getCodigoCliente(), cliente.getNombre(),
                 cliente.getFotoPerfil(), cliente.getNickname(), cliente.getEmail(),
-                cliente.getCiudadResidencia(),cliente.getListaNegociosFavoritos());
+                cliente.getCiudadResidencia(), cliente.getListaNegociosFavoritos());
     }
 
     @Override
@@ -141,7 +149,7 @@ public class ClienteServicioImpl implements ClienteServicio {
         //Recorremos la lista de clientes y por cada uno creamos un DTO y lo agregamos a la lista
         for (Cliente cliente : clientes) {
             //Se verifica que la cuenta del cliente esté activa, para listarlo
-            if(cliente.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)){
+            if (cliente.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)) {
                 listaItemClienteDTO.add(new ItemClienteDTO(cliente.getCodigoCliente(),
                         cliente.getNombre(), cliente.getFotoPerfil(), cliente.getNickname(),
                         cliente.getEmail(), cliente.getCiudadResidencia(),
@@ -166,7 +174,16 @@ public class ClienteServicioImpl implements ClienteServicio {
 
     @Override
     public void cambiarPassword(CambioPasswordDTO cambioPasswordDTO) throws Exception {
+        Cliente cliente = obtenerClienteID(cambioPasswordDTO.id());
 
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (!passwordEncoder.matches(cambioPasswordDTO.passwordVieja(), cliente.getPassword())) {
+            throw new Exception("La contraseña es incorrecta");
+        }
+        String passwordEncriptada = passwordEncoder.encode(cambioPasswordDTO.passwordNueva());
+        cliente.setPassword(passwordEncriptada);
+
+        clienteRepo.save(cliente);
     }
 
 
@@ -174,7 +191,7 @@ public class ClienteServicioImpl implements ClienteServicio {
     public Cliente obtenerClienteID(String idCliente) throws ResourceNotFoundException {
         Optional<Cliente> optionalCliente = clienteRepo.findById(idCliente);
 
-        if (optionalCliente.isEmpty()){
+        if (optionalCliente.isEmpty()) {
             throw new ResourceNotFoundException(idCliente);
         }
 

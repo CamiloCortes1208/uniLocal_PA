@@ -1,0 +1,57 @@
+package co.edu.uniquindio.uniLocal_PA.test;
+
+import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ActualizarCalificacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.AgregarCalificacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ItemCalificacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ResponderCalificacionDTO;
+import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.CalificacionServicio;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@SpringBootTest
+public class CalificacionServicioTest {
+
+    @Autowired
+    CalificacionServicio calificacionServicio;
+
+    @Test
+    public void agregarCalificacionTest() throws Exception {
+        AgregarCalificacionDTO agregarCalificacionDTO = new AgregarCalificacionDTO(
+                "Cliente1", "Negocio4", LocalDateTime.now(),
+                5, "Excelente");
+        Assertions.assertThrows(Exception.class, () -> calificacionServicio.agregarCalificacion(agregarCalificacionDTO));
+    }
+
+    @Test
+    public void actualizarCalificacionTest() throws Exception {
+        ActualizarCalificacionDTO actualizarCalificacionDTO = new ActualizarCalificacionDTO(
+                "Calificacion1", 3, "Volví y subieron demasiado los precios");
+        calificacionServicio.actualizarCalificacion(actualizarCalificacionDTO);
+        Assertions.assertEquals("Volví y subieron demasiado los precios", calificacionServicio.obtenerCalificacion("Calificacion1").mensaje());
+    }
+
+    @Test
+    public void listarCalificacionesNegocioTest() throws Exception {
+        List<ItemCalificacionDTO> listaItemCalificacionDTO = calificacionServicio.listarCalificacionesNegocio("Negocio1");
+        Assertions.assertEquals(2, listaItemCalificacionDTO.size());
+    }
+
+    @Test
+    public void responderCalificacionTest() throws Exception {
+        ResponderCalificacionDTO responderCalificacionDTO = new ResponderCalificacionDTO(
+                "Calificacion1",
+                "Gracias! Eres bienvenido");
+        calificacionServicio.responderCalificacion(responderCalificacionDTO);
+        Assertions.assertEquals("Gracias! Eres bienvenido", calificacionServicio.obtenerCalificacion("Calificacion1").respuesta());
+    }
+
+    @Test
+    public void obtenerCalificacionPromedioNegocioTest() {
+        Assertions.assertEquals(4, calificacionServicio.obtenerCalificacionPromedioNegocio("Negocio1"));
+    }
+}

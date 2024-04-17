@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record LoginClienteDTO(
         @NotBlank @Email String email,
-        @NotBlank  String password
-)  {
+        @NotBlank String password
+) {
 
 }

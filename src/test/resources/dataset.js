@@ -1,4 +1,4 @@
-db = connect( 'mongodb://root:example@localhost:27017/uniLocal_PA?authSource=admin' );
+db = connect('mongodb://root:example@localhost:27017/uniLocal_PA?authSource=admin');
 db.clientes.insertMany([
     {
         _id: 'Cliente1',
@@ -72,7 +72,7 @@ db.negocios.insertMany([
         _id: 'Negocio1',
         codigoCliente: 'Cliente1',
         nombre: 'Cafeteria la esperanza',
-        decripcion: 'Cafeteria de Armenia con los mejores cafés',
+        descripcion: 'Cafeteria de Armenia con los mejores cafés',
         categoriaNegocio: 'CAFETERIA',
         estadoNegocio: 'APROBADO',
         ubicacion: {
@@ -96,15 +96,15 @@ db.negocios.insertMany([
         _id: 'Negocio2',
         codigoCliente: 'Cliente2',
         nombre: 'Panzetti',
-        decripcion: 'El mejor pan aliñado',
+        descripcion: 'El mejor pan aliñado',
         categoriaNegocio: 'PANADERIA',
         estadoNegocio: 'RECHAZADO',
         ubicacion: {
             longitud: 1.12355,
             latitud: -55.12305
         },
-        listaTelefonos: ['3101234567','3209876543'],
-        listaRutasImagenes: ['host.com/miimagen','host.com/miimagen2'],
+        listaTelefonos: ['3101234567', '3209876543'],
+        listaRutasImagenes: ['host.com/miimagen', 'host.com/miimagen2'],
         listaHorarios: [
             {
                 diaSemana: 'MARTES',
@@ -119,7 +119,7 @@ db.negocios.insertMany([
         _id: 'Negocio3',
         codigoCliente: 'Cliente3',
         nombre: 'Ferreteria la ilusión',
-        decripcion: 'La mejor ferretería de Pereira',
+        descripcion: 'La mejor ferretería de Pereira',
         categoriaNegocio: 'FERRETERIA',
         estadoNegocio: 'PENDIENTE',
         ubicacion: {
@@ -142,7 +142,7 @@ db.negocios.insertMany([
         _id: 'Negocio4',
         codigoCliente: 'Cliente4',
         nombre: 'Tecnologic S.A.S',
-        decripcion: 'El almacen donde encuentras todo de tecnologia',
+        descripcion: 'El almacen donde encuentras todo de tecnologia',
         categoriaNegocio: 'TIENDA_TECNOLOGICA',
         estadoNegocio: 'APROBADO',
         ubicacion: {
@@ -165,7 +165,7 @@ db.negocios.insertMany([
         _id: 'Negocio5',
         codigoCliente: 'Cliente5',
         nombre: 'Nike sucursal norte',
-        decripcion: 'Sucursal nike norte',
+        descripcion: 'Sucursal nike norte',
         categoriaNegocio: 'TIENDA_DEPORTIVA',
         estadoNegocio: 'RECHAZADO',
         ubicacion: {
@@ -438,7 +438,7 @@ db.publicaciones.insertMany([
         rutaImagen: 'rutaimagen',
         fechaPublicacion: new Date(),
         estadoRegistro: 'ACTIVO',
-        listaMeGustas: ['Cliente3','Cliente5'],
+        listaMeGustas: ['Cliente3', 'Cliente5'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion'
     },
     {
@@ -448,7 +448,7 @@ db.publicaciones.insertMany([
         rutaImagen: 'rutaimagen',
         fechaPublicacion: new Date(),
         estadoRegistro: 'ACTIVO',
-        listaMeGustas: ['Cliente1','Cliente5'],
+        listaMeGustas: ['Cliente1', 'Cliente5'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Publicacion'
     },
     {
