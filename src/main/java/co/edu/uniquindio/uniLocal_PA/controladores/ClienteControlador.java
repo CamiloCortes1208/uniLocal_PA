@@ -208,7 +208,7 @@ public class ClienteControlador {
                 "Evento actualizado correctamente"));
     }
 
-    @PutMapping("/eventos/terminar-evento/{codigoEvento}")
+    @DeleteMapping("/eventos/terminar-evento/{codigoEvento}")
     public ResponseEntity<MensajeDTO<String>>
     terminarEvento(@PathVariable String codigoEvento) throws Exception {
         eventoServicio.terminarEvento(codigoEvento);
