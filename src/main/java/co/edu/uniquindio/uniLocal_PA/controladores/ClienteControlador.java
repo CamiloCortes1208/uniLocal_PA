@@ -121,7 +121,7 @@ public class ClienteControlador {
 
     @PutMapping("/actualizar-calificacion")
     public ResponseEntity<MensajeDTO<String>>
-    actualizarCalificacion(ActualizarCalificacionDTO actualizarCalificacionDTO) throws Exception {
+    actualizarCalificacion(@Valid @RequestBody ActualizarCalificacionDTO actualizarCalificacionDTO) throws Exception {
         calificacionServicio.actualizarCalificacion(actualizarCalificacionDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Calificación actualizada correctamente"));
@@ -129,7 +129,7 @@ public class ClienteControlador {
 
     @PostMapping("/responder-calificacion")
     public ResponseEntity<MensajeDTO<String>>
-    responderCalificacion(ResponderCalificacionDTO responderCalificacionDTO) throws Exception {
+    responderCalificacion(@Valid @RequestBody ResponderCalificacionDTO responderCalificacionDTO) throws Exception {
         calificacionServicio.responderCalificacion(responderCalificacionDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Respuesta agregada correctamente"));
