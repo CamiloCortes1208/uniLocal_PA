@@ -50,13 +50,13 @@ public class OpinionServicioImpl implements OpinionServicio {
         Opinion opinionGuardada = opinionRepo.save(opinion);
 
         //Codigo de enviar correos de prueba
-        emailServicio.enviarCorreo(new EmailDTO(
+        /*emailServicio.enviarCorreo(new EmailDTO(
                 "Tu publicación ha sido comentada",
                 "Tu publicación ha sido comentada por " + clienteServicio.obtenerCliente(opinarPublicacionDTO.codigoCliente()).nickname() + ": " + opinarPublicacionDTO.mensaje(),
                 clienteServicio.obtenerCliente(
                         publicacionServicio.obtenerPublicacion(opinarPublicacionDTO.codigoPublicacion()).codigoCliente()
                 ).email()
-        ));
+        ));*/
 
         return opinionGuardada.getCodigoOpinion();
     }

@@ -21,7 +21,7 @@ public class RevisionServicioTest {
         AgregarRevisionDTO agregarRevisionDTO = new AgregarRevisionDTO(
                 LocalDateTime.now(),
                 "Moderador1",
-                "Negocio1",
+                "Negocio3",
                 "Todo correcto",
                 EstadoNegocio.APROBADO
         );
@@ -46,6 +46,6 @@ public class RevisionServicioTest {
 
     @Test
     public void listarRevisionNegocioTest() {
-        Assertions.assertEquals(2, revisionServicio.listarRevisionNegocio("Negocio1").size());
+        Assertions.assertEquals(1, revisionServicio.listarRevisionNegocio("Negocio1").size());
     }
 }

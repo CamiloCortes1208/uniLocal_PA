@@ -28,7 +28,7 @@ public class PublicacionServicioTest {
 
     @Test
     public void obtenerPublicacion() throws ResourceNotFoundException {
-        Assertions.assertEquals("El mejor sitio para tomar un café", publicacionServicio.obtenerPublicacion("Publicacion1").descripcion());
+        Assertions.assertEquals("Me encanta la comida de aquí!", publicacionServicio.obtenerPublicacion("Publicacion3").descripcion());
     }
 
     @Test

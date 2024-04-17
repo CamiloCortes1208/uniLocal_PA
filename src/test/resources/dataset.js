@@ -192,7 +192,7 @@ db.calificaciones.insertMany([
         codigoCliente: 'Cliente1',
         fecha: new Date(),
         mensaje: 'Muy buen local',
-        codigoNegocio: 'Negocio1',
+        codigoNegocio: 'Negocio3',
         valoracion: 5,
         respuesta: '',
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion'

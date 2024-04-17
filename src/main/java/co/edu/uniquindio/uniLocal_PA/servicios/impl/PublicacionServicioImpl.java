@@ -25,7 +25,10 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     private final ClienteServicio clienteServicio;
 
     @Override
-    public String agregarPublicacion(AgregarPublicacionDTO agregarPublicacionDTO) {
+    public String agregarPublicacion(AgregarPublicacionDTO agregarPublicacionDTO) throws ResourceNotFoundException {
+        if (!clienteServicio.existeCliente(agregarPublicacionDTO.idCliente())){
+            throw new ResourceNotFoundException(agregarPublicacionDTO.idCliente());
+        }
 
         Publicacion publicacion = new Publicacion();
 
@@ -70,10 +73,12 @@ public class PublicacionServicioImpl implements PublicacionServicio {
     public void eliminarPublicacion(String idPublicacion) throws Exception {
 
         Publicacion publicacion = obtenerPublicacionID(idPublicacion);
+        if (publicacion.getEstadoRegistro() == EstadoRegistro.INACTIVO){
+            throw new Exception("Ya se encuentra eliminada");
+        }
         publicacion.setEstadoRegistro(EstadoRegistro.INACTIVO);
 
         publicacionRepo.save(publicacion);
-
     }
 
     //Metodos para verificar la existencia de un recurso

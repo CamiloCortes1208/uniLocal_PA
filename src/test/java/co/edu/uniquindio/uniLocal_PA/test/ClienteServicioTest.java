@@ -21,8 +21,8 @@ public class ClienteServicioTest {
         RegistroClienteDTO registroClienteDTO = new RegistroClienteDTO(
                 "Jacobo",
                 "mi foto",
-                "jacobish",
-                "jacobo@email.com",
+                "juanito",
+                    "juan@email.com",
                 "mipassword",
                 "Quimbaya"
         );
@@ -34,15 +34,15 @@ public class ClienteServicioTest {
     @Test
     public void agregarNegocioFavoritoTest() throws Exception {
 
-        String codigoNegocioGuardado = clienteServicio
+        clienteServicio
                 .agregarNegocioFavorito("Cliente5", "Negocio1");
 
-        Assertions.assertNotNull(codigoNegocioGuardado);
+        Assertions.assertEquals(1,clienteServicio.obtenerCliente("Cliente5").listaFavoritos().size());
     }
 
     @Test
     public void editarPerfilTest() throws Exception {
-        //Se crea un objeto de tipo ActualizarClienteDTO de un  cliente que no existe
+        //Se crea un objeto de tipo ActualizarClienteDTO
         ActualizarClienteDTO actualizarClienteDTO = new ActualizarClienteDTO(
                 "Cliente1",
                 "Pepito Lopez",
@@ -68,7 +68,7 @@ public class ClienteServicioTest {
 
     @Test
     public void existeClienteTest() throws Exception {
-        Assertions.assertEquals(false, clienteServicio.existeCliente("Cliente1290319071"));
+        Assertions.assertFalse(clienteServicio.existeCliente("Cliente1290319071"));
     }
 
     @Test
@@ -83,10 +83,7 @@ public class ClienteServicioTest {
     @Test
     public void eliminarClienteTest() throws Exception {
 
-        //Se elimina el cliente con el id "Cliente1"
-
-
-        //Al intentar obtener el cliente con el id "Cliente1" se debe lanzar una excepción
+        //No se puede borrar un cliente que no existe
         Assertions.assertThrows(Exception.class, () -> clienteServicio.eliminarCliente("ClienteNoExistente"));
     }
 

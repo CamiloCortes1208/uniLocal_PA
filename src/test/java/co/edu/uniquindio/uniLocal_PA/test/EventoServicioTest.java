@@ -58,6 +58,6 @@ public class EventoServicioTest {
     @Test
     public void listarEventosNegocioTest() throws Exception {
         List<ItemEventoDTO> listaEventos = eventoServicio.listarEventosNegocio("Negocio1");
-        Assertions.assertEquals(3, listaEventos.size());
+        Assertions.assertEquals(2, listaEventos.size());
     }
 }

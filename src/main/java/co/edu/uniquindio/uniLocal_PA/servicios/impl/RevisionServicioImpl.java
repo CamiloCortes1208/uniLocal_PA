@@ -58,6 +58,8 @@ public class RevisionServicioImpl implements RevisionServicio {
             negocioServicio.rechazarNegocio(agregarRevisionDTO.codigoNegocio());
         }
 
+        /*
+        //Codigo envio correo de prueba
         emailServicio.enviarCorreo(new EmailDTO(
                 "Tu negocio ha sido recibido una revisión",
                 "Tu negocio ha sido recibido una revisión el día " + agregarRevisionDTO.fecha() + ": " +
@@ -66,7 +68,7 @@ public class RevisionServicioImpl implements RevisionServicio {
                 clienteServicio.obtenerCliente(
                         negocioServicio.obtenerNegocio(agregarRevisionDTO.codigoNegocio()).codigoCliente()
                 ).email()
-        ));
+        ));*/
 
         return revisionGuardada.getCodigoRevision();
     }

@@ -6,9 +6,11 @@ import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.DetalleEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ItemEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Evento;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoEvento;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.EventoRepo;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.EventoServicio;
+import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.NegocioServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +25,17 @@ import java.util.Optional;
 public class EventoServicioImpl implements EventoServicio {
 
     private final EventoRepo eventoRepo;
+    private final NegocioServicio negocioServicio;
 
     @Override
     public String agregarEvento(AgregarEventoDTO agregarEventoDTO) throws Exception {
 
+        if (!negocioServicio.existeNegocio(agregarEventoDTO.idNegocio())){
+            throw new Exception("El negocio no existe");
+        }
+        if (negocioServicio.obtenerNegocio(agregarEventoDTO.idNegocio()).estadoRegistro() == EstadoRegistro.INACTIVO){
+            throw new Exception("El negocio está inactivo");
+        }
         Evento evento = new Evento();
 
         evento.setNombre(agregarEventoDTO.nombre());
@@ -42,6 +51,7 @@ public class EventoServicioImpl implements EventoServicio {
 
     @Override
     public void actualizarEvento(ActualizarEventoDTO actualizarEventoDTO) throws Exception {
+
         Evento evento = obtenerEventoID(actualizarEventoDTO.codigoEvento());
 
         evento.setNombre(actualizarEventoDTO.nombre());

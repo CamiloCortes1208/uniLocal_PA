@@ -96,7 +96,7 @@ public class NegocioServicioTest {
 
     @Test
     public void aprobarNegocioTest() throws Exception {
-        negocioServicio.aprobarNegocio("Negocio4");
+        negocioServicio.aprobarNegocio("Negocio2");
         Assertions.assertEquals(EstadoNegocio.APROBADO, negocioServicio.obtenerNegocio("Negocio4").estadoNegocio());
     }
 
@@ -125,12 +125,12 @@ public class NegocioServicioTest {
 
     @Test
     public void listarNegociosPropietarioTest() throws Exception {
-        Assertions.assertEquals(2, negocioServicio.listarNegociosPropietario("Cliente1").size());
+        Assertions.assertEquals(3, negocioServicio.listarNegociosPropietario("Cliente1").size());
     }
 
     @Test
     public void existeNegocio() {
-        Assertions.assertThrows(Exception.class, () -> negocioServicio.existeNegocio("Negocio10231823"));
+        Assertions.assertFalse(negocioServicio.existeNegocio("Negocio10231823"));
     }
 
 

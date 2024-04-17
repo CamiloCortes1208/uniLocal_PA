@@ -3,6 +3,7 @@ package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.*;
 import co.edu.uniquindio.uniLocal_PA.dto.emailDTO.EmailDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.repositorios.ClienteRepo;
@@ -57,11 +58,11 @@ public class ClienteServicioImpl implements ClienteServicio {
         //Se guarda en la base de datos y obtenemos el objeto registrado
         Cliente clienteGuardado = clienteRepo.save(cliente);
 
-        emailServicio.enviarCorreo(new EmailDTO(
+        /*emailServicio.enviarCorreo(new EmailDTO(
                 "Bienvenido a Unilocal",
                 "Bienvenido a unilocal " + registroClienteDTO.nickname() + " disfruta de tu instancia :)",
                 registroClienteDTO.email()
-        ));
+        ));*/
 
         //Retornamos el id (código) del cliente registrado
         return clienteGuardado.getCodigoCliente();
@@ -79,7 +80,12 @@ public class ClienteServicioImpl implements ClienteServicio {
         if (!negocioServicio.existeNegocio(idNegocio)) {
             throw new ResourceNotFoundException(idNegocio);
         }
-
+        if (negocioServicio.obtenerNegocio(idNegocio).estadoNegocio() != EstadoNegocio.APROBADO && negocioServicio.obtenerNegocio(idNegocio).estadoRegistro() == EstadoRegistro.INACTIVO){
+            throw new Exception("No se puede añadir a favoritos un negocio no aprobado o inactivo");
+        }
+        if (cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO){
+            throw new Exception("Un usuario inactivo no puede agregar negocios a favoritos");
+        }
         //En caso de ya estar en la lista de favoritos, se elimina
         if (cliente.getListaNegociosFavoritos().contains(idNegocio)) {
             cliente.getListaNegociosFavoritos().remove(idNegocio);
@@ -99,7 +105,6 @@ public class ClienteServicioImpl implements ClienteServicio {
 
     @Override
     public void editarPerfil(ActualizarClienteDTO actualizarClienteDTO) throws Exception {
-
         if (existeEmail(actualizarClienteDTO.email())) {
             throw new Exception("El email ya está en uso");
         }
@@ -107,6 +112,10 @@ public class ClienteServicioImpl implements ClienteServicio {
         //Obtenemos el cliente que se quiere actualizar y le asignamos los nuevos valores (el
         //nickname no se puede cambiar)
         Cliente cliente = obtenerClienteID(actualizarClienteDTO.id());
+
+        if (cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO){
+            throw new Exception("Un usuario inactivo no puede editar el perfil");
+        }
         cliente.setNombre(actualizarClienteDTO.nombre());
         cliente.setFotoPerfil(actualizarClienteDTO.fotoPerfil());
         cliente.setEmail(actualizarClienteDTO.email());
@@ -129,7 +138,7 @@ public class ClienteServicioImpl implements ClienteServicio {
         //Retornamos el cliente en formato DTO
         return new DetalleClienteDTO(cliente.getCodigoCliente(), cliente.getNombre(),
                 cliente.getFotoPerfil(), cliente.getNickname(), cliente.getEmail(),
-                cliente.getCiudadResidencia(), cliente.getListaNegociosFavoritos());
+                cliente.getCiudadResidencia(), cliente.getListaNegociosFavoritos(),cliente.getEstadoRegistro());
     }
 
     @Override
