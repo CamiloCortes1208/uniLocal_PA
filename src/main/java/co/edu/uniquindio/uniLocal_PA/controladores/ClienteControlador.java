@@ -48,7 +48,7 @@ public class ClienteControlador {
                 "Cliente actualizado correctamente"));
     }
 
-    @PutMapping("/eliminar/{idCuenta}")
+    @DeleteMapping("/eliminar/{idCuenta}")
     public ResponseEntity<MensajeDTO<String>>
     eliminarCliente(@PathVariable String idCuenta) throws Exception {
         clienteServicio.eliminarCliente(idCuenta);
@@ -97,7 +97,7 @@ public class ClienteControlador {
                 "Negocio actualizado correctamente"));
     }
 
-    @PutMapping("/eliminar-negocio/{idNegocio}")
+    @DeleteMapping("/eliminar-negocio/{idNegocio}")
     public ResponseEntity<MensajeDTO<String>>
     eliminarNegocio(@PathVariable String idNegocio) throws Exception {
         negocioServicio.eliminarNegocio(idNegocio);
@@ -164,7 +164,7 @@ public class ClienteControlador {
                 "Publicación editada correctamente"));
     }
 
-    @PutMapping("/eliminar-publicacion/{idPublicacion}")
+    @DeleteMapping("/eliminar-publicacion/{idPublicacion}")
     public ResponseEntity<MensajeDTO<String>>
     eliminarPublicacion(@PathVariable String idPublicacion) throws Exception {
         publicacionServicio.eliminarPublicacion(idPublicacion);
