@@ -62,12 +62,6 @@ public class ClienteControlador {
                 clienteServicio.obtenerCliente(idCliente)));
     }
 
-    @GetMapping("/listar-todos")
-    public ResponseEntity<MensajeDTO<List<ItemClienteDTO>>> listarClientes() {
-        return ResponseEntity.ok().body( new MensajeDTO<>(false,
-                clienteServicio.listarClientes() ));
-    }
-
     @PostMapping("/agregar-negocio-favoritos/{idCliente}/{idNegocio}")
     public ResponseEntity<MensajeDTO<String>>
     agregarNegocioFavorito(@PathVariable String idCliente, @PathVariable String idNegocio) throws Exception {
@@ -77,8 +71,11 @@ public class ClienteControlador {
     }
 
     @PutMapping("/editar-password")
-    void cambiarPassword(@Valid @RequestBody CambioPasswordDTO cambioPasswordDTO) {
-
+    public ResponseEntity<MensajeDTO<String>>
+    cambiarPassword(@Valid @RequestBody CambioPasswordDTO cambioPasswordDTO) throws Exception {
+        clienteServicio.cambiarPassword(cambioPasswordDTO);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                "Contraseña actualizada correctamente"));
     }
 
     //Acciones que puede ejecutar un cliente respecto a los negocios
