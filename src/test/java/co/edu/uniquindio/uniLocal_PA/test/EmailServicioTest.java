@@ -21,7 +21,7 @@ public class EmailServicioTest {
         EmailDTO emailDTO = new EmailDTO(
                 "Envío de correo de prueba",
                 "Este es un correo de prueba",
-                ".com"
+                "pepitojuarez@gmail.com"
         );
 
         Assertions.assertDoesNotThrow( ()-> emailServicio.enviarCorreo(emailDTO));
