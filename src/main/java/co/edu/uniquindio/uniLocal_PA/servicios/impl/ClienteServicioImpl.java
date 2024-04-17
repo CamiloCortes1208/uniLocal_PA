@@ -58,11 +58,12 @@ public class ClienteServicioImpl implements ClienteServicio {
         //Se guarda en la base de datos y obtenemos el objeto registrado
         Cliente clienteGuardado = clienteRepo.save(cliente);
 
-        /*emailServicio.enviarCorreo(new EmailDTO(
+
+        emailServicio.enviarCorreo(new EmailDTO(
                 "Bienvenido a Unilocal",
                 "Bienvenido a unilocal " + registroClienteDTO.nickname() + " disfruta de tu instancia :)",
                 registroClienteDTO.email()
-        ));*/
+        ));
 
         //Retornamos el id (código) del cliente registrado
         return clienteGuardado.getCodigoCliente();
