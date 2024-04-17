@@ -18,6 +18,7 @@ import co.edu.uniquindio.uniLocal_PA.dto.opinionDTO.ReaccionarOpinionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ActualizarPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.AgregarPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ItemPublicacionDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ReaccionarPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.*;
 import jakarta.validation.Valid;
@@ -145,6 +146,14 @@ public class ClienteControlador {
         publicacionServicio.agregarPublicacion(agregarPublicacionDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Publicación creada correctamente"));
+    }
+
+    @PostMapping("/reaccionar-publicacion")
+    public ResponseEntity<MensajeDTO<String>>
+    reaccionarPublicacion(@Valid @RequestBody ReaccionarPublicacionDTO reaccionarPublicacionDTO) throws Exception {
+        publicacionServicio.reaccionarPublicacion(reaccionarPublicacionDTO);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                "Reacción agregada correctamente"));
     }
 
     @PutMapping("/actualizar-publicacion")
