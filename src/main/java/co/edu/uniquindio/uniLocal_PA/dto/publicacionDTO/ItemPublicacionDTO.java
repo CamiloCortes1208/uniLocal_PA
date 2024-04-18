@@ -1,6 +1,8 @@
 package co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,8 +11,8 @@ public record ItemPublicacionDTO(
         @NotBlank String codigoPublicacion,
         @NotBlank String codigoCliente,
         @NotBlank String descripcion,
-        @NotBlank List<String> listaMeGustas,
+        @NotEmpty List<String> listaMeGustas,
         @NotBlank String rutaImagen,
-        @NotBlank LocalDateTime fechaPublicacion
+        @NotNull LocalDateTime fechaPublicacion
 ) {
 }
