@@ -5,10 +5,7 @@ import co.edu.uniquindio.uniLocal_PA.modelo.Ubicacion;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoNegocio;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 
@@ -17,12 +14,12 @@ public record ItemNegocioDTO(
         @NotBlank String codigoCliente,
         @NotBlank @Min(10) @Max(50) String nombre,
         @NotBlank @Min(50) @Max(300) String descripcion,
-        @NotBlank CategoriaNegocio categoriaNegocio,
-        @NotBlank EstadoNegocio estadoNegocio,
-        @NotBlank Ubicacion ubicacion,
+        @NotNull CategoriaNegocio categoriaNegocio,
+        @NotNull EstadoNegocio estadoNegocio,
+        @NotNull Ubicacion ubicacion,
         List<String> listaTelefonos,
         @NotEmpty List<String> listaRutasImagenes,
         @NotEmpty List<Horario> listaHorarios,
-        @NotBlank EstadoRegistro estadoRegistro
+        @NotNull EstadoRegistro estadoRegistro
 ) {
 }

@@ -39,8 +39,8 @@ public class RevisionServicioImpl implements RevisionServicio {
         if (agregarRevisionDTO.estadoNegocio() == EstadoNegocio.PENDIENTE) {
             throw new Exception("No se puede asignar una revisión como pendiente");
         }
-        if (negocioServicio.obtenerNegocio(agregarRevisionDTO.codigoNegocio()).estadoNegocio() != EstadoNegocio.PENDIENTE) {
-            throw new Exception("No se puede asignar una revisión a un negocio que no está pendiente de revision");
+        if (negocioServicio.obtenerNegocio(agregarRevisionDTO.codigoNegocio()).estadoNegocio() == EstadoNegocio.APROBADO) {
+            throw new Exception("No se puede asignar una revisión a un negocio que ya fue aprobado");
         }
         Revision revision = new Revision();
         revision.setFecha(agregarRevisionDTO.fecha());

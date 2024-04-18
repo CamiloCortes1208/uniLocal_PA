@@ -3,10 +3,7 @@ package co.edu.uniquindio.uniLocal_PA.dto.negocioDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.Horario;
 import co.edu.uniquindio.uniLocal_PA.modelo.Ubicacion;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 
@@ -14,7 +11,7 @@ public record AgregarNegocioDTO(
         @NotBlank String codigoCliente,
         @NotBlank @Min(10) @Max(50) String nombreNegocio,
         @NotBlank @Min(50) @Max(300) String descripcion,
-        @NotBlank CategoriaNegocio categoriaNegocio,
+        @NotNull CategoriaNegocio categoriaNegocio,
 
         //Revisar lo de la lista de imagenes de negocio
         @NotEmpty List<String> listaImagenesNegocio,
@@ -22,6 +19,6 @@ public record AgregarNegocioDTO(
         List<String> listaTelefonos,
         //Revisar lo de horarios
         @NotEmpty List<Horario> listaHorarios,
-        @NotBlank Ubicacion ubicacion
+        @NotNull Ubicacion ubicacion
 ) {
 }

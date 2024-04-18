@@ -1,11 +1,15 @@
 package co.edu.uniquindio.uniLocal_PA.test;
 
 import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.*;
+import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
+import co.edu.uniquindio.uniLocal_PA.repositorios.ModeradorRepo;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -14,6 +18,9 @@ public class ClienteServicioTest {
 
     @Autowired
     private ClienteServicio clienteServicio;
+
+    @Autowired
+    private ModeradorRepo moderadorRepo;
 
     @Test
     public void registrarClienteTest() throws Exception {
