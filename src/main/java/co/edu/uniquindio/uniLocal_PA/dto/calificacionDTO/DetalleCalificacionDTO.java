@@ -12,7 +12,7 @@ public record DetalleCalificacionDTO(
         @NotBlank String codigoNegocio,
         @NotBlank String codigoCliente,
         @NotNull LocalDateTime fecha,
-        @NotBlank int valoracion,
+        @NotNull int valoracion,
         @NotBlank @Min(20) @Max(300) String mensaje,
         @NotBlank String respuesta) {
 }

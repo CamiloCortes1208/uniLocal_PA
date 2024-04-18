@@ -13,7 +13,7 @@ public record AgregarCalificacionDTO(
         @NotBlank String codigoCliente,
         @NotBlank String codigoNegocio,
         @NotNull LocalDateTime fecha,
-        @NotBlank @Range(min = 1, max = 5) int valoracion,
+        @NotNull @Range(min = 1, max = 5) int valoracion,
         @NotBlank @Min(20) @Max(300) String mensaje
 ) {
 }
