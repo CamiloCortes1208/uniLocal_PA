@@ -30,7 +30,10 @@ public class JWTUtils {
     }
 
     private SecretKey getKey() {
-        String claveSecreta = "holaCarambola2024";
+        String claveSecreta = "holaCarambola2024saddddddddddddddddddddddgfhjd" +
+                "lkñasdañlsdjsalkdjqwieqwpoeiqwpoeieotsd,fmsd.,fnsdkfjsdlfkjsdkl" +
+                "fjwqoperiewruweiorupodifiuspdujcskvnsdjfhsdjhwuireoiwrjksdfnksd" +
+                "jflksdjfk!/()GHJFGDF123346476l";
         byte[] secretKeyBytes = claveSecreta.getBytes();
         return Keys.hmacShaKeyFor(secretKeyBytes);
     }

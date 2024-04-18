@@ -480,6 +480,7 @@ db.opiniones.insertMany([
         codigoPublicacion: 'Publicacion1',
         fecha: new Date(),
         mensaje: 'Lo mejor es tomar café con pan!',
+        listaMeGustas: ['Cliente3'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion'
     },
     {
@@ -488,6 +489,7 @@ db.opiniones.insertMany([
         codigoPublicacion: 'Publicacion2',
         fecha: new Date(),
         mensaje: 'Felicidades!',
+        listaMeGustas: ['Cliente1'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion'
     },
     {
@@ -496,6 +498,7 @@ db.opiniones.insertMany([
         codigoPublicacion: 'Publicacion2',
         fecha: new Date(),
         mensaje: 'Allí dan los mejores precios!',
+        listaMeGustas: ['Cliente3','Cliente2'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion'
     },
     {
@@ -504,6 +507,7 @@ db.opiniones.insertMany([
         codigoPublicacion: 'Publicacion3',
         fecha: new Date(),
         mensaje: 'Sabe delicioso!',
+        listaMeGustas: ['Cliente3','Cliente5'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion'
     },
     {
@@ -512,6 +516,7 @@ db.opiniones.insertMany([
         codigoPublicacion: 'Publicacion3',
         fecha: new Date(),
         mensaje: 'Espero poder ir algun día',
+        listaMeGustas: ['Cliente4'],
         _class: 'co.edu.uniquindio.uniLocal_PA.modelo.documentos.Opinion'
     }
 ]);

@@ -13,7 +13,8 @@ import java.util.Optional;
 public interface CalificacionRepo extends MongoRepository<Calificacion, String> {
     @Aggregation({"{ $match: { codigoNegocio: ?0 } }", "{ $lookup: { from: 'negocios', localField: " +
             "'codigoNegocio', foreignField: '_id', as: 'negocio' } }", "{ $unwind: '$negocio' }", "{ " +
-            "$project: { fecha: '$fecha', valoracion: '$valoracion', mensaje: '$mensaje', " +
+            "$project: { codigoCalificacion: '$codigoCalificacion', codigoNegocio: '$codigoNegocio'," +
+            " codigoCliente: '$codigoCliente', fecha: '$fecha', valoracion: '$valoracion', respuesta: '$respuesta', " +
             "nombreNegocio: '$negocio.nombre', ubicacionNegocio: '$negocio.ubicacion' } }"})
     List<ItemCalificacionDTO> listarCalificacionesNegocio(String codigoNegocio);
 

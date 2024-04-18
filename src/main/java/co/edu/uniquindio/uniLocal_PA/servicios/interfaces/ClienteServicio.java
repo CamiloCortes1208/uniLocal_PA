@@ -18,7 +18,7 @@ public interface ClienteServicio {
 
     List<ItemClienteDTO> listarClientes();
 
-    String agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception;
+    String agregarNegocioFavorito(AgregarNegocioFavoritosDTO agregarNegocioFavoritosDTO) throws Exception;
 
     void cambiarPassword(CambioPasswordDTO cambioPasswordDTO) throws Exception;
 }

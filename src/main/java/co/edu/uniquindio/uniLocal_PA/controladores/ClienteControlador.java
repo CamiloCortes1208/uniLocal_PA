@@ -4,10 +4,7 @@ import co.edu.uniquindio.uniLocal_PA.dto.JWT_DTO.MensajeDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ActualizarCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.AgregarCalificacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ResponderCalificacionDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.ActualizarClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.CambioPasswordDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.DetalleClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.ItemClienteDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.*;
 import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ActualizarEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.AgregarEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.ActualizarNegocioDTO;
@@ -48,7 +45,7 @@ public class ClienteControlador {
                 "Cliente actualizado correctamente"));
     }
 
-    @PutMapping("/eliminar/{idCuenta}")
+    @DeleteMapping("/eliminar/{idCuenta}")
     public ResponseEntity<MensajeDTO<String>>
     eliminarCliente(@PathVariable String idCuenta) throws Exception {
         clienteServicio.eliminarCliente(idCuenta);
@@ -63,10 +60,10 @@ public class ClienteControlador {
                 clienteServicio.obtenerCliente(idCliente)));
     }
 
-    @PostMapping("/agregar-negocio-favoritos/{idCliente}/{idNegocio}")
+    @PostMapping("/agregar-negocio-favoritos")
     public ResponseEntity<MensajeDTO<String>>
-    agregarNegocioFavorito(@PathVariable String idCliente, @PathVariable String idNegocio) throws Exception {
-        clienteServicio.agregarNegocioFavorito(idCliente,idNegocio);
+    agregarNegocioFavorito(@Valid @RequestBody AgregarNegocioFavoritosDTO agregarNegocioFavoritosDTO) throws Exception {
+        clienteServicio.agregarNegocioFavorito(agregarNegocioFavoritosDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Negocio agregado a favoritos correctamente"));
     }
@@ -97,7 +94,7 @@ public class ClienteControlador {
                 "Negocio actualizado correctamente"));
     }
 
-    @PutMapping("/eliminar-negocio/{idNegocio}")
+    @DeleteMapping("/eliminar-negocio/{idNegocio}")
     public ResponseEntity<MensajeDTO<String>>
     eliminarNegocio(@PathVariable String idNegocio) throws Exception {
         negocioServicio.eliminarNegocio(idNegocio);
@@ -116,7 +113,7 @@ public class ClienteControlador {
     //Acciones que puede ejecutar un cliente respecto a las calificaciones
     @PostMapping("/agregar-Calificacion")
     public ResponseEntity<MensajeDTO<String>>
-    agregarCalificacion(AgregarCalificacionDTO agregarCalificacionDTO) throws Exception{
+    agregarCalificacion(@Valid @RequestBody AgregarCalificacionDTO agregarCalificacionDTO) throws Exception{
         calificacionServicio.agregarCalificacion(agregarCalificacionDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Calificación agregada correctamente"));
@@ -124,7 +121,7 @@ public class ClienteControlador {
 
     @PutMapping("/actualizar-calificacion")
     public ResponseEntity<MensajeDTO<String>>
-    actualizarCalificacion(ActualizarCalificacionDTO actualizarCalificacionDTO) throws Exception {
+    actualizarCalificacion(@Valid @RequestBody ActualizarCalificacionDTO actualizarCalificacionDTO) throws Exception {
         calificacionServicio.actualizarCalificacion(actualizarCalificacionDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Calificación actualizada correctamente"));
@@ -132,7 +129,7 @@ public class ClienteControlador {
 
     @PostMapping("/responder-calificacion")
     public ResponseEntity<MensajeDTO<String>>
-    responderCalificacion(ResponderCalificacionDTO responderCalificacionDTO) throws Exception {
+    responderCalificacion(@Valid @RequestBody ResponderCalificacionDTO responderCalificacionDTO) throws Exception {
         calificacionServicio.responderCalificacion(responderCalificacionDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Respuesta agregada correctamente"));
@@ -164,7 +161,7 @@ public class ClienteControlador {
                 "Publicación editada correctamente"));
     }
 
-    @PutMapping("/eliminar-publicacion/{idPublicacion}")
+    @DeleteMapping("/eliminar-publicacion/{idPublicacion}")
     public ResponseEntity<MensajeDTO<String>>
     eliminarPublicacion(@PathVariable String idPublicacion) throws Exception {
         publicacionServicio.eliminarPublicacion(idPublicacion);
@@ -208,7 +205,7 @@ public class ClienteControlador {
                 "Evento actualizado correctamente"));
     }
 
-    @PutMapping("/eventos/terminar-evento/{codigoEvento}")
+    @DeleteMapping("/eventos/terminar-evento/{codigoEvento}")
     public ResponseEntity<MensajeDTO<String>>
     terminarEvento(@PathVariable String codigoEvento) throws Exception {
         eventoServicio.terminarEvento(codigoEvento);

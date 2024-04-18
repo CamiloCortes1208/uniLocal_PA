@@ -35,7 +35,7 @@ public class ModeradorControlador {
     actualizarModerador(@Valid @RequestBody ActualizarModeradorDTO actualizarModeradorDTO) throws Exception {
         moderadorServicio.actualizarModerador(actualizarModeradorDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
-                "Cliente actualizado correctamente"));
+                "Moderador actualizado correctamente"));
     }
 
     //Acciones que puede realizar un moderador respecto a los negocios
