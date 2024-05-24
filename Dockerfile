@@ -9,6 +9,8 @@ COPY gradlew .
 COPY gradle/ ./gradle/
 # Copy the application source code
 COPY src/ ./src/
+
+RUN chmod +x gradlew
 # Build the application using Gradle
 RUN ./gradlew build
 # Set the port to expose
