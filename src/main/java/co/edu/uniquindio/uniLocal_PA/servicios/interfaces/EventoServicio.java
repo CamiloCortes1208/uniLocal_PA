@@ -5,6 +5,7 @@ import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.AgregarEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.DetalleEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ItemEventoDTO;
 
+import java.awt.event.ItemEvent;
 import java.util.List;
 
 public interface EventoServicio {
@@ -17,4 +18,6 @@ public interface EventoServicio {
     List<ItemEventoDTO> listarEventosNegocio(String idNegocio) throws Exception;
 
     DetalleEventoDTO obtenerEvento(String idEvento) throws Exception;
+
+    List<ItemEventoDTO> listarEventos();
 }

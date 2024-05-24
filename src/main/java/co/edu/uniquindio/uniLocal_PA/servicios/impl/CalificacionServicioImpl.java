@@ -2,6 +2,7 @@ package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
 import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.*;
 import co.edu.uniquindio.uniLocal_PA.dto.emailDTO.EmailDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.DetalleNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Calificacion;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
@@ -30,17 +31,16 @@ public class CalificacionServicioImpl implements CalificacionServicio {
 
     @Override
     public String agregarCalificacion(AgregarCalificacionDTO agregarCalificacionDTO) throws Exception {
-        if (!clienteServicio.existeCliente(agregarCalificacionDTO.codigoCliente())) {
-            throw new ResourceNotFoundException(agregarCalificacionDTO.codigoCliente());
-        }
-        if (!negocioServicio.existeNegocio(agregarCalificacionDTO.codigoNegocio())) {
+        //Con esto se verifica si existe y si está activo o inactivo
+        if (negocioServicio.obtenerNegocioAprobado(agregarCalificacionDTO.codigoNegocio())==null) {
             throw new ResourceNotFoundException(agregarCalificacionDTO.codigoNegocio());
+        }
+        //Con esto se verifica si existe y si está activo o inactivo
+        if (clienteServicio.obtenerCliente(agregarCalificacionDTO.codigoCliente())==null) {
+            throw new ResourceNotFoundException(agregarCalificacionDTO.codigoCliente());
         }
         if (existeCalificacionClienteNegocioIDs(agregarCalificacionDTO.codigoNegocio(), agregarCalificacionDTO.codigoCliente())) {
             throw new Exception("El cliente ya ha realizado una calificacion en este negocio");
-        }
-        if (clienteServicio.obtenerCliente(agregarCalificacionDTO.codigoCliente()).estadoRegistro() == EstadoRegistro.INACTIVO){
-            throw new Exception("El cliente está inactivo");
         }
         //Se crea la calificación
         Calificacion calificacion = new Calificacion();
@@ -60,7 +60,7 @@ public class CalificacionServicioImpl implements CalificacionServicio {
                 "Tu negocio ha sido calificado",
                 "Tu negocio ha sido calificado por " + clienteServicio.obtenerCliente(agregarCalificacionDTO.codigoCliente()).nickname() + ": " +
                         "\n\nValoracion: " + agregarCalificacionDTO.valoracion() + "\nDescripcion: " + agregarCalificacionDTO.mensaje(),
-                clienteServicio.obtenerCliente(negocioServicio.obtenerNegocio(agregarCalificacionDTO.codigoNegocio()).codigoCliente()).email()));
+                clienteServicio.obtenerCliente(negocioServicio.obtenerNegocioAprobado(agregarCalificacionDTO.codigoNegocio()).codigoCliente()).email()));
 
         //Se obtiene el codigo de la calificación para verificar su funcionamiento
         return calificacionGuardada.getCodigoCalificacion();
@@ -82,7 +82,7 @@ public class CalificacionServicioImpl implements CalificacionServicio {
                 "Tu negocio ha sido re-calificado por " + clienteServicio.obtenerCliente(obtenerCalificacion(actualizarCalificacionDTO.idCalificacion()).codigoCliente()).nickname() + ": " +
                         "\n\nValoracion: " + actualizarCalificacionDTO.valoracion() + "\nDescripcion: " + actualizarCalificacionDTO.mensaje(),
                 clienteServicio.obtenerCliente(
-                        negocioServicio.obtenerNegocio(
+                        negocioServicio.obtenerNegocioAprobado(
                                 obtenerCalificacion(actualizarCalificacionDTO.idCalificacion()).codigoNegocio()
                         ).codigoCliente()
                 ).email()
@@ -93,8 +93,11 @@ public class CalificacionServicioImpl implements CalificacionServicio {
     }
 
     @Override
-    public List<ItemCalificacionDTO> listarCalificacionesNegocio(String idNegocio) throws ResourceNotFoundException {
-        return calificacionRepo.listarCalificacionesNegocio(idNegocio);
+    public List<ItemCalificacionDTO> listarCalificacionesNegocio(String idNegocio) throws Exception {
+        //Con esto verificamos que el negocio exista y que esté activo
+        DetalleNegocioDTO detalleNegocioDTO = negocioServicio.obtenerNegocioAprobado(idNegocio);
+
+        return calificacionRepo.findByCodigoNegocio(detalleNegocioDTO.codigoNegocio());
     }
 
     @Override
@@ -106,7 +109,7 @@ public class CalificacionServicioImpl implements CalificacionServicio {
         //Codigo enviar correos de prueba
         emailServicio.enviarCorreo(new EmailDTO(
                 "Tu calificación ha sido respondida",
-                "Tu negocio ha sido respondida por el dueño del negocio: " + clienteServicio.obtenerCliente(negocioServicio.obtenerNegocio(obtenerCalificacion(responderCalificacionDTO.idCalificacion()).codigoNegocio()).codigoCliente()).nickname() + ": " +
+                "Tu negocio ha sido respondida por el dueño del negocio: " + clienteServicio.obtenerCliente(negocioServicio.obtenerNegocioAprobado(obtenerCalificacion(responderCalificacionDTO.idCalificacion()).codigoNegocio()).codigoCliente()).nickname() + ": " +
                         "\n\nRespuesta: " + responderCalificacionDTO.respuesta(),
                 clienteServicio.obtenerCliente(
                         obtenerCalificacion(responderCalificacionDTO.idCalificacion()).codigoCliente()

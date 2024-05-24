@@ -30,6 +30,7 @@ public class Negocio {
     private CategoriaNegocio categoriaNegocio;
     private EstadoNegocio estadoNegocio;
     private Ubicacion ubicacion;
+    private int visitas;
     private List<String> listaTelefonos = new ArrayList<>();
     private List<String> listaRutasImagenes = new ArrayList<>();
     private List<Horario> listaHorarios = new ArrayList<>();

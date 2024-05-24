@@ -45,7 +45,7 @@ public class RevisionServicioTest {
     }
 
     @Test
-    public void listarRevisionNegocioTest() {
+    public void listarRevisionNegocioTest() throws Exception {
         Assertions.assertEquals(1, revisionServicio.listarRevisionNegocio("Negocio1").size());
     }
 }

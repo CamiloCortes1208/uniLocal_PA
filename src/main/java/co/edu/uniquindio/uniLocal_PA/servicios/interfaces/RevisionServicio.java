@@ -16,5 +16,5 @@ public interface RevisionServicio {
 
     List<ItemRevisionDTO> listarRevision();
 
-    List<ItemRevisionDTO> listarRevisionNegocio(String codigoNegocio);
+    List<ItemRevisionDTO> listarRevisionNegocio(String codigoNegocio) throws Exception;
 }

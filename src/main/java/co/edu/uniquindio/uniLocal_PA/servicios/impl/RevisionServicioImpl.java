@@ -1,6 +1,7 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.impl;
 
 import co.edu.uniquindio.uniLocal_PA.dto.emailDTO.EmailDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.DetalleNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.revisionDTO.AgregarRevisionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.revisionDTO.DetalleRevisionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.revisionDTO.ItemRevisionDTO;
@@ -39,7 +40,7 @@ public class RevisionServicioImpl implements RevisionServicio {
         if (agregarRevisionDTO.estadoNegocio() == EstadoNegocio.PENDIENTE) {
             throw new Exception("No se puede asignar una revisión como pendiente");
         }
-        if (negocioServicio.obtenerNegocio(agregarRevisionDTO.codigoNegocio()).estadoNegocio() != EstadoNegocio.PENDIENTE) {
+        if (negocioServicio.obtenerNegocioAprobado(agregarRevisionDTO.codigoNegocio()).estadoNegocio() != EstadoNegocio.PENDIENTE) {
             throw new Exception("No se puede asignar una revisión a un negocio que no está pendiente de revision");
         }
         Revision revision = new Revision();
@@ -66,7 +67,7 @@ public class RevisionServicioImpl implements RevisionServicio {
                         "\n\nEstado: " + agregarRevisionDTO.estadoNegocio() +
                         "\n Descripcion: " + agregarRevisionDTO.descripcion(),
                 clienteServicio.obtenerCliente(
-                        negocioServicio.obtenerNegocio(agregarRevisionDTO.codigoNegocio()).codigoCliente()
+                        negocioServicio.obtenerNegocioAprobado(agregarRevisionDTO.codigoNegocio()).codigoCliente()
                 ).email()
         ));
 
@@ -88,19 +89,7 @@ public class RevisionServicioImpl implements RevisionServicio {
 
     @Override
     public List<ItemRevisionDTO> listarRevisionModerador(String codigoModerador) {
-        List<Revision> listaRevision = revisionRepo.findAllByCodigoModerador(codigoModerador);
-        List<ItemRevisionDTO> itemsRevision = new ArrayList<>();
-        for (Revision revision : listaRevision) {
-            itemsRevision.add(new ItemRevisionDTO(
-                    revision.getCodigoRevision(),
-                    revision.getFecha(),
-                    revision.getCodigoModerador(),
-                    revision.getCodigoNegocio(),
-                    revision.getDescripcion(),
-                    revision.getEstadoNegocio()
-            ));
-        }
-        return itemsRevision;
+        return revisionRepo.findAllByCodigoModerador(codigoModerador);
     }
 
     @Override
@@ -121,20 +110,11 @@ public class RevisionServicioImpl implements RevisionServicio {
     }
 
     @Override
-    public List<ItemRevisionDTO> listarRevisionNegocio(String codigoNegocio) {
-        List<Revision> listaRevision = revisionRepo.findAllByCodigoNegocio(codigoNegocio);
-        List<ItemRevisionDTO> itemsRevision = new ArrayList<>();
-        for (Revision revision : listaRevision) {
-            itemsRevision.add(new ItemRevisionDTO(
-                    revision.getCodigoRevision(),
-                    revision.getFecha(),
-                    revision.getCodigoModerador(),
-                    revision.getCodigoNegocio(),
-                    revision.getDescripcion(),
-                    revision.getEstadoNegocio()
-            ));
-        }
-        return itemsRevision;
+    public List<ItemRevisionDTO> listarRevisionNegocio(String codigoNegocio) throws Exception {
+        //Obtenemos el detalle del negocio (valida existencia y si está activo)
+        DetalleNegocioDTO detalleNegocioDTO = negocioServicio.obtenerNegocioAprobado(codigoNegocio);
+
+        return revisionRepo.findAllByCodigoNegocio(detalleNegocioDTO.codigoNegocio());
     }
 
     private Revision obtenerRevisionID(String codigoRevision) throws ResourceNotFoundException {

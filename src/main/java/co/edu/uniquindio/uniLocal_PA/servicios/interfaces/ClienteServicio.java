@@ -1,6 +1,8 @@
 package co.edu.uniquindio.uniLocal_PA.servicios.interfaces;
 
 import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.*;
+import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
+import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -18,7 +20,11 @@ public interface ClienteServicio {
 
     List<ItemClienteDTO> listarClientes();
 
-    String agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception;
-
     void cambiarPassword(CambioPasswordDTO cambioPasswordDTO) throws Exception;
+
+    Cliente obtenerClienteID(String idCliente) throws ResourceNotFoundException;
+
+    void actualizarFavoritos(Cliente cliente);
+
+
 }

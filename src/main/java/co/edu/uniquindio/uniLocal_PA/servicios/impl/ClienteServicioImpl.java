@@ -25,7 +25,6 @@ import java.util.Optional;
 public class ClienteServicioImpl implements ClienteServicio {
 
     private final ClienteRepo clienteRepo;
-    private final NegocioServicio negocioServicio;
     private final EmailServicio emailServicio;
 
     @Override
@@ -37,6 +36,9 @@ public class ClienteServicioImpl implements ClienteServicio {
 
         if (existeNickname(registroClienteDTO.nickname())) {
             throw new Exception("El nickname ya se encuentra registrado por otro usuario");
+        }
+        if (!registroClienteDTO.password().equals(registroClienteDTO.confirmarPassword())){
+            throw new Exception("Las contraseñas no son iguales");
         }
 
         //Se crea el objeto Cliente
@@ -67,41 +69,6 @@ public class ClienteServicioImpl implements ClienteServicio {
 
         //Retornamos el id (código) del cliente registrado
         return clienteGuardado.getCodigoCliente();
-    }
-
-    @Override
-    public String agregarNegocioFavorito(String idCliente, String idNegocio) throws Exception {
-        //Se obtiene el cliente al cual se le va a agregar el negocio favorito
-        Cliente cliente = obtenerClienteID(idCliente);
-
-        /*
-        Se arroja una excepción en caso de que no exista el negocio que se quiere
-        agregar a los favoritos del cliente
-         */
-        if (!negocioServicio.existeNegocio(idNegocio)) {
-            throw new ResourceNotFoundException(idNegocio);
-        }
-        if (negocioServicio.obtenerNegocio(idNegocio).estadoNegocio() != EstadoNegocio.APROBADO && negocioServicio.obtenerNegocio(idNegocio).estadoRegistro() == EstadoRegistro.INACTIVO){
-            throw new Exception("No se puede añadir a favoritos un negocio no aprobado o inactivo");
-        }
-        if (cliente.getEstadoRegistro() == EstadoRegistro.INACTIVO){
-            throw new Exception("Un usuario inactivo no puede agregar negocios a favoritos");
-        }
-        //En caso de ya estar en la lista de favoritos, se elimina
-        if (cliente.getListaNegociosFavoritos().contains(idNegocio)) {
-            cliente.getListaNegociosFavoritos().remove(idNegocio);
-        }
-        //En caso contrario, se quita de la lista
-        else {
-            cliente.getListaNegociosFavoritos().add(idNegocio);
-        }
-
-        //Se actualiza la información del cliente en el repositorio
-        clienteRepo.save(cliente);
-
-        //Se retorna el código del negocio para verificar en los tests
-        return idNegocio;
-
     }
 
     @Override
@@ -169,7 +136,6 @@ public class ClienteServicioImpl implements ClienteServicio {
         return listaItemClienteDTO;
     }
 
-
     @Override
     public void eliminarCliente(String idCuenta) throws Exception {
 
@@ -186,6 +152,10 @@ public class ClienteServicioImpl implements ClienteServicio {
     public void cambiarPassword(CambioPasswordDTO cambioPasswordDTO) throws Exception {
         Cliente cliente = obtenerClienteID(cambioPasswordDTO.id());
 
+        if (cliente.getEstadoRegistro().equals(EstadoRegistro.INACTIVO)){
+            throw new Exception("El cliente está inactivo");
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (!passwordEncoder.matches(cambioPasswordDTO.passwordVieja(), cliente.getPassword())) {
             throw new Exception("La contraseña es incorrecta");
@@ -195,7 +165,6 @@ public class ClienteServicioImpl implements ClienteServicio {
 
         clienteRepo.save(cliente);
     }
-
 
     //Metodos para verificar existencia de datos
     public Cliente obtenerClienteID(String idCliente) throws ResourceNotFoundException {
@@ -208,6 +177,9 @@ public class ClienteServicioImpl implements ClienteServicio {
         return optionalCliente.get();
     }
 
+    public void actualizarFavoritos(Cliente cliente){
+        clienteRepo.save(cliente);
+    }
 
     private boolean existeEmail(String email) {
         return clienteRepo.findByEmail(email).isPresent();

@@ -9,6 +9,7 @@ import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.opinionDTO.ItemOpinionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ItemPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.CategoriaNegocio;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.Ciudades;
 import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.*;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class VisitanteControlador {
     public ResponseEntity<MensajeDTO<DetalleNegocioDTO>>
     obtenerNegocio(@PathVariable String idNegocio) throws Exception {
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
-                negocioServicio.obtenerNegocio(idNegocio)));
+                negocioServicio.obtenerNegocioAprobado(idNegocio)));
     }
 
     @GetMapping("/listar-negocios-nombre/{nombre}")
@@ -104,4 +105,17 @@ public class VisitanteControlador {
                 eventoServicio.obtenerEvento(idEvento)));
     }
 
+    @GetMapping("/listar-ciudades")
+    public ResponseEntity<MensajeDTO<List<Ciudades>>>
+    listarCiudades() throws Exception {
+        return ResponseEntity.ok().body( new MensajeDTO<>( false,
+                List.of(Ciudades.values())));
+    }
+
+    @GetMapping("/listar-categorias")
+    public ResponseEntity<MensajeDTO<List<CategoriaNegocio>>>
+    listarCategorias() throws Exception {
+        return ResponseEntity.ok().body( new MensajeDTO<>( false,
+                List.of(CategoriaNegocio.values())));
+    }
 }

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -35,7 +36,7 @@ public class PublicacionServicioImpl implements PublicacionServicio {
         publicacion.setDescripcion(agregarPublicacionDTO.descripcion());
         publicacion.setRutaImagen(agregarPublicacionDTO.rutaImagen());
         publicacion.setCodigoCliente(agregarPublicacionDTO.idCliente());
-        publicacion.setFechaPublicacion(agregarPublicacionDTO.fechaPublicacion());
+        publicacion.setFechaPublicacion(LocalDateTime.now());
 
         Publicacion publicacionGuardada = publicacionRepo.save(publicacion);
 

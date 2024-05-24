@@ -8,6 +8,7 @@ import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.AutenticacionServicio;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.ClienteServicio;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,9 @@ public class AutenticacionControlador {
     public ResponseEntity<MensajeDTO<String>>
     registrarCliente(@Valid @RequestBody
                      RegistroClienteDTO registroClienteDTO) throws Exception {
+        System.out.println("Registrar cliente");
         clienteServicio.registrarCliente(registroClienteDTO);
+        System.out.println("Registrado");
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Cliente registrado correctamente"));
     }

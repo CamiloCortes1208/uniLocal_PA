@@ -40,7 +40,7 @@ public class CalificacionServicioTest {
     public void listarCalificacionesNegocioTest() throws Exception {
         //Solo hay 3 calificaciones para negocio1
         List<ItemCalificacionDTO> listaItemCalificacionDTO = calificacionServicio.listarCalificacionesNegocio("Negocio1");
-        Assertions.assertEquals(2, listaItemCalificacionDTO.size());
+        Assertions.assertEquals(3, listaItemCalificacionDTO.size());
     }
 
     @Test

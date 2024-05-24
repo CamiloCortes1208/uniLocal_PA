@@ -7,19 +7,17 @@ import co.edu.uniquindio.uniLocal_PA.dto.calificacionDTO.ResponderCalificacionDT
 import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.ActualizarClienteDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.CambioPasswordDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.DetalleClienteDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.clienteDTO.ItemClienteDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.ActualizarEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.eventoDTO.AgregarEventoDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.ActualizarNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.AgregarNegocioDTO;
+import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.DetalleNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.negocioDTO.ItemNegocioDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.opinionDTO.OpinarPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.opinionDTO.ReaccionarOpinionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ActualizarPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.AgregarPublicacionDTO;
-import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ItemPublicacionDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.publicacionDTO.ReaccionarPublicacionDTO;
-import co.edu.uniquindio.uniLocal_PA.modelo.excepciones.ResourceNotFoundException;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +64,7 @@ public class ClienteControlador {
     @PostMapping("/agregar-negocio-favoritos/{idCliente}/{idNegocio}")
     public ResponseEntity<MensajeDTO<String>>
     agregarNegocioFavorito(@PathVariable String idCliente, @PathVariable String idNegocio) throws Exception {
-        clienteServicio.agregarNegocioFavorito(idCliente,idNegocio);
+        negocioServicio.agregarNegocioFavorito(idCliente,idNegocio);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Negocio agregado a favoritos correctamente"));
     }
@@ -97,7 +95,7 @@ public class ClienteControlador {
                 "Negocio actualizado correctamente"));
     }
 
-    @PutMapping("/eliminar-negocio/{idNegocio}")
+    @DeleteMapping("/eliminar-negocio/{idNegocio}")
     public ResponseEntity<MensajeDTO<String>>
     eliminarNegocio(@PathVariable String idNegocio) throws Exception {
         negocioServicio.eliminarNegocio(idNegocio);
@@ -110,6 +108,26 @@ public class ClienteControlador {
     listarNegociosPropietario(@PathVariable String idPropietario) throws Exception {
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 negocioServicio.listarNegociosPropietario(idPropietario)));
+    }
+    @GetMapping("/listar-negocios-propietario-rechazados/{idPropietario}")
+    public ResponseEntity<MensajeDTO<List<ItemNegocioDTO>>>
+    listarNegociosPropietarioRechazados(@PathVariable String idPropietario) throws Exception {
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                negocioServicio.listarNegociosPropietarioRechazados(idPropietario)));
+    }
+
+    @GetMapping("/obtener-negocio/{idNegocio}")
+    public ResponseEntity<MensajeDTO<DetalleNegocioDTO>>
+    obtenerNegocioAprobado(@PathVariable String idNegocio) throws Exception {
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                negocioServicio.obtenerNegocioAprobado(idNegocio)));
+    }
+
+    @GetMapping("/obtener-negocio-rechazado/{idNegocio}")
+    public ResponseEntity<MensajeDTO<DetalleNegocioDTO>>
+    obtenerNegocioRechazado(@PathVariable String idNegocio) throws Exception {
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                negocioServicio.obtenerNegocioRechazado(idNegocio)));
     }
 
 
@@ -212,6 +230,22 @@ public class ClienteControlador {
     public ResponseEntity<MensajeDTO<String>>
     terminarEvento(@PathVariable String codigoEvento) throws Exception {
         eventoServicio.terminarEvento(codigoEvento);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                "Evento terminado correctamente"));
+    }
+
+    @GetMapping("/eventos/obtener-eventos")
+    public ResponseEntity<MensajeDTO<String>>
+    listarEventos() throws Exception {
+        eventoServicio.listarEventos();
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                "Evento terminado correctamente"));
+    }
+
+    @GetMapping("/eventos/obtener-eventos-negocio/{codigoNegocio}")
+    public ResponseEntity<MensajeDTO<String>>
+    listarEventosNegocio(@PathVariable String codigoNegocio) throws Exception {
+        eventoServicio.listarEventosNegocio(codigoNegocio);
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 "Evento terminado correctamente"));
     }

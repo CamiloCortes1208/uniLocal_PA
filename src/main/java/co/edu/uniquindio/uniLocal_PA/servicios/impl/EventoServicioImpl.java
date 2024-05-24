@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +32,7 @@ public class EventoServicioImpl implements EventoServicio {
         if (!negocioServicio.existeNegocio(agregarEventoDTO.idNegocio())){
             throw new Exception("El negocio no existe");
         }
-        if (negocioServicio.obtenerNegocio(agregarEventoDTO.idNegocio()).estadoRegistro() == EstadoRegistro.INACTIVO){
+        if (negocioServicio.obtenerNegocioAprobado(agregarEventoDTO.idNegocio()).estadoRegistro() == EstadoRegistro.INACTIVO){
             throw new Exception("El negocio está inactivo");
         }
         Evento evento = new Evento();
@@ -75,7 +74,7 @@ public class EventoServicioImpl implements EventoServicio {
 
     @Override
     public List<ItemEventoDTO> listarEventosNegocio(String idNegocio) throws Exception {
-        List<Evento> listaEventos = eventoRepo.findAllByCodigoNegocio(idNegocio);
+        /*List<Evento> listaEventos = eventoRepo.findAllByCodigoNegocio(idNegocio);
         List<ItemEventoDTO> itemsEventoDTO = new ArrayList<>();
         for (Evento evento : listaEventos) {
             itemsEventoDTO.add(new ItemEventoDTO(
@@ -88,7 +87,13 @@ public class EventoServicioImpl implements EventoServicio {
                     evento.getEstadoEvento()
             ));
         }
-        return itemsEventoDTO;
+        return itemsEventoDTO;*/
+        return eventoRepo.findAllByCodigoNegocio(idNegocio);
+    }
+
+    @Override
+    public List<ItemEventoDTO> listarEventos() {
+        return eventoRepo.findAllByEstadoEvento(EstadoEvento.EN_CURSO);
     }
 
     @Override

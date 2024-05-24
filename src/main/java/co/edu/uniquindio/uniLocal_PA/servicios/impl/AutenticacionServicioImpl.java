@@ -4,6 +4,7 @@ import co.edu.uniquindio.uniLocal_PA.dto.JWT_DTO.TokenDTO;
 import co.edu.uniquindio.uniLocal_PA.dto.LoginDTO.LoginDTO;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Cliente;
 import co.edu.uniquindio.uniLocal_PA.modelo.documentos.Moderador;
+import co.edu.uniquindio.uniLocal_PA.modelo.enumeraciones.EstadoRegistro;
 import co.edu.uniquindio.uniLocal_PA.repositorios.ClienteRepo;
 import co.edu.uniquindio.uniLocal_PA.repositorios.ModeradorRepo;
 import co.edu.uniquindio.uniLocal_PA.servicios.interfaces.AutenticacionServicio;
@@ -32,6 +33,9 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
         if (clienteOptional.isEmpty()) {
             throw new Exception("El correo no se encuentra registrado");
         }
+        if (clienteOptional.get().getEstadoRegistro().equals(EstadoRegistro.INACTIVO)){
+            throw new Exception("El cliente está inactivo");
+        }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Cliente cliente = clienteOptional.get();
         if (!passwordEncoder.matches(loginDTO.password(), cliente.getPassword())) {
@@ -49,6 +53,9 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
         Optional<Moderador> moderadorOptional = moderadorRepo.findByEmail(loginDTO.email());
         if (moderadorOptional.isEmpty()) {
             throw new Exception("El correo no se encuentra registrado");
+        }
+        if (moderadorOptional.get().getEstadoRegistro().equals(EstadoRegistro.INACTIVO)){
+            throw new Exception("El moderador está inactivo");
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Moderador moderador = moderadorOptional.get();

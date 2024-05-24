@@ -9,7 +9,7 @@ public record ItemPublicacionDTO(
         @NotBlank String codigoPublicacion,
         @NotBlank String codigoCliente,
         @NotBlank String descripcion,
-        @NotBlank List<String> listaMeGustas,
+        List<String> listaMeGustas,
         @NotBlank String rutaImagen,
         @NotBlank LocalDateTime fechaPublicacion
 ) {

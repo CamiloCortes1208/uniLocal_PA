@@ -17,6 +17,7 @@ public class ImagenesController {
     @PostMapping("/subir")
     public ResponseEntity<MensajeDTO<Map>> subir(@RequestParam("file") MultipartFile imagen)
             throws Exception{
+        System.out.println("hola");
         Map respuesta = imagenesServicio.subirImagen(imagen);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, respuesta ));
     }

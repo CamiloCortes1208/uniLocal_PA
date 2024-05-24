@@ -35,6 +35,7 @@ public class FiltroToken extends OncePerRequestFilter {
             //Se obtiene el token de la petición del encabezado del mensaje HTTP
             String token = getToken(request);
             boolean error = true;
+            System.out.println(token);
             try {
                 //Si la petición es para la ruta /api/clientes se verifica que el token sea
                 // correcto y que el rol sea CLIENTE
@@ -43,7 +44,7 @@ public class FiltroToken extends OncePerRequestFilter {
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
                         if (!jws.getPayload().get("rol").equals("CLIENTE")) {
-                            crearRespuestaError("No tiene permisos para acceder a este recurso",
+                            crearRespuestaError("No tiene permisos para acceder a este recurso, usted es: "+jws.getPayload().get("rol"),
 
                                     HttpServletResponse.SC_FORBIDDEN, response);
 
@@ -51,6 +52,7 @@ public class FiltroToken extends OncePerRequestFilter {
                             error = false;
                         }
                     } else {
+                        System.out.println("Es nulo el token de cliente");
                         crearRespuestaError("No tiene permisos para acceder a este recurso",
 
                                 HttpServletResponse.SC_FORBIDDEN, response);
@@ -75,6 +77,7 @@ public class FiltroToken extends OncePerRequestFilter {
                             error = false;
                         }
                     } else {
+                        System.out.println("Es nulo el token de moderador");
                         crearRespuestaError("No tiene permisos para acceder a este recurso",
 
                                 HttpServletResponse.SC_FORBIDDEN, response);
@@ -106,6 +109,7 @@ public class FiltroToken extends OncePerRequestFilter {
 
     private String getToken(HttpServletRequest req) {
         String header = req.getHeader("Authorization");
+        System.out.println("header: " +header);
         if(header != null && header.startsWith("Bearer "))
             return header.replace("Bearer ", "");
         return null;

@@ -73,7 +73,7 @@ public class ModeradorControlador {
 
     @GetMapping("/listar-revisiones-negocio/{codigoNegocio}")
     public ResponseEntity<MensajeDTO<List<ItemRevisionDTO>>>
-    listarRevisionNegocio(@PathVariable String codigoNegocio) {
+    listarRevisionNegocio(@PathVariable String codigoNegocio) throws Exception {
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 revisionServicio.listarRevisionNegocio(codigoNegocio)));
     }

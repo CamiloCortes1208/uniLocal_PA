@@ -24,20 +24,12 @@ public class ClienteServicioTest {
                 "juanito",
                     "juan@email.com",
                 "mipassword",
+                "mipassword",
                 "Quimbaya"
         );
 
         Assertions.assertThrows(Exception.class, () -> clienteServicio
                 .registrarCliente(registroClienteDTO));
-    }
-
-    @Test
-    public void agregarNegocioFavoritoTest() throws Exception {
-
-        clienteServicio
-                .agregarNegocioFavorito("Cliente5", "Negocio1");
-
-        Assertions.assertEquals(1,clienteServicio.obtenerCliente("Cliente5").listaFavoritos().size());
     }
 
     @Test
