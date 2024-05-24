@@ -21,8 +21,7 @@ public class PublicacionServicioTest {
         AgregarPublicacionDTO agregarPublicacionDTO = new AgregarPublicacionDTO(
                 "Que bonito café",
                 "imagen2",
-                "Cliente1",
-                LocalDateTime.now());
+                "Cliente1");
         Assertions.assertEquals("Que bonito café", publicacionServicio.obtenerPublicacion(publicacionServicio.agregarPublicacion(agregarPublicacionDTO)).descripcion());
     }
 
